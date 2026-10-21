@@ -7,11 +7,7 @@ Nguồn: https://www.deedeestudio.net/
 Nhấp đúp `Start.command`, sau đó mở http://127.0.0.1:4173.
 Máy cần có Python 3. Nếu cổng đang được dùng, bản local có thể đã chạy.
 
-Hoặc mở Terminal trong thư mục này và chạy:
-
-```sh
-python3 -m http.server 4173 --bind 127.0.0.1
-```
+Hoặc chạy `python3 serve.py` trong thư mục này để ánh xạ tiền tố đường dẫn GitHub Pages khi xem local.
 
 ## Nội dung
 
