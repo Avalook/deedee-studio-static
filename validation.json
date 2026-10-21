@@ -1,0 +1,3061 @@
+{
+  "checkedAt": "2026-10-17T03:28:33.923Z",
+  "pages": [
+    {
+      "route": "/",
+      "status": 200,
+      "title": "DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/our-work",
+      "status": 200,
+      "title": "Dự án | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/testimonials",
+      "status": 200,
+      "title": "Testimonials | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/news",
+      "status": 200,
+      "title": "Tin tức | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/carrers",
+      "status": 200,
+      "title": "Tuyển dụng | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/contact-short-form",
+      "status": 200,
+      "title": "Contact - Short film | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/contact-long-form",
+      "status": 200,
+      "title": "Contact - Series | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/chia-khoa-cho-mot-quy-trinh-hop-tac-quoc-te",
+      "status": 200,
+      "title": "Chìa khóa cho một quy trình hợp tác quốc tế hiệu quả là gì?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/v%C3%AC-sao-phim-ho%E1%BA%A1t-h%C3%ACnh-d%C3%A0nh-cho-ng%C6%B0%E1%BB%9Di-l%E1%BB%9Bn-c%E1%BA%A7n-m%E1%BB%99t-%C4%91%E1%BB%8Bnh-h%C6%B0%E1%BB%9Bng-ngh%E1%BB%87-thu%E1%BA%ADt-%C4%91%E1%BB%A7-m%E1%BA%A1nh",
+      "status": 200,
+      "title": "Vì sao phim hoạt hình dành cho người lớn cần một định hướng nghệ thuật đủ mạnh?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/storyboard-buoc-lam-phim-truoc-khi-vao-san-xuat-phim",
+      "status": 200,
+      "title": "Storyboard: Bước làm phim trước khi vào sản xuất phim",
+      "hasContent": true
+    },
+    {
+      "route": "/post/t%C3%A0n-th%E1%BB%83-v%C5%A9-tr%E1%BB%A5-h%E1%BA%ADu-t%E1%BA%ADn-th%E1%BA%BF-l%E1%BA%A5y-c%E1%BA%A3m-h%E1%BB%A9ng-t%E1%BB%AB-th%E1%BA%A7n-tho%E1%BA%A1i-vi%E1%BB%87t-nam",
+      "status": 200,
+      "title": "Tàn thể: Vũ trụ hậu tận thế lấy cảm hứng từ thần thoại Việt Nam",
+      "hasContent": true
+    },
+    {
+      "route": "/post/b%C3%AAn-trong-quy-tr%C3%ACnh-s%E1%BA%A3n-xu%E1%BA%A5t-ho%E1%BA%A1t-h%C3%ACnh-tr%E1%BB%8Dn-g%C3%B3i-c%E1%BB%A7a-deedee",
+      "status": 200,
+      "title": "Bên trong quy trình sản xuất hoạt hình trọn gói của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/v%C3%AC-sao-m%E1%BB%99t-s%E1%BB%91-c%E1%BA%A3nh-off-model-v%E1%BA%ABn-%C4%91%C6%B0%E1%BB%A3c-duy%E1%BB%87t-g%C3%B3c-nh%C3%ACn-t%E1%BB%AB-animation-supervisor-c%E1%BB%A7a-deedee",
+      "status": 200,
+      "title": "Vì sao một số cảnh \"off-model\" vẫn được duyệt? - Góc nhìn từ Animation Supervisor của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/ho%E1%BA%A1t-h%C3%ACnh-g%C3%B3p-ph%E1%BA%A7n-t%E1%BA%A1o-n%C3%AAn-b%E1%BA%A3n-s%E1%BA%AFc-ri%C3%AAng-cho-game-chivalware",
+      "status": 200,
+      "title": "Hoạt hình góp phần tạo nên bản sắc riêng cho game Chivalware",
+      "hasContent": true
+    },
+    {
+      "route": "/post/khi-m%E1%BB%99t-tvc-ph%E1%BA%A3i-%C4%91%E1%BA%A1t-ti%C3%AAu-chu%E1%BA%A9n-c%E1%BB%A7a-c%E1%BA%A3-2-th%C6%B0%C6%A1ng-hi%E1%BB%87u",
+      "status": 200,
+      "title": "Khi một TVC phải đạt tiêu chuẩn của cả 2 thương hiệu",
+      "hasContent": true
+    },
+    {
+      "route": "/post/oh-my-god-yes-th%C3%A1ch-th%E1%BB%A9c-l%E1%BB%9Bn-nh%E1%BA%A5t-kh%C3%B4ng-ph%E1%BA%A3i-%E1%BB%9F-k%E1%BB%B9-thu%E1%BA%ADt-m%C3%A0-l%C3%A0-v%C4%83n-h%C3%B3a",
+      "status": 200,
+      "title": "Oh My God... Yes! - Thách thức lớn nhất không phải ở kỹ thuật, mà là văn hóa",
+      "hasContent": true
+    },
+    {
+      "route": "/en",
+      "status": 200,
+      "title": "DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/kh%C3%B3a-%C4%91%C3%A0o-t%E1%BA%A1o-n%E1%BB%99i-b%E1%BB%99-storyboard-101-khi-m%E1%BB%97i-khung-h%C3%ACnh-%C4%91%E1%BB%81u-b%E1%BA%AFt-%C4%91%E1%BA%A7u-t%E1%BB%AB-t%C6%B0-duy-k%E1%BB%83-chuy%E1%BB%87n",
+      "status": 200,
+      "title": "Khóa đào tạo nội bộ Storyboard 101 | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/th%C3%AAm-m%E1%BB%99t-d%E1%BB%B1-%C3%A1n-c%E1%BB%A7a-deedee-tr%C3%AAn-cafe-s%C3%A1ng-vtv3",
+      "status": 200,
+      "title": "Thêm một dự án của DeeDee trên Cafe sáng VTV3",
+      "hasContent": true
+    },
+    {
+      "route": "/post/4-g%C3%B3c-nh%C3%ACn-%C4%91%C3%A1ng-ch%C3%BA-%C3%BD-t%E1%BB%AB-annecy-mifa-2026",
+      "status": 200,
+      "title": "4 góc nhìn đáng chú ý từ Annecy &amp; MIFA 2026",
+      "hasContent": true
+    },
+    {
+      "route": "/post/h%C3%A0nh-tr%C3%ACnh-t%E1%BB%AB-fan-h%C3%A2m-m%E1%BB%99-%C4%91%E1%BA%BFn-di%E1%BB%85n-ho%E1%BA%A1t-c%C3%A1c-nh%C3%A2n-v%E1%BA%ADt-disney-marvel-dc",
+      "status": 200,
+      "title": "Hành trình từ fan hâm mộ đến diễn hoạt các nhân vật Disney, Marvel &amp; DC",
+      "hasContent": true
+    },
+    {
+      "route": "/post/gi%E1%BA%A3i-c%C3%A1nh-di%E1%BB%81u-b%E1%BA%A1c-2025-thu%E1%BB%99c-v%E1%BB%81-phim-ng%E1%BA%AFn-tr%E1%BB%9F-v%E1%BB%81-c%E1%BB%A7a-deedee-animation-studio",
+      "status": 200,
+      "title": "Giải Cánh Diều Bạc 2025 thuộc về phim ngắn Trở Về của DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/%C4%91%E1%BA%A1i-ngh%C4%A9a-hi%E1%BB%87p-mini-series-t%E1%BB%AB-deedee-animation-studio-ch%C3%ADnh-th%E1%BB%A9c-ra-m%E1%BA%AFt",
+      "status": 200,
+      "title": "Đại Nghĩa Hiệp - Mini Series từ DeeDee Animation Studio chính thức ra mắt",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/sunny-side-down",
+      "status": 200,
+      "title": "SUNNY SIDE DOWN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/chivalware",
+      "status": 200,
+      "title": "CHIVALWARE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/jelly's-bean",
+      "status": 200,
+      "title": "JELLY'S BEAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/green-sm",
+      "status": 200,
+      "title": "GREEN SM  | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/privacy-policy",
+      "status": 200,
+      "title": "Chính sách quyền riêng tư | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/fantastic-four",
+      "status": 200,
+      "title": "MEET THE FANTASTIC FOUR | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/ho%C3%A0ng-th%E1%BB%8B-th%E1%BA%BF%3A-fate-%26-destiny",
+      "status": 200,
+      "title": "HOÀNG THỊ THẾ: FATE &amp; DESTINY | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/studio",
+      "status": 200,
+      "title": "STUDIO | DeeDee Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/service",
+      "status": 200,
+      "title": "SERVICE | DeeDee Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/contact-us",
+      "status": 200,
+      "title": "Liên hệ | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/aboutus",
+      "status": 200,
+      "title": "ABOUT US | DeeDee Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/careers",
+      "status": 200,
+      "title": "Tuyển dụng2 | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/activities",
+      "status": 200,
+      "title": "Hoạt động | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/our-work",
+      "status": 200,
+      "title": "Our work | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/home-again-tro-ve",
+      "status": 200,
+      "title": "TRỞ VỀ | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/broken-being%3A-the-prequel",
+      "status": 200,
+      "title": "TÀN THỂ: TIỀN TRUYỆN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/awaken",
+      "status": 200,
+      "title": "AWAKEN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/yo-zeno!",
+      "status": 200,
+      "title": "YO ZENO! | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/home-again",
+      "status": 200,
+      "title": "Home Again Animated Short Film | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/the-magnificent-life-of-marcel-pagnol",
+      "status": 200,
+      "title": "A MAGNIFICENT LIFE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/how-to-become-a-mob-boss",
+      "status": 200,
+      "title": "HOW TO BECOME A MOB BOSS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/how-to-become-a-cult-leader",
+      "status": 200,
+      "title": "HOW TO BECOME A CULT LEADER | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/cyberslav",
+      "status": 200,
+      "title": "CYBERSLAV | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/oh-my-god-yes",
+      "status": 200,
+      "title": "Oh My God...YES! | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/warhamer-interogator",
+      "status": 200,
+      "title": "WARHAMER INTEROGATOR | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/holiday-heroes",
+      "status": 200,
+      "title": "HOLIDAY HEROES | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/miraculous-chibi",
+      "status": 200,
+      "title": "MIRACULOUS CHIBI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/fc-mobile-viet-nam-x-captain-boy",
+      "status": 200,
+      "title": "FC MOBILE VIỆT NAM X CAPTAIN BOY | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/upzi",
+      "status": 200,
+      "title": "UPZI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/th-mistori",
+      "status": 200,
+      "title": "TH MISTORI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/pudgy-penguins",
+      "status": 200,
+      "title": "PUDGY PENGUINS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/vinamilk-adm",
+      "status": 200,
+      "title": "VINAMILK ADM | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/susu-card",
+      "status": 200,
+      "title": "SUSU CARD | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/vinamilk-greenfarm",
+      "status": 200,
+      "title": "VINAMILK GREENFARM | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/freefire-x-naruto",
+      "status": 200,
+      "title": "FREEFIRE X NARUTO | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/making-waves-valorant",
+      "status": 200,
+      "title": "MAKING WAVES - VALORANT | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/idle-slayer-x-attack-on-titan",
+      "status": 200,
+      "title": "IDLE SLAYER X ATTACK ON TITAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/dc's-justice-league%3A-cosmic-chaos",
+      "status": 200,
+      "title": "DC'S JUSTICE LEAGUE: COSMIC CHAOS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/free-fire",
+      "status": 200,
+      "title": "FREE FIRE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/testimonials",
+      "status": 200,
+      "title": "Testimonials | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/free-fire-hack",
+      "status": 200,
+      "title": "FREE FIRE HACK | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/glorious-mission",
+      "status": 200,
+      "title": "GLORIOUS MISSION | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/t%E1%BA%A1i-sao-hbo-quy%E1%BA%BFt-%C4%91%E1%BB%8Bnh-%C4%91%E1%BA%A7u-t%C6%B0-to%C3%A0n-b%E1%BB%99-v%C3%A0o-ho%E1%BA%A1t-h%C3%ACnh-d%C3%A0nh-cho-ng%C6%B0%E1%BB%9Di-l%E1%BB%9Bn",
+      "status": 200,
+      "title": "Tại sao HBO quyết định đầu tư toàn bộ vào hoạt hình dành cho người lớn?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/news",
+      "status": 200,
+      "title": "News | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-12-appeal",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 12: Appeal",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-11-solid-drawing",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 11: Solid Drawing",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-10-exaggeration",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 10: Exaggeration",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-9-timing-spacing",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 9: Timing &amp; Spacing",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-8-secondary-action",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 8: Secondary Action",
+      "hasContent": true
+    },
+    {
+      "route": "/post/website-cho-animator",
+      "status": 200,
+      "title": "Top 10 Website Khiến Bạn Muốn Trở Thành Animator",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-6-slow-in-slow-out",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 6: Slow In &amp; Slow Out",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-7-arcs",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 7: Arcs",
+      "hasContent": true
+    },
+    {
+      "route": "/post/cafe-s%C3%A1ng-vtv3-deedee-animation-studio-v%C3%A0-h%C3%A0nh-tr%C3%ACnh-k%E1%BB%83-chuy%E1%BB%87n-l%E1%BB%8Bch-s%E1%BB%AD-b%E1%BA%B1ng-ho%E1%BA%A1t-h%C3%ACnh",
+      "status": 200,
+      "title": "Cafe sáng VTV3: DeeDee Animation Studio và hành trình kể chuyện lịch sử bằng hoạt hình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tv360-d%C3%A0nh-chuy%C3%AAn-m%E1%BB%A5c-ri%C3%AAng-cho-ho%E1%BA%A1t-h%C3%ACnh-c%E1%BB%A7a-deedee-animation-studio",
+      "status": 200,
+      "title": "TV360 dành chuyên mục riêng cho hoạt hình của DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/contact-short-form",
+      "status": 200,
+      "title": "Contact - Short film | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/contact-long-form",
+      "status": 200,
+      "title": "Contact - Series | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/carrers",
+      "status": 200,
+      "title": "Career | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/adeevui-2025-chuy%E1%BA%BFn-%C4%91i-g%E1%BA%AFn-k%E1%BA%BFt-cu%E1%BB%91i-n%C4%83m-c%E1%BB%A7a-deedee-animation-studio-c%C3%B9ng-avalook-vexa-studio",
+      "status": 200,
+      "title": "ADEEVUI 2025: Chuyến đi gắn kết cuối năm của DeeDee Animation Studio cùng Avalook &amp; Vexa Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/what-s-the-key-to-seamless-international-collaboration",
+      "status": 200,
+      "title": "What’s the Key to Seamless International Collaboration?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/contact-us",
+      "status": 200,
+      "title": "Contact us | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/why-adult-animation-needs-strong-art-direction",
+      "status": 200,
+      "title": "Why Adult Animation Needs Strong Art Direction",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/storyboard-making-the-film-before-making-the-film",
+      "status": 200,
+      "title": "Storyboard: Making the Film Before Making the Film",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/broken-being-building-a-post-apocalyptic-universe-inspired-by-vietnamese-mythology",
+      "status": 200,
+      "title": "Broken Being: Building a Post-Apocalyptic Universe Inspired by Vietnamese Mythology",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/storyboard",
+      "status": 200,
+      "title": "storyboard | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/categories/talk-interview",
+      "status": 200,
+      "title": "Góc chuyên gia",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/inside-deedee-s-full-pipeline-animation-services-from-concept-development-to-animation-supervision",
+      "status": 200,
+      "title": "Inside DeeDee's Full-Pipeline Animation Services: From Concept Development to Animation Supervision",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/why-i-approved-some-off-model-scenes-perspective-from-deedee-s-animation-supervisor",
+      "status": 200,
+      "title": "Why I Approved Some Off-Model Scenes: Perspective from DeeDee’s Animation Supervisor",
+      "hasContent": true
+    },
+    {
+      "route": "/post/jelly-s-bean-gi%C3%A0nh-chi%E1%BA%BFn-th%E1%BA%AFng-chung-cu%E1%BB%99c-t%E1%BA%A1i-vietnam-animation-ip-contest-2025",
+      "status": 200,
+      "title": "Jelly’s Bean đạt giải nhất Vietnam Animation IP Contest",
+      "hasContent": true
+    },
+    {
+      "route": "/post/%C4%91i%E1%BB%81u-g%C3%AC-khi%E1%BA%BFn-h%C6%A1n-60-000-b%E1%BA%A1n-tr%E1%BA%BB-y%C3%AAu-th%C3%ADch-phim-ho%E1%BA%A1t-h%C3%ACnh-v%E1%BB%81-t%C3%ADn-ng%C6%B0%E1%BB%A1ng-v%C4%83n-h%C3%B3a-vi%E1%BB%87t-nam",
+      "status": 200,
+      "title": "Điều gì khiến hơn 60.000 bạn trẻ yêu thích phim hoạt hình về tín ngưỡng văn hóa Việt Nam",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/%C4%91%E1%BA%A1o-di%E1%BB%85n",
+      "status": 200,
+      "title": "đạo diễn | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/animation",
+      "status": 200,
+      "title": "animation | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/chuy%C3%AAn-m%C3%B4n",
+      "status": 200,
+      "title": "chuyên môn | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/off-model-1",
+      "status": 200,
+      "title": "off-model | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/s%E1%BA%A3n-xu%E1%BA%A5t",
+      "status": 200,
+      "title": "sản xuất | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/how-do-you-make-two-global-brands-shine-in-one-animated-tvc",
+      "status": 200,
+      "title": "How Do You Make Two Global Brands Shine in One Animated TVC?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/giving-chivalware-a-distinct-visual-identity-through-animation",
+      "status": 200,
+      "title": "Giving Chivalware a Distinct Visual Identity through Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/ho%E1%BA%A1t-h%C3%ACnh-gi%C3%BAp-fc-mobile-t%E1%BA%A1o-d%E1%BA%A5u-%E1%BA%A5n-ri%C3%AAng-gi%E1%BB%AFa-r%E1%BB%ABng-nh%E1%BA%A1c-t%E1%BA%BFt",
+      "status": 200,
+      "title": "Hoạt hình giúp FC Mobile tạo dấu ấn riêng giữa “rừng” nhạc Tết!",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/oh-my-god-yes-bringing-gen-z-american-humor-to-life",
+      "status": 200,
+      "title": "Oh My God… Yes! - Bringing Gen Z American Humor to Life",
+      "hasContent": true
+    },
+    {
+      "route": "/post/qu%E1%BA%A3ng-c%C3%A1o-ho%E1%BA%A1t-h%C3%ACnh-gi%E1%BA%A3i-ph%C3%A1p-linh-ho%E1%BA%A1t-cho-th%E1%BB%9Di-%C4%91%E1%BA%A1i-%C4%91a-n%E1%BB%81n-t%E1%BA%A3ng",
+      "status": 200,
+      "title": "Quảng cáo hoạt hình: Giải pháp linh hoạt cho thời đại đa nền tảng!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/how-to-become-a-cult-leader-netflix-casestudy",
+      "status": 200,
+      "title": "How to Become a Cult Leader - Khi hoạt hình trở thành “chất dẫn” cho một series tài liệu trên Netflix",
+      "hasContent": true
+    },
+    {
+      "route": "/post/10-cach-nang-tam-quang-cao-bang-hoat-hinh",
+      "status": 200,
+      "title": "10 Cách nâng tầm Quảng cáo bằng Hoạt hình",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-and-hoang-thi-the-fate-destiny-featured-in-french-language-news-report",
+      "status": 200,
+      "title": "DeeDee and&nbsp;Hoang Thi The: Fate &amp; Destiny&nbsp;Featured in French-Language News Report",
+      "hasContent": true
+    },
+    {
+      "route": "/post/sunny-side-down-series-youtube-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao",
+      "status": 200,
+      "title": "Sunny Side Down - Series Youtube chất lượng cao",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/when-deedee-is-featured-in-english-language-media",
+      "status": 200,
+      "title": "When DeeDee Is Featured in English-Language Media",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/why-2d-is-the-perfect-match-for-adult-animation",
+      "status": 200,
+      "title": "Why 2D Is the Perfect Match for Adult Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/how-we-ani-made-cyberslav-hand-drawn-animation",
+      "status": 200,
+      "title": "Case Study: Quy trình sản xuất CYBERSLAV | Hoạt hình vẽ tay",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/green-sm",
+      "status": 200,
+      "title": "GREEN SM  | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/chivalware",
+      "status": 200,
+      "title": "CHIVALWARE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/sunny-side-down",
+      "status": 200,
+      "title": "SUNNY SIDE DOWN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/jelly's-bean",
+      "status": 200,
+      "title": "JELLY'S BEAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/fantastic-four",
+      "status": 200,
+      "title": "MEET THE FANTASTIC FOUR | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/internal-training-program-storyboard-101",
+      "status": 200,
+      "title": "Internal training program Storyboard 101",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/ho%C3%A0ng-th%E1%BB%8B-th%E1%BA%BF%3A-fate-%26-destiny",
+      "status": 200,
+      "title": "HOÀNG THỊ THẾ: FATE &amp; DESTINY | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/privacy-policy",
+      "status": 200,
+      "title": "Chính sách quyền riêng tư | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/studio",
+      "status": 200,
+      "title": "STUDIO | DeeDee Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/another-deedee-project-made-it-to-vtv3-morning-coffee-news",
+      "status": 200,
+      "title": "Another DeeDee project made it to VTV3 Morning Coffee News",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-ti%C3%AAn-phong-trong-qu%E1%BA%A3n-l%C3%BD-d%E1%BB%B1-%C3%A1n-ngh%E1%BB%87-thu%E1%BA%ADt-v%E1%BB%9Bi-pmo",
+      "status": 200,
+      "title": "DeeDee tiên phong trong quản lý dự án nghệ thuật với PMO",
+      "hasContent": true
+    },
+    {
+      "route": "/en/activities",
+      "status": 200,
+      "title": "Activities | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/vtv",
+      "status": 200,
+      "title": "vtv | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tr%E1%BB%9F-v%E1%BB%81-phim-ho%E1%BA%A1t-h%C3%ACnh-v%E1%BB%81-ng%C6%B0%E1%BB%9Di-l%C3%ADnh-%C4%91o%E1%BA%A1t-nhi%E1%BB%81u-gi%E1%BA%A3i-th%C6%B0%E1%BB%9Fng-t%E1%BA%A1i-li%C3%AAn-hoan-phim-vi%E1%BB%87t-nam",
+      "status": 200,
+      "title": "Liên hoan Phim Việt Nam: Trở Về - phim hoạt hình về người lính đoạt nhiều giải thưởng danh giá",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/categories/ho%E1%BA%A1t-%C4%91%E1%BB%99ng",
+      "status": 200,
+      "title": "Hoạt động",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/4-takeaways-from-annecy-mifa-2026",
+      "status": 200,
+      "title": "4 takeaways from Annecy &amp; MIFA 2026",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/deedee-animation-studio-1",
+      "status": 200,
+      "title": "DeeDee Animation Studio | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/annecy",
+      "status": 200,
+      "title": "Annecy | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/vietnam-pavilion",
+      "status": 200,
+      "title": "Vietnam Pavilion | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/animation-trends",
+      "status": 200,
+      "title": "Animation Trends | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/silver-kite-award-2025-goes-to-deedee-animation-studio-s-short-film-home-again",
+      "status": 200,
+      "title": "Silver Kite Award 2025 Goes to DeeDee Animation Studio’s Short Film Home Again",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/from-fans-to-animating-disney-marvel-dc-characters",
+      "status": 200,
+      "title": "From Fans to Animating Disney, Marvel &amp; DC Characters",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-tr%C3%AAn-b%E1%BA%A3n-%C4%91%E1%BB%93-qu%E1%BB%91c-t%E1%BA%BF-khi-ho%E1%BA%A1t-h%C3%ACnh-vi%E1%BB%87t-nam-g%C3%B5-c%E1%BB%ADa-c%C3%A1c-kh%C3%B4ng-gian-v%C4%83n-h%C3%B3a-to%C3%A0n-c%E1%BA%A7u",
+      "status": 200,
+      "title": "DeeDee trên bản đồ Quốc tế: Khi hoạt hình Việt Nam gõ cửa các không gian văn hóa toàn cầu",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/tr%E1%BB%9F-v%E1%BB%81",
+      "status": 200,
+      "title": "Trở Về | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/li%C3%AAn-hoan-phim",
+      "status": 200,
+      "title": "liên hoan phim | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/%C4%91%E1%BA%A1i-ngh%C4%A9a-hi%E1%BB%87p-a-new-mini-series-by-deedee-animation-studio-officially-launches",
+      "status": 200,
+      "title": "Đại Nghĩa Hiệp – A New Mini Series by DeeDee Animation Studio Officially Launches",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/c%C3%A1nh-di%E1%BB%81u-b%E1%BA%A1c",
+      "status": 200,
+      "title": "Cánh Diều Bạc | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/h%E1%BA%ADu-tr%C6%B0%E1%BB%9Dng-c%C3%B3-th%E1%BB%9D-c%C3%B3-thi%C3%AAng-ho%E1%BA%A1t-h%C3%ACnh-thu%E1%BA%A7n-vi%E1%BB%87t",
+      "status": 200,
+      "title": "Hậu trường: “Có Thờ Có Thiêng” - Hoạt Hình Thuần Việt",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/jelly%27s-bean",
+      "status": 200,
+      "title": "JELLY'S BEAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/jelly%27s-bean",
+      "status": 200,
+      "title": "JELLY'S BEAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/m%E1%BB%B1c-th%C3%A1ng-m%C6%B0%E1%BB%9Di-th%C3%A1ng-10-%C4%91%E1%BA%A7y-s%E1%BA%AFc-m%C3%A0u-t%E1%BA%A1i-deedee",
+      "status": 200,
+      "title": "Mực Tháng Mười: Tháng 10 Đầy Sắc Màu tại DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-ti%E1%BA%BFp-s%E1%BB%A9c-cho-th%E1%BA%BF-h%E1%BB%87-tr%E1%BA%BB-t%E1%BA%A1i-career-day-socci-2025",
+      "status": 200,
+      "title": "DeeDee Animation Studio tiếp sức cho thế hệ trẻ tại Career Day SOCCI 2025",
+      "hasContent": true
+    },
+    {
+      "route": "/post/s%E1%BB%B1-ki%E1%BB%87n-t%E1%BB%95ng-k%E1%BA%BFt-chi%E1%BA%BFu-phim-tr%E1%BB%9F-v%E1%BB%81-nh%C3%ACn-l%E1%BA%A1i-m%E1%BB%99t-h%C3%A0nh-tr%C3%ACnh",
+      "status": 200,
+      "title": "Sự kiện Tổng kết &amp; Chiếu phim Trở Về: Nhìn lại một hành trình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/2d-animator-kh%C3%B3a-h%E1%BB%8Dc-di%E1%BB%85n-ho%E1%BA%A1t-k%E1%BA%BFt-h%E1%BB%A3p-gi%E1%BB%AFa-deedee-animation-studio-art-workout-creative",
+      "status": 200,
+      "title": "2D Animator – Khóa học diễn hoạt kết hợp giữa DeeDee Animation Studio &amp; Art Workout Creative",
+      "hasContent": true
+    },
+    {
+      "route": "/post/c%C3%B9ng-deedee-%C4%91i-xem-phim-kh%C6%A1i-ngu%E1%BB%93n-c%E1%BA%A3m-h%E1%BB%A9ng-s%C3%A1ng-t%E1%BA%A1o",
+      "status": 200,
+      "title": "Cùng DeeDee đi xem phim - Khơi nguồn cảm hứng sáng tạo!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/adeexa-2025-deedee-v%E1%BA%BD-n%C3%AAn-nh%E1%BB%AFng-k%C3%BD-%E1%BB%A9c-%C4%91%E1%BA%B9p-t%E1%BA%A1i-hu%E1%BA%BF",
+      "status": 200,
+      "title": "ADEEXA 2025 – DeeDee vẽ nên những ký ức đẹp tại Huế",
+      "hasContent": true
+    },
+    {
+      "route": "/post/ceo-annecy-film-festival-gi%C3%A1m-%C4%91%E1%BB%91c-mifa-gh%C3%A9-th%C4%83m-deedee-m%E1%BB%9F-c%C3%A1nh-c%E1%BB%ADa-v%C6%B0%C6%A1n-t%E1%BA%A7m-th%E1%BA%BF-gi%E1%BB%9Bi",
+      "status": 200,
+      "title": "CEO Annecy Film Festival &amp; Giám đốc MIFA Ghé Thăm DeeDee: Mở cánh cửa vươn tầm Thế giới",
+      "hasContent": true
+    },
+    {
+      "route": "/post/year-end-party-dear-2024-thank-you",
+      "status": 200,
+      "title": "Year End Party: Dear 2024… Thank You!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/co-founder-deedee-animation-studio-truy%E1%BB%81n-c%E1%BA%A3m-h%E1%BB%A9ng-cho-th%E1%BA%BF-h%E1%BB%87-m%E1%BB%9Bi-c%E1%BB%A7a-rmit",
+      "status": 200,
+      "title": "DeeDee x RMIT Hanoi: Truyền Cảm Hứng Cho Thế Hệ Mới",
+      "hasContent": true
+    },
+    {
+      "route": "/post/inktober-2024-s%C3%A1ng-t%E1%BA%A1o-h%E1%BA%BFt-m%E1%BB%B1c",
+      "status": 200,
+      "title": "Inktober 2024 - Sáng tạo hết \"mực\"!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-tedx-ftuhanoi-ph%C3%A1-v%E1%BB%A1-gi%E1%BB%9Bi-h%E1%BA%A1n-c%C3%B9ng-ho%E1%BA%A1t-h%C3%ACnh",
+      "status": 200,
+      "title": "DeeDee x TEDx FTUHanoi: Phá Vỡ Giới Hạn Cùng Hoạt Hình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-tren-bao-chi-truyen-hinh-noi-tieng-anh",
+      "status": 200,
+      "title": "DeeDee trên báo chí - truyền hình nói tiếng Anh",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/awaken",
+      "status": 200,
+      "title": "AWAKEN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/home-again-tro-ve",
+      "status": 200,
+      "title": "TRỞ VỀ | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/broken-being%3A-the-prequel",
+      "status": 200,
+      "title": "TÀN THỂ: TIỀN TRUYỆN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/yo-zeno!",
+      "status": 200,
+      "title": "YO ZENO! | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/how-to-become-a-cult-leader",
+      "status": 200,
+      "title": "HOW TO BECOME A CULT LEADER | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/the-magnificent-life-of-marcel-pagnol",
+      "status": 200,
+      "title": "A MAGNIFICENT LIFE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/how-to-become-a-mob-boss",
+      "status": 200,
+      "title": "HOW TO BECOME A MOB BOSS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/oh-my-god-yes",
+      "status": 200,
+      "title": "Oh My God...YES! | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/cyberslav",
+      "status": 200,
+      "title": "CYBERSLAV | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/warhamer-interogator",
+      "status": 200,
+      "title": "WARHAMER INTEROGATOR | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/holiday-heroes",
+      "status": 200,
+      "title": "HOLIDAY HEROES | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/fc-mobile-viet-nam-x-captain-boy",
+      "status": 200,
+      "title": "FC MOBILE VIỆT NAM X CAPTAIN BOY | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/miraculous-chibi",
+      "status": 200,
+      "title": "MIRACULOUS CHIBI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/th-mistori",
+      "status": 200,
+      "title": "TH MISTORI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/upzi",
+      "status": 200,
+      "title": "UPZI | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/pudgy-penguins",
+      "status": 200,
+      "title": "PUDGY PENGUINS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/vinamilk-adm",
+      "status": 200,
+      "title": "VINAMILK ADM | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/susu-card",
+      "status": 200,
+      "title": "SUSU CARD | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/vinamilk-greenfarm",
+      "status": 200,
+      "title": "VINAMILK GREENFARM | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/freefire-x-naruto",
+      "status": 200,
+      "title": "FREEFIRE X NARUTO | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/idle-slayer-x-attack-on-titan",
+      "status": 200,
+      "title": "IDLE SLAYER X ATTACK ON TITAN | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/making-waves-valorant",
+      "status": 200,
+      "title": "MAKING WAVES - VALORANT | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/dc's-justice-league%3A-cosmic-chaos",
+      "status": 200,
+      "title": "DC'S JUSTICE LEAGUE: COSMIC CHAOS | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/free-fire",
+      "status": 200,
+      "title": "FREE FIRE | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/glorious-mission",
+      "status": 200,
+      "title": "GLORIOUS MISSION | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/free-fire-hack",
+      "status": 200,
+      "title": "FREE FIRE HACK | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-production-studio",
+      "status": 200,
+      "title": "DeeDee - Top animation production studios in Vietnam",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-studio",
+      "status": 200,
+      "title": "Top 10 biggest animation studios in the world",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/different-approaches-layout-design",
+      "status": 200,
+      "title": "An Expert’s View: Different approaches to layout design",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-studios-japan",
+      "status": 200,
+      "title": "Top 5 biggest animation studios in Japan",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/stop-motion-animation",
+      "status": 200,
+      "title": "Stop motion animation: the development and best examples",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/2d-animation-production",
+      "status": 200,
+      "title": "The 10-step-process of 2D animation production",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/2d-animation-movie",
+      "status": 200,
+      "title": "5 best professional softwares for 2D animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/2d-animation-studio",
+      "status": 200,
+      "title": "How to choose the best 2D Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-storytelling",
+      "status": 200,
+      "title": "The secrets behind Pixar impeccable animation storytelling",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/vtv3-morning-coffee-show-deedee-animation-studio-and-the-journey-of-telling-history-through-animati",
+      "status": 200,
+      "title": "VTV3 Morning Coffee show: DeeDee Animation Studio and the Journey of Telling History Through Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/deedee",
+      "status": 200,
+      "title": "deedee | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/news",
+      "status": 200,
+      "title": "news | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/adult-animation",
+      "status": 200,
+      "title": "adult animation | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/hbo",
+      "status": 200,
+      "title": "HBO | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyen-tac-animation-squash-and-stretch",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 1: Squash and Stretch | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyen-tac-animation-anticipation",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 2: Anticipation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-5-follow-through-overlapping-action",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 5",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/categories/knowledge",
+      "status": 200,
+      "title": "Kiến thức",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/international-collaboration",
+      "status": 200,
+      "title": "International Collaboration | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-xu%E1%BA%A5t-hi%E1%BB%87n-tr%C3%AAn-ch%C6%B0%C6%A1ng-tr%C3%ACnh-culture-mosaic-c%E1%BB%A7a-vtv4-2025",
+      "status": 200,
+      "title": "DeeDee Animation Studio xuất hiện trên chương trình Culture Mosaic của VTV4 (2025)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-vtv3-vi%E1%BB%87t-nam-%C4%91a-s%E1%BA%AFc-2023",
+      "status": 200,
+      "title": "DEEDEE x VTV3: Việt Nam Đa Sắc",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/art-direction",
+      "status": 200,
+      "title": "art direction | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/billboard-3d-%C4%91%C3%A3-th%C3%BAc-%C4%91%E1%BA%A9y-th%C3%A0nh-c%C3%B4ng-chi%E1%BA%BFn-d%E1%BB%8Bch-c%E1%BB%A7a-omo-nh%C6%B0-th%E1%BA%BF-n%C3%A0o",
+      "status": 200,
+      "title": "Billboard 3D đã thúc đẩy thành công chiến dịch của OMO như thế nào?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/h%E1%BA%ADu-tr%C6%B0%E1%BB%9Dng-lord-of-goblins-%C4%91%C6%B0a-th%E1%BA%BF-gi%E1%BB%9Bi-vi%E1%BB%85n-t%C6%B0%E1%BB%9Fng-l%C3%AAn-m%C3%A0n-%E1%BA%A3nh",
+      "status": 200,
+      "title": "Hậu trường Lord of Goblins: Đưa thế giới viễn tưởng lên màn ảnh",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/animation-industry",
+      "status": 200,
+      "title": "Animation Industry | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/storyboard",
+      "status": 200,
+      "title": "storyboard | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/behind-the-scenes-1",
+      "status": 200,
+      "title": "Behind the Scenes | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/ip",
+      "status": 200,
+      "title": "IP | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/categories/talk-interview-2",
+      "status": 200,
+      "title": "Expert Talk",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/animation-studio",
+      "status": 200,
+      "title": "Animation Studio | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/original",
+      "status": 200,
+      "title": "Original | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/animation-partner",
+      "status": 200,
+      "title": "animation partner | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/from-concept-to-screen",
+      "status": 200,
+      "title": "from concept to screen | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/sunny-side-down-crafting-expressive-animation-in-a-cosmic-chaos",
+      "status": 200,
+      "title": "Sunny Side Down - Crafting Expressive Animation in a Cosmic Chaos",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/end-to-end-service",
+      "status": 200,
+      "title": "end-to-end service | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/off-model",
+      "status": 200,
+      "title": "Off-model | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animated-advertising-a-flexible-solution-for-the-multi-platform-era",
+      "status": 200,
+      "title": "Animated Advertising: A Flexible Solution for the Multi-Platform Era",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-tham-gia-d%E1%BB%B1-%C3%A1n-ho%E1%BA%A1t-h%C3%ACnh-m%E1%BB%ABng-sinh-nh%E1%BA%ADt-mickey-t%E1%BA%A1i-h%C3%A0n-qu%E1%BB%91c",
+      "status": 200,
+      "title": "DeeDee tham gia dự án hoạt hình mừng sinh nhật Mickey tại Hàn Quốc",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-g%C3%B3p-m%E1%BA%B7t-t%E1%BA%A1i-l%E1%BB%85-khai-m%E1%BA%A1c-kinofest-2024",
+      "status": 200,
+      "title": "DeeDee Animation Studio góp mặt tại Lễ Khai mạc Kinofest 2024",
+      "hasContent": true
+    },
+    {
+      "route": "/post/huy%E1%BB%81n-tho%E1%BA%A1i-shin-ei-animation-gh%C3%A9-th%C4%83m-deedee",
+      "status": 200,
+      "title": "\"Huyền thoại \" Shin-ei Animation ghé thăm DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/t%E1%BB%AB-t%E1%BA%A7m-nh%C3%ACn-%C4%91%E1%BA%BFn-th%E1%BB%B1c-t%E1%BA%BF-c%C3%A2u-chuy%E1%BB%87n-%C4%91%E1%BA%A7y-c%E1%BA%A3m-h%E1%BB%A9ng-v%E1%BB%81-co-founder-studio-manager-producer-c%E1%BB%A7a-deedee",
+      "status": 200,
+      "title": "Từ Tầm Nhìn đến Thực Tế: Câu chuyện đầy cảm hứng về Co-Founder/Studio Manager/Producer của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/top-10-methods-to-elevate-advertising-campaigns-with-animation",
+      "status": 200,
+      "title": "Top 10 Methods to Elevate Advertising Campaigns with Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/how-fc-mobile-used-animation-to-stand-out-amongst-tet-campaigns",
+      "status": 200,
+      "title": "How FC Mobile Used Animation to Stand Out Amongst Tet Campaigns",
+      "hasContent": true
+    },
+    {
+      "route": "/post/s%E1%BB%B1-ki%E1%BB%87n-ra-m%E1%BA%AFt-s%C3%A1ch-v%C3%A0-talkshow-ho%E1%BA%A1t-h%C3%ACnh-li%E1%BB%87u-c%C3%B3-th%E1%BA%ADt-ch%E1%BB%89-d%C3%A0nh-cho-thi%E1%BA%BFu-nhi",
+      "status": 200,
+      "title": "Sự kiện ra mắt sách và Talkshow: Hoạt hình liệu có thật \"chỉ dành cho thiếu nhi\"?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/how-to-become-a-cult-leader-when-animation-became-the-driving-force-behind-a-netflix-documentary-s",
+      "status": 200,
+      "title": "How to Become a Cult Leader - When Animation Became the Driving Force Behind a Netflix Documentary Series",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/hoang-thi-the-fate--destiny",
+      "status": 200,
+      "title": "Hoang Thi The: Fate &amp; Destiny | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/jelly-s-bean-won-best-series-at-the-vietnam-animation-ip-contest-2025",
+      "status": 200,
+      "title": "Jelly’s Bean Won the Vietnam Animation IP Contest 2025!",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/how-we-ani-made-cyberslav-hand-drawn-animation-1",
+      "status": 200,
+      "title": "How we ani-made CYBERSLAV | Hand-drawn animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/categories/ho%E1%BA%A1t-%C4%91%E1%BB%99ng-1",
+      "status": 200,
+      "title": "Activities",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/h%C3%A0nh-%C4%91%E1%BB%99ng",
+      "status": 200,
+      "title": "Hành động | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/phim",
+      "status": 200,
+      "title": "Phim | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/khoa-h%E1%BB%8Dc-vi%E1%BB%85n-t%C6%B0%E1%BB%9Fng",
+      "status": 200,
+      "title": "Khoa học viễn tưởng | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/series",
+      "status": 200,
+      "title": "Series | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/a-vietnamese-studio-at-the-international-table-deedee-animation-and-its-growing-ties-with-the-uk-g",
+      "status": 200,
+      "title": "A Vietnamese Studio at the International Table: DeeDee Animation and Its Growing Ties with the UK, Germany, and France",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/ho%E1%BA%A1t-h%C3%ACnh-v%E1%BA%BD-tay",
+      "status": 200,
+      "title": "Hoạt hình vẽ tay | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-animation-studio-shines-at-kinofest-2024-opening-ceremony",
+      "status": 200,
+      "title": "DeeDee Animation Studio Shines at Kinofest 2024 Opening Ceremony",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/knowledge",
+      "status": 200,
+      "title": "knowledge | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/deedee-animation-studio",
+      "status": 200,
+      "title": "DeeDee Animation Studio | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/internal-training-course",
+      "status": 200,
+      "title": "Internal training course | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-leading-creative-project-management-with-pmo",
+      "status": 200,
+      "title": "DeeDee Leading Creative Project Management with PMO",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/tv360-has-launched-a-dedicated-category-for-deedee-animation-studio-s-animated-content",
+      "status": 200,
+      "title": "TV360 has launched a dedicated category for DeeDee Animation Studio’s animated content",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/home-again-an-award-winning-animated-film-about-a-vietnamese-soldier-at-the-24th-vietnam-film-fest",
+      "status": 200,
+      "title": "Home Again - an Award-Winning Animated Film About a Vietnamese Soldier at the 24th Vietnam Film Festival",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/adeevui-2025-deedee-animation-studio-s-year-end-team-bonding-trip-with-avalook-and-vexa-studio",
+      "status": 200,
+      "title": "ADEEVUI 2025:  DeeDee Animation Studio’s Year-End Team Bonding Trip with Avalook and Vexa Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/home-again-wrap-party-screening-ending-of-a-meaningful-journey",
+      "status": 200,
+      "title": "“Home Again” Wrap Party &amp; Screening: Ending of a Meaningful Journey",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/inktober-a-colorful-month-at-deedee",
+      "status": 200,
+      "title": "Inktober: A Colorful Month at DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-animation-studio-motivates-future-creatives-at-buv-s-careers-day-2025",
+      "status": 200,
+      "title": "DeeDee Animation Studio Motivates Future Creatives at BUV’s Careers Day 2025",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/adeexa-2025-deedee-paints-beautiful-memories-together-in-hue",
+      "status": 200,
+      "title": "ADEEXA 2025 - DeeDee Paints Beautiful Memories Together in Hue",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/movie-nights-at-deedee-fueling-creative-inspiration",
+      "status": 200,
+      "title": "Movie Nights at DeeDee – Fueling Creative Inspiration!",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-rmit-hanoi-inspires-the-next-generation",
+      "status": 200,
+      "title": "DeeDee x RMIT Hanoi: Inspires the Next Generation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/annecy-film-festival-ceo-mifa-director-visit-deedee-opening-doors-on-the-global-stage",
+      "status": 200,
+      "title": "Annecy Film Festival CEO &amp; MIFA Director Visit DeeDee: Opening doors on the global stage",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/year-end-party-dear-2024-thank-you-1",
+      "status": 200,
+      "title": "Year End Party: Dear 2024… Thank You!",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/tv-program",
+      "status": 200,
+      "title": "tv program | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-tedx-ftuhanoi-ph%C3%A1-v%E1%BB%A1-gi%E1%BB%9Bi-h%E1%BA%A1n-c%C3%B9ng-ho%E1%BA%A1t-h%C3%ACnh-1",
+      "status": 200,
+      "title": "DeeDee x TEDx FTUHanoi: Breaking Boundaries with Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/vtv-1",
+      "status": 200,
+      "title": "vtv | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/b%C3%B4ng-sen-b%E1%BA%A1c",
+      "status": 200,
+      "title": "Bông Sen Bạc | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/li%C3%AAn-hoan-phim-vi%E1%BB%87t-nam",
+      "status": 200,
+      "title": "Liên hoan Phim Việt Nam | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/animator",
+      "status": 200,
+      "title": "animator | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/2d",
+      "status": 200,
+      "title": "2D | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/l%E1%BA%A7n-%C4%91%E1%BA%A7u-ti%C3%AAn-deedee-animation-studio-tham-d%E1%BB%B1-li%C3%AAn-hoan-phim-ho%E1%BA%A1t-h%C3%ACnh-annecy",
+      "status": 200,
+      "title": "Lần đầu tiên DeeDee Animation Studio tham dự Liên hoan phim hoạt hình Annecy (Annecy Festival)",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/%C4%91%E1%BB%A9c",
+      "status": 200,
+      "title": "Đức | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/anh",
+      "status": 200,
+      "title": "Anh | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/kinofest-1",
+      "status": 200,
+      "title": "Kinofest | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/ph%C3%A1p",
+      "status": 200,
+      "title": "Pháp | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/v%C6%B0%C6%A1ng-qu%E1%BB%91c-anh",
+      "status": 200,
+      "title": "Vương quốc Anh | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/b%E1%BB%99-v%C4%83n-h%C3%B3a",
+      "status": 200,
+      "title": "Bộ văn hóa | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/h%E1%BA%ADu-tr%C6%B0%E1%BB%9Dng-c%C3%B3-th%E1%BB%9D-c%C3%B3-thi%C3%AAng-ho%E1%BA%A1t-h%C3%ACnh-thu%E1%BA%A7n-vi%E1%BB%87t-1",
+      "status": 200,
+      "title": "Behind the Scenes: “Có Thờ Có Thiêng” - Vietnamese Traditions in Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/buv",
+      "status": 200,
+      "title": "BUV | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/behind-the-scenes",
+      "status": 200,
+      "title": "Behind the Scenes | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/inktober",
+      "status": 200,
+      "title": "Inktober | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/career",
+      "status": 200,
+      "title": "career | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/mentor",
+      "status": 200,
+      "title": "mentor | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/ho%E1%BA%A1t-h%C3%ACnh",
+      "status": 200,
+      "title": "hoạt hình | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/kh%C3%B3a-h%E1%BB%8Dc",
+      "status": 200,
+      "title": "khóa học | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tu-vung-animation",
+      "status": 200,
+      "title": "Tổng Hợp Trọn Bộ Từ Vựng Animation &amp; Hoạt Hình Từ A-Z",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/trip",
+      "status": 200,
+      "title": "trip | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/xem-phim",
+      "status": 200,
+      "title": "xem phim | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/year-end-party",
+      "status": 200,
+      "title": "Year-end Party | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/a-visiting-from-ms-esther-peh-associate-director-public-policy-asia-of-warner-bros-discovery",
+      "status": 200,
+      "title": "A Visiting From Ms. Esther Peh - Associate Director, Public Policy, Asia of Warner Bros. Discovery",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-trip-2023",
+      "status": 200,
+      "title": "DeeDee Trip (2023)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-trip-2022",
+      "status": 200,
+      "title": "DeeDee Trip (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-trip-2021",
+      "status": 200,
+      "title": "DeeDee Trip (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/hashtags/29",
+      "status": 200,
+      "title": "#29",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/rmit",
+      "status": 200,
+      "title": "RMIT | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/tedx",
+      "status": 200,
+      "title": "TEDx | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-l-espace-symposium-on-the-image-creation-ecosystem-avgc-in-vietnam-2021",
+      "status": 200,
+      "title": "DeeDee x L'espace: Symposium on the image-creation ecosystem (AVGC) in Vietnam (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/home-again",
+      "status": 200,
+      "title": "Home Again | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyen-tac-animation-staging",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 3: Staging",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/categories/knowledge-1",
+      "status": 200,
+      "title": "Academy",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-animation-studio-on-vtv4-s-culture-mosaic",
+      "status": 200,
+      "title": "DeeDee Animation Studio on VTV4’s Culture Mosaic",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguy%C3%AAn-t%E1%BA%AFc-animation-nguy%C3%AAn-t%E1%BA%AFc-4-straight-ahead-pose-to-pose",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 4",
+      "hasContent": true
+    },
+    {
+      "route": "/post/top-10-cu%E1%BB%91n-s%C3%A1ch-%C4%91%C3%A1ng-%C4%91%E1%BB%8Dc-nh%E1%BA%A5t-v%E1%BB%81-animation",
+      "status": 200,
+      "title": "Top 10 Cuốn Sách Đáng Đọc Nhất Về Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/phim-ho%E1%BA%A1t-h%C3%ACnh-ng%C6%B0%E1%BB%9Di-l%E1%BB%9Bn-th%E1%BB%83-lo%E1%BA%A1i-ho%E1%BA%A1t-h%C3%ACnh-ph%C3%A1t-tri%E1%BB%83n-nhanh-nh%E1%BA%A5t-hi%E1%BB%87n-nay",
+      "status": 200,
+      "title": "PHIM HOẠT HÌNH NGƯỜI LỚN",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nhung-phim-hoat-hinh-hay-nhat",
+      "status": 200,
+      "title": "16 Bộ Phim Hoạt Hình Chiếu Rạp Hay Nhất Mọi Thời Đại",
+      "hasContent": true
+    },
+    {
+      "route": "/post/animation-vs-motion-graphics",
+      "status": 200,
+      "title": "Phân Biệt Animation vs Motion Graphics: Tương Đồng, Khác Biệt &amp; Cách Sử Dụng",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tim-viec-animation-chuan-bi-gi",
+      "status": 200,
+      "title": "Tìm Việc Trong Lĩnh Vực Animation: Cần Phải Chuẩn Bị Những Gì Khi Ứng Tuyển?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/animation-branding",
+      "status": 200,
+      "title": "Các Cách Nâng Tầm Nhận Diện Thương Hiệu Bằng Animation - Xu Hướng Branding 4.0",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/categories/exclusive-article",
+      "status": 200,
+      "title": "Exclusive article",
+      "hasContent": true
+    },
+    {
+      "route": "/post/quy-trinh-san-xuat",
+      "status": 200,
+      "title": "Hướng Dẫn Các Bước Làm Hoạt Hình 2D",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/billboard-3d-%C4%91%C3%A3-th%C3%BAc-%C4%91%E1%BA%A9y-th%C3%A0nh-c%C3%B4ng-chi%E1%BA%BFn-d%E1%BB%8Bch-c%E1%BB%A7a-omo-nh%C6%B0-th%E1%BA%BF-n%C3%A0o-1",
+      "status": 200,
+      "title": "How a 3D Billboard Boosted OMO’s Campaign Success",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/what-made-60-000-young-audiences-fall-in-love-with-an-animated-film-about-vietnamese-spiritual-cult",
+      "status": 200,
+      "title": "What made 60,000+ young audiences fall in love with an animated film about Vietnamese spiritual culture?",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/ph%C3%B3ng-s%E1%BB%B1",
+      "status": 200,
+      "title": "phóng sự | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/culture",
+      "status": 200,
+      "title": "culture | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/mosaic",
+      "status": 200,
+      "title": "mosaic | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/vtv4",
+      "status": 200,
+      "title": "vtv4 | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animating-dreams-an-interview-with-the-creative-mind-behind-deedee-animation-studio",
+      "status": 200,
+      "title": "Animating Dreams: An Interview with the Creative Mind Behind DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/beyond-frames-unraveling-the-journey-of-hoang-huy-ha-co-founder-art-director-animation-supervisor",
+      "status": 200,
+      "title": "Beyond Frames: Unraveling the Journey of Hoang Huy Ha Co-Founder, Art Director, Animation Supervisor.",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-vtv-video-storm-talkshow-2020",
+      "status": 200,
+      "title": "DeeDee x VTV: Video Storm Talkshow (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/behind-the-scenes-of-lord-of-goblins-bringing-a-fantasy-world-to-life",
+      "status": 200,
+      "title": "Behind the Scenes of Lord of Goblins: Bringing a Fantasy World to Life",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-attended-annecy-festival-for-the-first-time",
+      "status": 200,
+      "title": "DeeDee Attended Annecy International Animation Film Festival",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-omo-h%C3%A0nh-tr%C3%ACnh-h%E1%BB%A3p-t%C3%A1c-d%C3%A0i-l%C3%A2u",
+      "status": 200,
+      "title": "DeeDee &amp; OMO: Hành trình hợp tác dài lâu - Đưa nhiều chiến dịch quảng bá thành hiện thực",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/interview-about-the-vietnam-animation-industry",
+      "status": 200,
+      "title": "Vietnam's vibrant animation industry: Interview with Sylvain Grisollet from DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/disney",
+      "status": 200,
+      "title": "disney | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-omo-long-time-partnership-turning-brilliant-campaigns-into-reality",
+      "status": 200,
+      "title": "DeeDee &amp; OMO: Long-time Partnership - Turning Brilliant Campaigns into Reality",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/kinofest",
+      "status": 200,
+      "title": "kinofest | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/all-project/chimimo",
+      "status": 200,
+      "title": "CHIMIMO | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/deedee-1",
+      "status": 200,
+      "title": "DeeDee | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/blog/tags/book",
+      "status": 200,
+      "title": "book | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020",
+      "status": 200,
+      "title": "A Visiting From Mr. Daniel Santos - Director of Sales - EMEA &amp; APAC Of Toon Boom (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/netflix",
+      "status": 200,
+      "title": "netflix | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/how-to-become-a-cult-leader",
+      "status": 200,
+      "title": "How to become a cult leader | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/culture-1",
+      "status": 200,
+      "title": "culture | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/animation-1",
+      "status": 200,
+      "title": "animation | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/kinofest-2",
+      "status": 200,
+      "title": "Kinofest | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/germany",
+      "status": 200,
+      "title": "Germany | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/international",
+      "status": 200,
+      "title": "international | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/french",
+      "status": 200,
+      "title": "French | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/uk",
+      "status": 200,
+      "title": "UK | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/legendary-shin-ei-animation-visits-deedee-animation-studio",
+      "status": 200,
+      "title": "Legendary Shin-ei Animation visits DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/silver-lotus-award",
+      "status": 200,
+      "title": "Silver Lotus Award | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/vietnam-film-festival",
+      "status": 200,
+      "title": "Vietnam Film Festival | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/trip-1",
+      "status": 200,
+      "title": "trip | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/inktober-1",
+      "status": 200,
+      "title": "Inktober | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/lifeatstudio",
+      "status": 200,
+      "title": "lifeatstudio | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/movie-outings",
+      "status": 200,
+      "title": "movie outings | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/inktober-2024-at-deedee-everyone-creates",
+      "status": 200,
+      "title": "Inktober 2024: At DeeDee, everyone creates",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/hashtags/29",
+      "status": 200,
+      "title": "#29",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/types-equipment-needed-animation-studio",
+      "status": 200,
+      "title": "6 types of equipment needed for your animation studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/golden-kite-film-festival-2019",
+      "status": 200,
+      "title": "Golden Kite Film Festival (2019)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-fpt-university-talkshow-cartoon-from-a-z-2020-1",
+      "status": 200,
+      "title": "DeeDee x FPT University: Talkshow \"Cartoon From A- Z\" (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/animation-la-gi",
+      "status": 200,
+      "title": "Animation Là Gì? 5 Thể Loại Hoạt Hình Animation Phổ Biến",
+      "hasContent": true
+    },
+    {
+      "route": "/post/background-artist-phim-hoat-hinh",
+      "status": 200,
+      "title": "Tìm Hiểu Về Công Việc Background Artist Cho Phim Hoạt Hình 2D",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/spiderman-animated-movie",
+      "status": 200,
+      "title": "The best Spider-man animated movie of all time",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hoc-animation-bat-dau",
+      "status": 200,
+      "title": "Hướng Dẫn Học Animation Trọn Bộ Dành Cho Người Mới Bắt Đầu",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/essential-skills-animators",
+      "status": 200,
+      "title": "Essential skills for animators to succeed",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animated-musical-movies",
+      "status": 200,
+      "title": "The power of Disney animated musical movies",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-exaggeration",
+      "status": 200,
+      "title": "12 rules of animation: All about Exaggeration",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/adult-animation",
+      "status": 200,
+      "title": "An in-depth look at the development of adult animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/live-action-animation",
+      "status": 200,
+      "title": "Top 5 Live-Action/Animation Hybrid Movies",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-straight-ahead-pose",
+      "status": 200,
+      "title": "12 principles of animation:  All about Straight Ahead &amp; Pose To Pose",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animated-characters",
+      "status": 200,
+      "title": "Important life lessons learned from Disney's animated characters",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/extrapolation-animated-movies",
+      "status": 200,
+      "title": "An Expert’s View: How the auto extrapolation of animation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-studios",
+      "status": 200,
+      "title": "Not just big-budget animation studios can succeed in this game",
+      "hasContent": true
+    },
+    {
+      "route": "/post/phong-cach-animation-spider-verse",
+      "status": 200,
+      "title": "Phong Cách Hoạt Hình Đột Phá Của \"Spider-Man: Into The Spider-Verse\"",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/most-expensive-animated-movies",
+      "status": 200,
+      "title": "5 most expensive animated movies - and why do they cost so much?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/mosaic-1",
+      "status": 200,
+      "title": "mosaic | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-vtv3-multicolored-vietnam-2023",
+      "status": 200,
+      "title": "DEEDEE x VTV3: Multicolored Vietnam (2023)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-vtv1-art-culture-space-talkshow-2020-1",
+      "status": 200,
+      "title": "DeeDee x VTV1: Art &amp; Culture Space Talkshow (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/mirai-mamoru-hosoda",
+      "status": 200,
+      "title": "\"Mirai\" - Cuộc Phiêu Lưu Xuyên Thời Gian Với Mamoru Hosoda",
+      "hasContent": true
+    },
+    {
+      "route": "/post/vi-sao-nen-lam-hoat-hinh",
+      "status": 200,
+      "title": "Vì Sao Nên Theo Đuổi Nghề Làm Phim Hoạt Hình &amp; Animation?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/ky-nang-animator",
+      "status": 200,
+      "title": "Những Kiến Thức Và Kỹ Năng Không Thể Thiếu Để Làm Animator",
+      "hasContent": true
+    },
+    {
+      "route": "/post/video-animation-viral-marketing",
+      "status": 200,
+      "title": "Video Animation: Xu Hướng Viral Marketing Mới Tại Việt Nam",
+      "hasContent": true
+    },
+    {
+      "route": "/post/binh-minh-animation",
+      "status": 200,
+      "title": "Nguồn Gốc Của Hoạt Hình Và Nghệ Thuật Kể Chuyện Bằng Hình Ảnh",
+      "hasContent": true
+    },
+    {
+      "route": "/post/huong-dan-ve-background",
+      "status": 200,
+      "title": "Hướng Dẫn 5 Bước Vẽ Background Cơ Bản Cho Phim Hoạt Hình 2D",
+      "hasContent": true
+    },
+    {
+      "route": "/freefire",
+      "status": 200,
+      "title": "GARENA FREE FIRE  | DeeDee Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/how-deedee-brought-hand-inked-look-into-digital-animation",
+      "status": 200,
+      "title": "How DeeDee Brought Hand-inked Look into Digital Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tim-video-agency-animation",
+      "status": 200,
+      "title": "Tìm video Agency sản xuất Animation và hướng dẫn cho Client",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/mifa-2023",
+      "status": 200,
+      "title": "MIFA 2023 | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/annecy-festival",
+      "status": 200,
+      "title": "Annecy Festival | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-attended-mipcom-2022-1",
+      "status": 200,
+      "title": "DeeDee Attended MIPCOM (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-joins-mickey-s-96th-birthday-celebration-with-disney-in-korea",
+      "status": 200,
+      "title": "DeeDee Joins Mickey’s 96th Birthday Celebration with Disney in Korea",
+      "hasContent": true
+    },
+    {
+      "route": "/en/all-project/chimimo",
+      "status": 200,
+      "title": "CHIMIMO | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/series-hoat-hinh-viet",
+      "status": 200,
+      "title": "Series Hoạt Hình Việt \"Biệt Đội iOn Bạc\" - Kỷ Niệm 1 Năm",
+      "hasContent": true
+    },
+    {
+      "route": "/post/bu%E1%BB%95i-b%C3%ACnh-minh-c%E1%BB%A7a-ng%C3%A0nh-ho%E1%BA%A1t-h%C3%ACnh",
+      "status": 200,
+      "title": "Nguồn Gốc Của Hoạt Hình Và Nghệ Thuật Kể Chuyện Bằng Hình Ảnh",
+      "hasContent": true
+    },
+    {
+      "route": "/post/phong-c%C3%A1ch-ho%E1%BA%A1t-h%C3%ACnh-%C4%91%E1%BB%99t-ph%C3%A1-c%E1%BB%A7a-spider-man-into-the-spider-verse",
+      "status": 200,
+      "title": "Phong Cách Hoạt Hình Đột Phá Của \"Spider-Man: Into The Spider-Verse\"",
+      "hasContent": true
+    },
+    {
+      "route": "/post/khoi-nghiep-animation",
+      "status": 200,
+      "title": "DeeDee Animation Studio: Khởi Nghiệp Animation - Đi Đi Rồi Sẽ Đến",
+      "hasContent": true
+    },
+    {
+      "route": "/en/blog/tags/mickey",
+      "status": 200,
+      "title": "mickey | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/portfolio-tabs/2",
+      "status": 200,
+      "title": "Dự án | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/portfolio-tabs/3",
+      "status": 200,
+      "title": "Dự án | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/portfolio-tabs/4",
+      "status": 200,
+      "title": "Dự án | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/portfolio-tabs/2",
+      "status": 200,
+      "title": "Our work | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/portfolio-tabs/3",
+      "status": 200,
+      "title": "Our work | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/en/portfolio-tabs/4",
+      "status": 200,
+      "title": "Our work | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/vì-sao-phim-hoạt-hình-dành-cho-người-lớn-cần-một-định-hướng-nghệ-thuật-đủ-mạnh",
+      "status": 200,
+      "title": "Vì sao phim hoạt hình dành cho người lớn cần một định hướng nghệ thuật đủ mạnh?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tàn-thể-vũ-trụ-hậu-tận-thế-lấy-cảm-hứng-từ-thần-thoại-việt-nam",
+      "status": 200,
+      "title": "Tàn thể: Vũ trụ hậu tận thế lấy cảm hứng từ thần thoại Việt Nam",
+      "hasContent": true
+    },
+    {
+      "route": "/post/bên-trong-quy-trình-sản-xuất-hoạt-hình-trọn-gói-của-deedee",
+      "status": 200,
+      "title": "Bên trong quy trình sản xuất hoạt hình trọn gói của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/vì-sao-một-số-cảnh-off-model-vẫn-được-duyệt-góc-nhìn-từ-animation-supervisor-của-deedee",
+      "status": 200,
+      "title": "Vì sao một số cảnh \"off-model\" vẫn được duyệt? - Góc nhìn từ Animation Supervisor của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hoạt-hình-góp-phần-tạo-nên-bản-sắc-riêng-cho-game-chivalware",
+      "status": 200,
+      "title": "Hoạt hình góp phần tạo nên bản sắc riêng cho game Chivalware",
+      "hasContent": true
+    },
+    {
+      "route": "/post/khi-một-tvc-phải-đạt-tiêu-chuẩn-của-cả-2-thương-hiệu",
+      "status": 200,
+      "title": "Khi một TVC phải đạt tiêu chuẩn của cả 2 thương hiệu",
+      "hasContent": true
+    },
+    {
+      "route": "/post/oh-my-god-yes-thách-thức-lớn-nhất-không-phải-ở-kỹ-thuật-mà-là-văn-hóa",
+      "status": 200,
+      "title": "Oh My God... Yes! - Thách thức lớn nhất không phải ở kỹ thuật, mà là văn hóa",
+      "hasContent": true
+    },
+    {
+      "route": "/post/khóa-đào-tạo-nội-bộ-storyboard-101-khi-mỗi-khung-hình-đều-bắt-đầu-từ-tư-duy-kể-chuyện",
+      "status": 200,
+      "title": "Khóa đào tạo nội bộ Storyboard 101 | DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/4-góc-nhìn-đáng-chú-ý-từ-annecy-mifa-2026",
+      "status": 200,
+      "title": "4 góc nhìn đáng chú ý từ Annecy &amp; MIFA 2026",
+      "hasContent": true
+    },
+    {
+      "route": "/post/thêm-một-dự-án-của-deedee-trên-cafe-sáng-vtv3",
+      "status": 200,
+      "title": "Thêm một dự án của DeeDee trên Cafe sáng VTV3",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hành-trình-từ-fan-hâm-mộ-đến-diễn-hoạt-các-nhân-vật-disney-marvel-dc",
+      "status": 200,
+      "title": "Hành trình từ fan hâm mộ đến diễn hoạt các nhân vật Disney, Marvel &amp; DC",
+      "hasContent": true
+    },
+    {
+      "route": "/post/đại-nghĩa-hiệp-mini-series-từ-deedee-animation-studio-chính-thức-ra-mắt",
+      "status": 200,
+      "title": "Đại Nghĩa Hiệp - Mini Series từ DeeDee Animation Studio chính thức ra mắt",
+      "hasContent": true
+    },
+    {
+      "route": "/post/giải-cánh-diều-bạc-2025-thuộc-về-phim-ngắn-trở-về-của-deedee-animation-studio",
+      "status": 200,
+      "title": "Giải Cánh Diều Bạc 2025 thuộc về phim ngắn Trở Về của DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tại-sao-hbo-quyết-định-đầu-tư-toàn-bộ-vào-hoạt-hình-dành-cho-người-lớn",
+      "status": 200,
+      "title": "Tại sao HBO quyết định đầu tư toàn bộ vào hoạt hình dành cho người lớn?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-12-appeal",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 12: Appeal",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-11-solid-drawing",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 11: Solid Drawing",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-10-exaggeration",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 10: Exaggeration",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-9-timing-spacing",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 9: Timing &amp; Spacing",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-8-secondary-action",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 8: Secondary Action",
+      "hasContent": true
+    },
+    {
+      "route": "/post/nguyên-tắc-animation-nguyên-tắc-7-arcs",
+      "status": 200,
+      "title": "Nguyên Tắc Animation - Nguyên Tắc 7: Arcs",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyên-tắc-animation-nguyên-tắc-6-slow-in-slow-out",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 6: Slow In &amp; Slow Out",
+      "hasContent": true
+    },
+    {
+      "route": "/post/cafe-sáng-vtv3-deedee-animation-studio-và-hành-trình-kể-chuyện-lịch-sử-bằng-hoạt-hình",
+      "status": 200,
+      "title": "Cafe sáng VTV3: DeeDee Animation Studio và hành trình kể chuyện lịch sử bằng hoạt hình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/tv360-dành-chuyên-mục-riêng-cho-hoạt-hình-của-deedee-animation-studio",
+      "status": 200,
+      "title": "TV360 dành chuyên mục riêng cho hoạt hình của DeeDee Animation Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/adeevui-2025-chuyến-đi-gắn-kết-cuối-năm-của-deedee-animation-studio-cùng-avalook-vexa-studio",
+      "status": 200,
+      "title": "ADEEVUI 2025: Chuyến đi gắn kết cuối năm của DeeDee Animation Studio cùng Avalook &amp; Vexa Studio",
+      "hasContent": true
+    },
+    {
+      "route": "/post/điều-gì-khiến-hơn-60-000-bạn-trẻ-yêu-thích-phim-hoạt-hình-về-tín-ngưỡng-văn-hóa-việt-nam",
+      "status": 200,
+      "title": "Điều gì khiến hơn 60.000 bạn trẻ yêu thích phim hoạt hình về tín ngưỡng văn hóa Việt Nam",
+      "hasContent": true
+    },
+    {
+      "route": "/post/jelly-s-bean-giành-chiến-thắng-chung-cuộc-tại-vietnam-animation-ip-contest-2025",
+      "status": 200,
+      "title": "Jelly’s Bean đạt giải nhất Vietnam Animation IP Contest",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hoạt-hình-giúp-fc-mobile-tạo-dấu-ấn-riêng-giữa-rừng-nhạc-tết",
+      "status": 200,
+      "title": "Hoạt hình giúp FC Mobile tạo dấu ấn riêng giữa “rừng” nhạc Tết!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/quảng-cáo-hoạt-hình-giải-pháp-linh-hoạt-cho-thời-đại-đa-nền-tảng",
+      "status": 200,
+      "title": "Quảng cáo hoạt hình: Giải pháp linh hoạt cho thời đại đa nền tảng!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/sunny-side-down-series-youtube-chất-lượng-cao",
+      "status": 200,
+      "title": "Sunny Side Down - Series Youtube chất lượng cao",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-tiên-phong-trong-quản-lý-dự-án-nghệ-thuật-với-pmo",
+      "status": 200,
+      "title": "DeeDee tiên phong trong quản lý dự án nghệ thuật với PMO",
+      "hasContent": true
+    },
+    {
+      "route": "/post/trở-về-phim-hoạt-hình-về-người-lính-đoạt-nhiều-giải-thưởng-tại-liên-hoan-phim-việt-nam",
+      "status": 200,
+      "title": "Liên hoan Phim Việt Nam: Trở Về - phim hoạt hình về người lính đoạt nhiều giải thưởng danh giá",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-trên-bản-đồ-quốc-tế-khi-hoạt-hình-việt-nam-gõ-cửa-các-không-gian-văn-hóa-toàn-cầu",
+      "status": 200,
+      "title": "DeeDee trên bản đồ Quốc tế: Khi hoạt hình Việt Nam gõ cửa các không gian văn hóa toàn cầu",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/đại-nghĩa-hiệp-a-new-mini-series-by-deedee-animation-studio-officially-launches",
+      "status": 200,
+      "title": "Đại Nghĩa Hiệp – A New Mini Series by DeeDee Animation Studio Officially Launches",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hậu-trường-có-thờ-có-thiêng-hoạt-hình-thuần-việt",
+      "status": 200,
+      "title": "Hậu trường: “Có Thờ Có Thiêng” - Hoạt Hình Thuần Việt",
+      "hasContent": true
+    },
+    {
+      "route": "/post/mực-tháng-mười-tháng-10-đầy-sắc-màu-tại-deedee",
+      "status": 200,
+      "title": "Mực Tháng Mười: Tháng 10 Đầy Sắc Màu tại DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/sự-kiện-tổng-kết-chiếu-phim-trở-về-nhìn-lại-một-hành-trình",
+      "status": 200,
+      "title": "Sự kiện Tổng kết &amp; Chiếu phim Trở Về: Nhìn lại một hành trình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-tiếp-sức-cho-thế-hệ-trẻ-tại-career-day-socci-2025",
+      "status": 200,
+      "title": "DeeDee Animation Studio tiếp sức cho thế hệ trẻ tại Career Day SOCCI 2025",
+      "hasContent": true
+    },
+    {
+      "route": "/post/2d-animator-khóa-học-diễn-hoạt-kết-hợp-giữa-deedee-animation-studio-art-workout-creative",
+      "status": 200,
+      "title": "2D Animator – Khóa học diễn hoạt kết hợp giữa DeeDee Animation Studio &amp; Art Workout Creative",
+      "hasContent": true
+    },
+    {
+      "route": "/post/adeexa-2025-deedee-vẽ-nên-những-ký-ức-đẹp-tại-huế",
+      "status": 200,
+      "title": "ADEEXA 2025 – DeeDee vẽ nên những ký ức đẹp tại Huế",
+      "hasContent": true
+    },
+    {
+      "route": "/post/cùng-deedee-đi-xem-phim-khơi-nguồn-cảm-hứng-sáng-tạo",
+      "status": 200,
+      "title": "Cùng DeeDee đi xem phim - Khơi nguồn cảm hứng sáng tạo!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/ceo-annecy-film-festival-giám-đốc-mifa-ghé-thăm-deedee-mở-cánh-cửa-vươn-tầm-thế-giới",
+      "status": 200,
+      "title": "CEO Annecy Film Festival &amp; Giám đốc MIFA Ghé Thăm DeeDee: Mở cánh cửa vươn tầm Thế giới",
+      "hasContent": true
+    },
+    {
+      "route": "/post/co-founder-deedee-animation-studio-truyền-cảm-hứng-cho-thế-hệ-mới-của-rmit",
+      "status": 200,
+      "title": "DeeDee x RMIT Hanoi: Truyền Cảm Hứng Cho Thế Hệ Mới",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-tedx-ftuhanoi-phá-vỡ-giới-hạn-cùng-hoạt-hình",
+      "status": 200,
+      "title": "DeeDee x TEDx FTUHanoi: Phá Vỡ Giới Hạn Cùng Hoạt Hình",
+      "hasContent": true
+    },
+    {
+      "route": "/post/inktober-2024-sáng-tạo-hết-mực",
+      "status": 200,
+      "title": "Inktober 2024 - Sáng tạo hết \"mực\"!",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyên-tắc-animation-nguyên-tắc-5-follow-through-overlapping-action",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 5",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-xuất-hiện-trên-chương-trình-culture-mosaic-của-vtv4-2025",
+      "status": 200,
+      "title": "DeeDee Animation Studio xuất hiện trên chương trình Culture Mosaic của VTV4 (2025)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-vtv3-việt-nam-đa-sắc-2023",
+      "status": 200,
+      "title": "DEEDEE x VTV3: Việt Nam Đa Sắc",
+      "hasContent": true
+    },
+    {
+      "route": "/post/billboard-3d-đã-thúc-đẩy-thành-công-chiến-dịch-của-omo-như-thế-nào",
+      "status": 200,
+      "title": "Billboard 3D đã thúc đẩy thành công chiến dịch của OMO như thế nào?",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hậu-trường-lord-of-goblins-đưa-thế-giới-viễn-tưởng-lên-màn-ảnh",
+      "status": 200,
+      "title": "Hậu trường Lord of Goblins: Đưa thế giới viễn tưởng lên màn ảnh",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-omo-hành-trình-hợp-tác-dài-lâu",
+      "status": 200,
+      "title": "DeeDee &amp; OMO: Hành trình hợp tác dài lâu - Đưa nhiều chiến dịch quảng bá thành hiện thực",
+      "hasContent": true
+    },
+    {
+      "route": "/post/vượt-qua-giới-hạn-khám-phá-hành-trình-của-co-founder-art-director-animation-supervisor",
+      "status": 200,
+      "title": "Vượt qua giới hạn: Khám phá hành trình của Co-Founder, Art Director &amp; Animation Supervisor",
+      "hasContent": true
+    },
+    {
+      "route": "/post/hội-thảo-phát-triển-các-ngành-công-nghiệp-văn-hóa-sáng-tạo-việt-nam-trong-kỷ-nguyên-số-2023",
+      "status": 200,
+      "title": "Hội thảo \"Phát triển các ngành công nghiệp văn hóa, sáng tạo Việt Nam trong kỷ nguyên số\" (2023)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/từ-tầm-nhìn-đến-thực-tế-câu-chuyện-đầy-cảm-hứng-về-co-founder-studio-manager-producer-của-deedee",
+      "status": 200,
+      "title": "Từ Tầm Nhìn đến Thực Tế: Câu chuyện đầy cảm hứng về Co-Founder/Studio Manager/Producer của DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/vietnam-s-vibrant-animation-industry-interview-with-sylvain-grisollet-from-deedee-animation-studio-1",
+      "status": 200,
+      "title": "Cùng trò chuyện về ngành công nghiệp hoạt hình của Việt Nam với Business Development Director",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-vtv1-art-culture-space-talkshow-2022",
+      "status": 200,
+      "title": "DeeDee x VTV1: Không gian Văn hóa Nghệ thuật (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/viet-nam-s-animation-production-capacity-international-cooperation-prospects-2022",
+      "status": 200,
+      "title": "Phim hoạt hình Việt Nam - Năng lực sản xuất và Xu hướng hợp tác quốc tế (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-l-espace-journée-réalités-4-0-2021",
+      "status": 200,
+      "title": "DeeDee x L'espace: Journée \"Réalités 4.0\" (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-vtv1-art-culture-space-talkshow-2020",
+      "status": 200,
+      "title": "DeeDee x VTV1: Art &amp; Culture Space Talkshow (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-fpt-university-talkshow-cartoon-from-a-z-2020",
+      "status": 200,
+      "title": "DeeDee x FPT University: Talkshow \"Cartoon From A- Z\" (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-tham-gia-dự-án-hoạt-hình-mừng-sinh-nhật-mickey-tại-hàn-quốc",
+      "status": 200,
+      "title": "DeeDee tham gia dự án hoạt hình mừng sinh nhật Mickey tại Hàn Quốc",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-animation-studio-góp-mặt-tại-lễ-khai-mạc-kinofest-2024",
+      "status": 200,
+      "title": "DeeDee Animation Studio góp mặt tại Lễ Khai mạc Kinofest 2024",
+      "hasContent": true
+    },
+    {
+      "route": "/post/huyền-thoại-shin-ei-animation-ghé-thăm-deedee",
+      "status": 200,
+      "title": "\"Huyền thoại \" Shin-ei Animation ghé thăm DeeDee",
+      "hasContent": true
+    },
+    {
+      "route": "/post/sự-kiện-ra-mắt-sách-và-talkshow-hoạt-hình-liệu-có-thật-chỉ-dành-cho-thiếu-nhi",
+      "status": 200,
+      "title": "Sự kiện ra mắt sách và Talkshow: Hoạt hình liệu có thật \"chỉ dành cho thiếu nhi\"?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-tedx-ftuhanoi-phá-vỡ-giới-hạn-cùng-hoạt-hình-1",
+      "status": 200,
+      "title": "DeeDee x TEDx FTUHanoi: Breaking Boundaries with Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-s-fashion-week-2023",
+      "status": 200,
+      "title": "DeeDee's Fashion Week (2023)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/lần-đầu-tiên-deedee-animation-studio-tham-dự-liên-hoan-phim-hoạt-hình-annecy",
+      "status": 200,
+      "title": "Lần đầu tiên DeeDee Animation Studio tham dự Liên hoan phim hoạt hình Annecy (Annecy Festival)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-attended-mipcom-2022",
+      "status": 200,
+      "title": "DeeDee tham dự MIPCOM (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-christmas-event-2022",
+      "status": 200,
+      "title": "DeeDee Christmas Event (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-halloween-event-2022",
+      "status": 200,
+      "title": "DeeDee Halloween Event (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-s-5-years-anniversary-2022",
+      "status": 200,
+      "title": "DeeDee's 5 Years Anniversary (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-team-building-2022",
+      "status": 200,
+      "title": "DeeDee Team Building (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-x-unicef-deedee-animation-studio-s-invitation-to-the-world-children-s-day-2020-ceremony",
+      "status": 200,
+      "title": "DeeDee x UNICEF: DeeDee Animation Studio’s Invitation to the World Children’s Day 2020 Ceremony",
+      "hasContent": true
+    },
+    {
+      "route": "/post/deedee-s-4-years-anniversary-2021",
+      "status": 200,
+      "title": "DeeDee's 4 Years Anniversary (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/hậu-trường-có-thờ-có-thiêng-hoạt-hình-thuần-việt-1",
+      "status": 200,
+      "title": "Behind the Scenes: “Có Thờ Có Thiêng” - Vietnamese Traditions in Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/top-10-cuốn-sách-đáng-đọc-nhất-về-animation",
+      "status": 200,
+      "title": "Top 10 Cuốn Sách Đáng Đọc Nhất Về Animation",
+      "hasContent": true
+    },
+    {
+      "route": "/post/12-nguyên-tắc-animation-nguyên-tắc-4-straight-ahead-pose-to-pose",
+      "status": 200,
+      "title": "12 Nguyên Tắc Animation - Nguyên Tắc 4",
+      "hasContent": true
+    },
+    {
+      "route": "/post/phim-hoạt-hình-người-lớn-thể-loại-hoạt-hình-phát-triển-nhanh-nhất-hiện-nay",
+      "status": 200,
+      "title": "PHIM HOẠT HÌNH NGƯỜI LỚN",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/billboard-3d-đã-thúc-đẩy-thành-công-chiến-dịch-của-omo-như-thế-nào-1",
+      "status": 200,
+      "title": "How a 3D Billboard Boosted OMO’s Campaign Success",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/frames-of-fantasy-a-deep-dive-with-deedee-s-co-founder-animation-director",
+      "status": 200,
+      "title": "Frames of Fantasy: A Deep Dive with DeeDee's Co-Founder/ Animation Director",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-s-adventure-in-los-angeles",
+      "status": 200,
+      "title": "DeeDee’s Adventure in Los Angeles",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/bridging-creativity-and-efficiency-the-insightful-experience-of-project-manager-line-producer",
+      "status": 200,
+      "title": "Bridging Creativity and Efficiency: The Insightful Experience of A Project Manager &amp; Line Producer",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/workshop-developing-vietnam-s-cultural-and-creative-industries-in-the-digital-era-2023",
+      "status": 200,
+      "title": "Workshop: “Developing Vietnam’s Cultural and Creative industries in the Digital era” (2023)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/from-vision-to-reality-the-inspiring-story-of-nhu-deedee-s-co-founder-studio-manager-producer",
+      "status": 200,
+      "title": "From Vision to Reality: The Inspiring story of Nhu, DeeDee’s Co-Founder, Studio Manager &amp; Producer",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-vtv1-art-culture-space-talkshow-2022-1",
+      "status": 200,
+      "title": "DeeDee x VTV1: Art &amp; Culture Space Talkshow (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/viet-nam-s-animation-production-capacity-international-cooperation-prospects-2022-1",
+      "status": 200,
+      "title": "Viet Nam's Animation - Production Capacity &amp; International Cooperation Prospects (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-l-espace-symposium-on-the-image-creation-ecosystem-avgc-in-vietnam-2021-1",
+      "status": 200,
+      "title": "DeeDee x L'espace: Symposium on the image-creation ecosystem (AVGC) in Vietnam (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-l-espace-journée-réalités-4-0-2021-1",
+      "status": 200,
+      "title": "DeeDee x L'espace: Journée \"Réalités 4.0\" (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-vtv-video-storm-talkshow-2020-1",
+      "status": 200,
+      "title": "DeeDee x VTV: Video Storm Talkshow (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/book-launch-event-and-the-talkshow-is-animation-only-for-kids",
+      "status": 200,
+      "title": "Book Launch Event and the Talkshow: \"Is Animation Only for Kids?\"",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-christmas-event-2022-1",
+      "status": 200,
+      "title": "DeeDee Christmas Event (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-halloween-event-2022-1",
+      "status": 200,
+      "title": "DeeDee Halloween Event (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-s-5-years-anniversary-2022-1",
+      "status": 200,
+      "title": "DeeDee's 5 Years Anniversary (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-trip-2022-1",
+      "status": 200,
+      "title": "DeeDee Trip (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/a-visiting-from-ms-esther-peh-associate-director-public-policy-asia-of-warner-bros-discovery-1",
+      "status": 200,
+      "title": "A Visiting From Ms. Esther Peh - Associate Director, Public Policy, Asia of Warner Bros. Discovery",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-team-building-2022-1",
+      "status": 200,
+      "title": "DeeDee Team Building (2022)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-trip-2021-1",
+      "status": 200,
+      "title": "DeeDee Trip (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-unicef-deedee-animation-studio-s-invitation-to-the-world-children-s-day-2020-ceremony-1",
+      "status": 200,
+      "title": "DeeDee x UNICEF: DeeDee Animation Studio’s Invitation to the World Children’s Day 2020 Ceremony",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-s-4-years-anniversary-2021-1",
+      "status": 200,
+      "title": "DeeDee's 4 Years Anniversary (2021)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/deedee-x-macc-master-class-with-anime-director-ito-tomohiko-2020-1",
+      "status": 200,
+      "title": "DeeDee x MACC: Master Class With Anime Director Ito Tomohiko (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/laika-produce-stop-motion-animation",
+      "status": 200,
+      "title": "How does Laika produce stop motion animation?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animation-movies-longest-time-to-make",
+      "status": 200,
+      "title": "Top 5 animation movies that take the longest time to make",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/animated-cartoons-for-kids",
+      "status": 200,
+      "title": "The glorious commercial future of animated cartoons for kids",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/ghibli-animation-studio",
+      "status": 200,
+      "title": "How Ghibli animation studio cast the spell of 4-decade of anime magic",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/principles-animation-staging-animation",
+      "status": 200,
+      "title": "Principles of animation: Staging in story design and layout",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/webinar-recap-the-business-of-animation-in-vietnam",
+      "status": 200,
+      "title": "Webinar recap 2: The business of animation in Vietnam",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/principles-animation-anticipation",
+      "status": 200,
+      "title": "12 principles of animation: Anticipation",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/principles-animation-squash-stretch",
+      "status": 200,
+      "title": "12 Principles of Animation - Squash and Stretch",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/video-game-animated-series",
+      "status": 200,
+      "title": "Video-game animated series: The new chapter of the animation industry",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/top-highest-grossing-anime-films",
+      "status": 200,
+      "title": "5 highest-grossing anime films of all time",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/top-highest-grossing-animated-movies",
+      "status": 200,
+      "title": "Top 5 highest-grossing animated movies ever from famous studios",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/types-jobs-animation-house",
+      "status": 200,
+      "title": "10 Types of jobs in an animation house: Which one is for you?",
+      "hasContent": true
+    },
+    {
+      "route": "/en/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020-1",
+      "status": 200,
+      "title": "A Visiting From Mr. Daniel Santos - Director of Sales - EMEA &amp; APAC Of Toon Boom (2020)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/golden-kite-film-festival-2019-2",
+      "status": 200,
+      "title": "Golden Kite Film Festival (2019)",
+      "hasContent": true
+    },
+    {
+      "route": "/post/buổi-bình-minh-của-ngành-hoạt-hình",
+      "status": 200,
+      "title": "Nguồn Gốc Của Hoạt Hình Và Nghệ Thuật Kể Chuyện Bằng Hình Ảnh",
+      "hasContent": true
+    },
+    {
+      "route": "/post/phong-cách-hoạt-hình-đột-phá-của-spider-man-into-the-spider-verse",
+      "status": 200,
+      "title": "Phong Cách Hoạt Hình Đột Phá Của \"Spider-Man: Into The Spider-Verse\"",
+      "hasContent": true
+    }
+  ],
+  "browser": [
+    {
+      "route": "/",
+      "status": 200,
+      "title": "DeeDee Animation Studio",
+      "imageCount": 324,
+      "brokenImages": [],
+      "blockedRemoteRequests": [],
+      "expectedBlockedExternalVideo": [],
+      "failedLocalRequests": [],
+      "localHttpErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [
+        {
+          "url": "http://127.0.0.1:4173/assets/87183e0ecfb2a5b1be0c9966.mp4",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/homepage-desktop.png"
+    },
+    {
+      "route": "/our-work",
+      "status": 200,
+      "title": "Dự án | DeeDee Animation Studio",
+      "imageCount": 87,
+      "brokenImages": [],
+      "blockedRemoteRequests": [],
+      "expectedBlockedExternalVideo": [],
+      "failedLocalRequests": [],
+      "localHttpErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "screenshot": "evidence/-our-work-desktop.png"
+    },
+    {
+      "route": "/contact-us",
+      "status": 200,
+      "title": "Liên hệ | DeeDee Animation Studio",
+      "imageCount": 36,
+      "brokenImages": [],
+      "blockedRemoteRequests": [],
+      "expectedBlockedExternalVideo": [],
+      "failedLocalRequests": [],
+      "localHttpErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "screenshot": "evidence/-contact-us-desktop.png"
+    },
+    {
+      "route": "/all-project/sunny-side-down",
+      "status": 200,
+      "title": "SUNNY SIDE DOWN | DeeDee Animation Studio",
+      "imageCount": 29,
+      "brokenImages": [],
+      "blockedRemoteRequests": [
+        "https://www.youtube.com/embed/NIrD-FaDTQw?autoplay=0&mute=0&controls=1&loop=0&origin=https%3A%2F%2Fwww.deedeestudio.net&playsinline=1&enablejsapi=1&widgetid=1&forigin=https%3A%2F%2Fwww.deedeestudio.net%2Fall-project%2Fsunny-side-down&aoriginsup=1&vf=6"
+      ],
+      "expectedBlockedExternalVideo": [
+        "https://www.youtube.com/embed/NIrD-FaDTQw?autoplay=0&mute=0&controls=1&loop=0&origin=https%3A%2F%2Fwww.deedeestudio.net&playsinline=1&enablejsapi=1&widgetid=1&forigin=https%3A%2F%2Fwww.deedeestudio.net%2Fall-project%2Fsunny-side-down&aoriginsup=1&vf=6"
+      ],
+      "failedLocalRequests": [],
+      "localHttpErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.youtube.com/embed/NIrD-FaDTQw?autoplay=0&mute=0&controls=1&loop=0&origin=https%3A%2F%2Fwww.deedeestudio.net&playsinline=1&enablejsapi=1&widgetid=1&forigin=https%3A%2F%2Fwww.deedeestudio.net%2Fall-project%2Fsunny-side-down&aoriginsup=1&vf=6",
+          "error": "net::ERR_BLOCKED_BY_CLIENT"
+        }
+      ],
+      "screenshot": "evidence/-all-project-sunny-side-down-desktop.png"
+    },
+    {
+      "route": "/post/chia-khoa-cho-mot-quy-trinh-hop-tac-quoc-te",
+      "status": 200,
+      "title": "Chìa khóa cho một quy trình hợp tác quốc tế hiệu quả là gì?",
+      "imageCount": 21,
+      "brokenImages": [],
+      "blockedRemoteRequests": [],
+      "expectedBlockedExternalVideo": [],
+      "failedLocalRequests": [],
+      "localHttpErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "screenshot": "evidence/-post-chia-khoa-cho-mot-quy-trinh-hop-tac-quoc-te-desktop.png"
+    }
+  ],
+  "navigation": {
+    "passed": true,
+    "target": "http://127.0.0.1:4173/our-work/",
+    "title": "Dự án | DeeDee Animation Studio"
+  },
+  "failures": []
+}
