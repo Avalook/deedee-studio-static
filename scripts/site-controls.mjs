@@ -55,8 +55,85 @@ export function selectManifestAsset(index, imageData) {
   if (!candidates.length) return null;
   return candidates.slice().sort((a, b) => (b.width * b.height - a.width * a.height) || a.asset.localeCompare(b.asset))[0].asset;
 }
-export async function hydrateEmptyWixImages(root = document, basePath = '', fetchImpl = fetch) {
-  const images = [...root.querySelectorAll('wow-image > img')].filter(image => !image.getAttribute('src'));
+
+function hydrateWixImage(image, index, basePath) {
+  const holder = image.closest('wow-image');
+  let info;
+  try { info = JSON.parse(holder?.getAttribute('data-image-info') || '{}'); } catch { return false; }
+  const asset = selectManifestAsset(index, info?.imageData);
+  if (!asset) return false;
+  image.src = `${basePath}${asset}`;
+  image.style.width = '100%';
+  image.style.height = '100%';
+  image.style.objectFit = info.displayMode === 'fill' ? 'cover' : 'contain';
+  image.style.objectPosition = 'center center';
+  image.style.visibility = 'visible';
+  image.style.opacity = '1';
+  image.dataset.deedeeImageHydrated = 'true';
+  return true;
+}
+
+function hydrateWixImages(images, index, basePath) {
+  let hydrated = 0;
+  for (const image of images) {
+    if (hydrateWixImage(image, index, basePath)) hydrated += 1;
+  }
+  return hydrated;
+}
+
+
+function createManifestIndexLoader(basePath, fetchImpl) {
+  let manifestPromise;
+  return () => {
+    if (!manifestPromise) {
+      manifestPromise = (async () => {
+        try {
+          const response = await fetchImpl(`${basePath}/manifest.json`);
+          if (!response.ok) return null;
+          return indexManifestAssets(await response.json());
+        } catch {
+          return null;
+        }
+      })().then(index => {
+        if (!index) manifestPromise = null;
+        return index;
+      });
+    }
+    return manifestPromise;
+  };
+}
+
+async function hydrateIntersectingWixImages(entries, observer, pendingImages, loadIndex, basePath) {
+  const eligible = entries
+    .filter(entry => entry.isIntersecting || entry.intersectionRatio > 0)
+    .map(entry => entry.target)
+    .filter(image => !image.getAttribute('src') && !pendingImages.has(image));
+  if (!eligible.length) return;
+  eligible.forEach(image => pendingImages.add(image));
+
+  const index = await loadIndex();
+  if (!index) {
+    eligible.forEach(image => pendingImages.delete(image));
+    return;
+  }
+  for (const image of eligible) {
+    if (!image.getAttribute('src')) hydrateWixImage(image, index, basePath);
+    observer.unobserve(image);
+  }
+}
+
+
+function findNearViewportImages(images, viewportHeight, margin) {
+  return images.filter(image => {
+    if (image.getAttribute('src')) return false;
+    const rect = image.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return false;
+    return rect.bottom >= -margin && rect.top <= viewportHeight + margin;
+  });
+}
+export async function hydrateEmptyWixImages(root = document, basePath = '', fetchImpl = fetch, candidates = null) {
+  const images = candidates || [...root.querySelectorAll('wow-image > img')]
+    .filter(image => !image.getAttribute('src'));
   if (!images.length) return 0;
   let manifest;
   try {
@@ -64,25 +141,65 @@ export async function hydrateEmptyWixImages(root = document, basePath = '', fetc
     if (!response.ok) return 0;
     manifest = await response.json();
   } catch { return 0; }
-  const index = indexManifestAssets(manifest);
-  let hydrated = 0;
-  for (const image of images) {
-    const holder = image.closest('wow-image');
-    let info;
-    try { info = JSON.parse(holder?.getAttribute('data-image-info') || '{}'); } catch { continue; }
-    const asset = selectManifestAsset(index, info?.imageData);
-    if (!asset) continue;
-    image.src = `${basePath}${asset}`;
-    image.style.width = '100%';
-    image.style.height = '100%';
-    image.style.objectFit = info.displayMode === 'fill' ? 'cover' : 'contain';
-    image.style.objectPosition = 'center center';
-    image.style.visibility = 'visible';
-    image.style.opacity = '1';
-    image.dataset.deedeeImageHydrated = 'true';
-    hydrated += 1;
+  return hydrateWixImages(images, indexManifestAssets(manifest), basePath);
+}
+
+
+export function observeEmptyWixImages(
+  root = document,
+  basePath = '',
+  fetchImpl = fetch,
+  ObserverImpl = globalThis.IntersectionObserver,
+  windowImpl = globalThis.window,
+) {
+  const images = [...root.querySelectorAll('wow-image > img')]
+    .filter(image => !image.getAttribute('src'));
+  if (!images.length) return null;
+  if (typeof ObserverImpl !== 'function') {
+    hydrateEmptyWixImages(root, basePath, fetchImpl).catch(() => {});
+    return null;
   }
-  return hydrated;
+
+  const pendingImages = new WeakSet();
+  const loadIndex = createManifestIndexLoader(basePath, fetchImpl);
+  const hydrate = entries => hydrateIntersectingWixImages(
+    entries,
+    observer,
+    pendingImages,
+    loadIndex,
+    basePath,
+  );
+  let observer;
+  observer = new ObserverImpl(
+    entries => hydrate(entries),
+    { rootMargin: '1200px 0px' },
+  );
+  images.forEach(image => observer.observe(image));
+
+  if (typeof windowImpl?.addEventListener === 'function') {
+    let scheduled = false;
+    const checkNearViewport = () => {
+      scheduled = false;
+      const near = findNearViewportImages(images, windowImpl.innerHeight, 1200);
+      if (near.length) {
+        hydrate(near.map(target => ({ target, isIntersecting: true })));
+      }
+    };
+    const scheduleCheck = () => {
+      if (scheduled) return;
+      scheduled = true;
+      if (typeof windowImpl.requestAnimationFrame === 'function') {
+        windowImpl.requestAnimationFrame(checkNearViewport);
+      } else {
+        setTimeout(checkNearViewport, 0);
+      }
+    };
+    windowImpl.addEventListener('resize', scheduleCheck, { passive: true });
+    windowImpl.addEventListener('scroll', scheduleCheck, { passive: true });
+    scheduleCheck();
+  }
+
+  return observer;
 }
 export async function loadProjectData(fetchImpl = fetch, url = '/deedee-studio-static/project-pages.json') {
   const response = await fetchImpl(url);
@@ -101,7 +218,7 @@ export function toggleTestimonial(button) {
 export function installSiteControls(root = document, pathname = location.pathname) {
   root.querySelectorAll('a[aria-label="Check out our work"]').forEach(link => link.setAttribute('href', contactHref(pathname)));
   const base = pathname === '/deedee-studio-static' || pathname.startsWith('/deedee-studio-static/') ? '/deedee-studio-static' : '';
-  hydrateEmptyWixImages(root, base).catch(() => {});
+  observeEmptyWixImages(root, base);
   root.addEventListener('click', async event => {
     const testimonial = event.target.closest?.('button[data-testid="ellipsis_text_viewer_expand_control"]');
     if (testimonial && toggleTestimonial(testimonial)) { event.preventDefault(); return; }
