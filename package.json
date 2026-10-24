@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 tests/*.test.mjs",
     "repair:backgrounds": "node scripts/repair-backgrounds.mjs",
-    "restore:images": "node scripts/restore-placeholder-assets.mjs"
+    "restore:images": "node scripts/restore-placeholder-assets.mjs",
+    "repair:shapes": "node scripts/shape-backgrounds.mjs"
   },
   "devDependencies": {
     "parse5": "8.0.1"

@@ -3,4 +3,14 @@
 /evidence/
 /reference-desktop.png
 /node_modules/
+node_modules/
 __pycache__/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+/dist/
+/build/
