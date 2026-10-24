@@ -2,3 +2,5 @@
 /original/
 /evidence/
 /reference-desktop.png
+/node_modules/
+__pycache__/
