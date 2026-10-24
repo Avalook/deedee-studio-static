@@ -1614,6 +1614,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const activateTab = (tab) => {
     const widget = tab.closest('.Tabscomponent1176390459__root');
     if (!widget) return;
+    const label = tab.querySelector('[data-hook="tab-item-label"]')?.textContent?.trim();
+    if (label) {
+      const url = new URL(location.href);
+      url.pathname = url.pathname.replace(/\/+$/, '');
+      url.search = label === 'Originals' ? '' : `?.=${encodeURIComponent(label)}`;
+      history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }
     const tabs = [...widget.querySelectorAll('[data-hook="tab-item"][role="tab"]')];
     const panelId = tab.getAttribute('aria-controls');
     const panels = [...widget.querySelectorAll('[data-hook="TabPanel"]')];
@@ -1674,10 +1681,5 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     tabs[nextIndex].focus();
     activateTab(tabs[nextIndex]);
   });
-  const requestedTab = new URLSearchParams(location.search).get('tab');
-  if (requestedTab) {
-    const tab = document.querySelector('.Tabscomponent1176390459__root [role="tab"][data-idx="' + (Number(requestedTab) - 1) + '"]');
-    if (tab) activateTab(tab);
-  }
 })();
 </script><script type="module" data-deedee-site-controls src="/deedee-studio-static/scripts/site-controls.mjs"></script><script type="module" data-deedee-background-runtime src="/deedee-studio-static/scripts/background-layout.mjs"></script></body></html>
