@@ -1,7 +1,11 @@
+import { installPartnerMarquee } from './partner-marquee.mjs';
+
 const VIDEO_HOSTS = new Set(['video.wixstatic.com']);
 const EMBED_HOSTS = new Set(['www.youtube.com', 'player.vimeo.com']);
 
 export function animationDuration(width) { return Number.isFinite(width) && width > 0 ? width / 40 * 1000 : 0; }
+
+
 export function normalizePageRoute(pathname) {
   let route = String(pathname || '/').replace(/^\/deedee-studio-static(?=\/|$)/, '').replace(/\/$/, '') || '/';
   try { route = decodeURI(route); } catch { /* Keep malformed encoded path stable for a 404. */ }
@@ -44,6 +48,7 @@ export function createPlayer(doc, source) {
 }
 
 export function installMediaMotion(root = document, pathname = location.pathname) {
+  installPartnerMarquee(root);
   root.addEventListener('click', async event => {
     const preview = event.target.closest?.('[data-hook="video-player"] .react-player__preview');
     if (!preview) return;
