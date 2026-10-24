@@ -1,1 +1,107 @@
-#pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"].gallery-item-container{opacity: 1 !important;display: block !important;transition: opacity .2s ease !important;top: 0px !important;left: 0px !important;right: auto !important;height: 155px !important;width: 1px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-common-info-outer{height: 154px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-common-info{height: 154px !important;width: 100% !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-wrapper{width: 1px !important;height: 1px !important;margin: 0 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-content{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-hover{width: 1px !important;height: 1px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .item-hover-flex-container{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="0"] .gallery-item-wrapper img{width: 100% !important;height: 100% !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"].gallery-item-container{opacity: 1 !important;display: block !important;transition: opacity .2s ease !important;top: 0px !important;left: 11px !important;right: auto !important;height: 155px !important;width: 1px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-common-info-outer{height: 154px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-common-info{height: 154px !important;width: 100% !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-wrapper{width: 1px !important;height: 1px !important;margin: 0 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-content{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-hover{width: 1px !important;height: 1px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .item-hover-flex-container{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="1"] .gallery-item-wrapper img{width: 100% !important;height: 100% !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"].gallery-item-container{opacity: 1 !important;display: block !important;transition: opacity .2s ease !important;top: 0px !important;left: 22px !important;right: auto !important;height: 155px !important;width: 1px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-common-info-outer{height: 154px !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-common-info{height: 154px !important;width: 100% !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-wrapper{width: 1px !important;height: 1px !important;margin: 0 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-content{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-hover{width: 1px !important;height: 1px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .item-hover-flex-container{width: 1px !important;height: 1px !important;margin: 0px 0px !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx [data-hook="item-container"][data-idx="2"] .gallery-item-wrapper img{width: 100% !important;height: 100% !important;opacity: 1 !important;} #pro-gallery-comp-m8e63qxx .pro-gallery-prerender{height:137.5px !important;}#pro-gallery-comp-m8e63qxx {height:137.5px !important; width:0px !important;}#pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {height:137.5px !important;}#pro-gallery-comp-m8e63qxx .pro-gallery {height:137.5px !important; width:0px !important;}#pro-gallery-comp-m8e63qxx .pro-gallery-parent-container {height:137.5px !important; width:32px !important;}
+/* Scoped repair for the mirrored mobile blog gallery comp-m8e63qxx.
+   The original snapshot was taken while the gallery had zero layout width, so
+   its prerender CSS hard-coded 0/1px sizes. Restore the live 3-column card row
+   without touching global site CSS. */
+#pro-gallery-comp-m8e63qxx,
+#pro-gallery-comp-m8e63qxx .pro-gallery,
+#pro-gallery-comp-m8e63qxx .pro-gallery-container,
+#pro-gallery-comp-m8e63qxx .pro-gallery-margin-container,
+#pro-gallery-comp-m8e63qxx .pro-gallery-parent-container,
+#pro-gallery-comp-m8e63qxx .pro-gallery-prerender {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+#pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  column-gap: 32px !important;
+  row-gap: 0 !important;
+  align-items: start;
+}
+
+#pro-gallery-comp-m8e63qxx .item-link-wrapper {
+  display: contents !important;
+}
+
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"].gallery-item-container {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  opacity: 1 !important;
+  display: block !important;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 32px;
+  box-shadow: 0 8px 0 0 rgb(161, 57, 224);
+}
+
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 3;
+  margin: -1px !important;
+  overflow: hidden;
+  border-radius: 32px 32px 0 0;
+}
+
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-content {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"] img {
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box;
+  object-fit: cover !important;
+  border: 5px solid #fff;
+  border-radius: 32px 32px 0 0;
+}
+
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info-outer,
+#pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info {
+  height: 154px !important;
+}
+
+#pro-gallery-comp-m8e63qxx .RiOfiW {
+  background: #fff !important;
+  min-height: 154px;
+}
+
+#pro-gallery-comp-m8e63qxx .O16KGI::before {
+  content: "Xem Nội Dung";
+  position: absolute;
+  top: 104px;
+  right: 19px;
+  bottom: 10px;
+  left: 0;
+  color: rgb(161, 57, 224);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* The page-level Wix rule forces a 10px bottom margin on the absolutely
+   positioned source cards; in this repaired grid it would add 10px of row
+   height, so neutralize it with higher specificity. */
+#SITE_CONTAINER #main_MF#main_MF .css-editing-scope [data-hook="post-list-root"] #pro-gallery-comp-m8e63qxx [data-hook="item-container"] {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 750px) {
+  #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper {
+    width: calc(100% + 2px) !important;
+    height: 72.75px !important;
+    aspect-ratio: auto !important;
+  }
+}
