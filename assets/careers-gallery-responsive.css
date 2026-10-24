@@ -1,0 +1,115 @@
+/* Restore the Wix careers gallery's responsive card grid for its smaller
+   breakpoints. The archived desktop layout is already correct above 1379px. */
+@media (max-width: 1379px) {
+  #pro-gallery-comp-m8cy9ggi,
+  #pro-gallery-comp-m8cy9ggi .pro-gallery,
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-container,
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    display: grid !important;
+    column-gap: 32px !important;
+    row-gap: 22px !important;
+    align-items: start;
+  }
+
+  #pro-gallery-comp-m8cy9ggi .item-link-wrapper {
+    display: contents !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"].gallery-item-container {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] .gallery-item-wrapper {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] .gallery-item-content {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] .gallery-item-common-info-outer,
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] .gallery-item-common-info {
+    height: 350px !important;
+  }
+}
+
+@media (max-width: 479px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="2"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="3"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="4"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="5"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
+    visibility: hidden !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="4"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="5"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
+    visibility: hidden !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
+    visibility: hidden !important;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1379px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
+  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
+    visibility: hidden !important;
+  }
+}
