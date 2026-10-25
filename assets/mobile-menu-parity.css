@@ -1,0 +1,63 @@
+@media (max-width: 750px) {
+  #comp-m7hggz5t1 {
+    width: 149px !important;
+    height: 410px !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  #comp-m7hggz5t1 > .comp-m7hggz5t1-overflow-wrapper,
+  #comp-m7hggz5t1 > .comp-m7hggz5t1-overflow-wrapper > .comp-m7hggz5t1-container {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 410px !important;
+    min-height: 410px !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #comp-m7hggz5t1 nav {
+    position: absolute !important;
+    top: 62px !important;
+    right: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: 348.2px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  #comp-m7hggz5t1 nav > a {
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 0 0 58.2px !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 58.2px !important;
+    min-height: 58.2px !important;
+    max-height: 58.2px !important;
+    margin: 0 !important;
+    padding: 16px 24px !important;
+    font-size: 17.65px !important;
+    line-height: 25.2px !important;
+    position: relative !important;
+    top: -3.15px !important;
+    background: transparent !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #000 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+  }
+
+  #comp-m7hggz5t1 nav > a::before,
+  #comp-m7hggz5t1 nav > a::after {
+    display: none !important;
+    content: none !important;
+  }
+}
