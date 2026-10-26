@@ -22,7 +22,8 @@ const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, all) =>
 
 const config = JSON.parse(readFileSync(path.join(HERE, 'routes.json'), 'utf8'));
 const WIDTHS = (args.widths ?? config.widths.join(',')).split(',').map(Number);
-const ROUTES = args.routes ? args.routes.split(',') : config.core;
+// --routes-file holds a JSON array; use it for routes that contain commas.
+const ROUTES = args['routes-file'] ? JSON.parse(readFileSync(path.resolve(args['routes-file']), 'utf8')) : args.routes ? args.routes.split(',') : config.core;
 const LIVE = args.live ?? 'https://www.deedeestudio.net';
 const LOCAL = args.local ?? 'http://127.0.0.1:4173/deedee-studio-static';
 const CONCURRENCY = Number(args.concurrency ?? 2);
