@@ -353,7 +353,21 @@ export function installFormDropdowns(root = document) {
   }, true);
 }
 
+/**
+ * Wix writes the browser's real scrollbar width to <body> and scales several margins with it. The mirror was
+ * captured with a 15px classic scrollbar baked in, which is wrong for overlay scrollbars (macOS trackpads, phones).
+ */
+export function syncScrollbarWidth(root = document, win = globalThis.window) {
+  const clientWidth = root.documentElement?.clientWidth;
+  if (!root.body || !win || typeof clientWidth !== 'number') return null;
+  const width = Math.max(0, win.innerWidth - clientWidth);
+  root.body.style.setProperty('--scrollbar-width', `${width}px`);
+  return width;
+}
+
 export function installSiteControls(root = document, pathname = location.pathname) {
+  syncScrollbarWidth(root);
+  globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);
   installProjectDetailBack(root, pathname);

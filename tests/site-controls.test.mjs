@@ -10,6 +10,7 @@ import {
   observeEmptyWixImages,
   projectPage,
   setProjectMoreVisibility,
+  syncScrollbarWidth,
   toggleTestimonial,
   validateProjectData,
 } from '../scripts/site-controls.mjs';
@@ -472,4 +473,15 @@ test('hydrates all empty placeholders when IntersectionObserver is unavailable',
   assert.equal(observer, null);
   assert.equal(fetches, 1);
   assert.equal(image.src, '/assets/fallback.webp');
+});
+
+test('syncScrollbarWidth mirrors the real scrollbar width onto the body like the Wix runtime', () => {
+  const props = {};
+  const root = { documentElement: { clientWidth: 1425 }, body: { style: { setProperty: (name, value) => { props[name] = value; } } } };
+  assert.equal(syncScrollbarWidth(root, { innerWidth: 1440 }), 15);
+  assert.equal(props['--scrollbar-width'], '15px');
+  root.documentElement.clientWidth = 1440;
+  assert.equal(syncScrollbarWidth(root, { innerWidth: 1440 }), 0);
+  assert.equal(props['--scrollbar-width'], '0px');
+  assert.equal(syncScrollbarWidth({ documentElement: {}, body: null }, { innerWidth: 1440 }), null);
 });
