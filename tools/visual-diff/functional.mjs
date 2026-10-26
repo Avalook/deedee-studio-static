@@ -8,7 +8,7 @@ import { contextOptions } from './env.mjs';
 const args = process.argv.slice(2);
 const live = args.includes('--live');
 const width = Number(args[args.indexOf('--width') + 1]) || 1440;
-const BASE = live ? 'https://www.deedeestudio.net' : 'http://127.0.0.1:4173/deedee-studio-static';
+const BASE = args.includes('--pages') ? 'https://avalook.github.io/deedee-studio-static' : live ? 'https://www.deedeestudio.net' : 'http://127.0.0.1:4173/deedee-studio-static';
 const results = [];
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
@@ -156,7 +156,7 @@ await check('contact form has a working submit target', async () => {
 
 await browser.close();
 const pad = (s, n) => String(s).padEnd(n);
-console.log(`${live ? 'LIVE' : 'LOCAL'} @${width}px\n`);
+console.log(`${args.includes('--pages') ? 'GITHUB PAGES' : live ? 'LIVE' : 'LOCAL'} @${width}px\n`);
 for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'}  ${pad(r.name, 52)} ${r.detail}`);
 console.log(`\n${results.filter(r => r.ok).length}/${results.length} pass`);
 process.exitCode = results.every(r => r.ok) ? 0 : 1;
