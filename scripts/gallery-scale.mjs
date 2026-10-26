@@ -4,7 +4,8 @@
  * Where nothing in the stylesheets re-flows a gallery, scale it to the width it actually has.
  */
 const MIN_SCALE = 0.6;
-const MAX_SCALE = 1.2;
+// Up to ~2560px screens (2560 / 1421 = 1.8); live Wix keeps scaling these rows in proportion on wide displays.
+const MAX_SCALE = 1.8;
 const IGNORED_DELTA = 0.002;
 
 function galleryHost(margin) {

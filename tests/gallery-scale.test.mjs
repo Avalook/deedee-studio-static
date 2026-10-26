@@ -32,6 +32,14 @@ test('leaves galleries that CSS already re-flows, and ones that already fit', ()
   assert.equal(fits.host.style.zoom, '');
 });
 
+test('wide screens scale up in proportion, but not without limit', () => {
+  const wide = gallery({ baked: 1421, container: 1914 });
+  assert.equal(scaleBakedGalleries(rootWith(wide)), 1);
+  assert.ok(Math.abs(Number(wide.host.style.zoom) - 1914 / 1421) < 1e-9);
+  const huge = gallery({ baked: 1421, container: 3200 });
+  assert.equal(scaleBakedGalleries(rootWith(huge)), 0);
+});
+
 test('ignores scroll strips far wider than their container and galleries without a frozen width', () => {
   const marquee = gallery({ baked: 2534, container: 1440 });
   const unmeasured = gallery({ baked: 0, container: 1440 });

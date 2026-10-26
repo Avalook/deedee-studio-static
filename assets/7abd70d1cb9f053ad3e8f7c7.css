@@ -114,3 +114,39 @@
     top: 104px;
   }
 }
+
+/* Wix serves phones (user agent, not width) a single-column list: 16:9 image over a 112px text block, ~20.4px between cards. */
+@media (max-width: 600px) {
+  #pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {
+    grid-template-columns: minmax(0, 1fr) !important;
+    row-gap: 20.44px !important;
+  }
+
+  #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper {
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info-outer,
+  #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info {
+    height: 112px !important;
+  }
+
+  #pro-gallery-comp-m8e63qxx .RiOfiW {
+    min-height: 112px;
+  }
+
+  #pro-gallery-comp-m8e63qxx .uYL9xS {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+
+  #pro-gallery-comp-m8e63qxx .O16KGI h2 {
+    font-size: 16px !important;
+  }
+
+  #pro-gallery-comp-m8e63qxx .O16KGI::before {
+    top: 80px;
+    right: 0;
+    text-align: right;
+  }
+}

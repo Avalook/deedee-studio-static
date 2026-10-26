@@ -19,5 +19,5 @@ test('home news gallery keeps the third card visible at every breakpoint', () =>
 });
 
 test('homepage busts the cached stylesheet URL when gallery rules change', () => {
-  assert.match(homepage, /7abd70d1cb9f053ad3e8f7c7\.css\?v=3/);
+  assert.match(homepage, /7abd70d1cb9f053ad3e8f7c7\.css\?v=5/);
 });

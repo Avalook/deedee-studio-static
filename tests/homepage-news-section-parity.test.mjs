@@ -129,3 +129,28 @@ test('homepage awards gallery resumes after a pointer drag ends outside the scro
   windowListeners.get('pointerup')({ pointerId: 8 });
   assert.equal(scheduledTimers, 2);
 });
+
+test('awards strips use the fixed-size phone layout on phone widths only', async () => {
+  const awards = await import('../scripts/homepage-awards-gallery-parity.mjs');
+
+  // Live phone: 116px laurels every 115px at any width up to 600px, starting flush left.
+  for (const viewport of [360, 419, 600]) {
+    assert.equal(awards.awardGalleryItemWidth(viewport - 33, viewport), 116);
+    assert.equal(awards.awardGalleryStep(116, viewport), 115);
+    assert.equal(awards.awardGalleryStartOffset(116, viewport), 0);
+    assert.equal(awards.awardGalleryItemLeft(2, 116, viewport), 230);
+  }
+  // Above the phone limit the scaled five-per-row layout is unchanged.
+  assert.equal(awards.awardGalleryItemWidth(368, 787), 49);
+  assert.equal(awards.awardGalleryStep(49, 787), 74);
+  assert.equal(awards.awardGalleryStartOffset(49, 787), 75);
+});
+
+test('home news cards stack in one column on phones', async () => {
+  const css = await readFile(new URL('../assets/7abd70d1cb9f053ad3e8f7c7.css', import.meta.url), 'utf8');
+  const phone = css.slice(css.indexOf('@media (max-width: 600px)'));
+
+  assert.match(phone, /grid-template-columns:\s*minmax\(0,\s*1fr\)\s*!important/);
+  assert.match(phone, /aspect-ratio:\s*16 \/ 9/);
+  assert.match(phone, /font-size:\s*16px/);
+});

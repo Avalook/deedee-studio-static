@@ -10,7 +10,7 @@ import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
-import { contextOptions } from './env.mjs';
+import { contextOptions, launchOptions } from './env.mjs';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 
@@ -198,7 +198,7 @@ async function runCell(browser, route, width) {
 
 async function main() {
   mkdirSync(OUT, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const browser = await chromium.launch(launchOptions());
   const queue = ROUTES.flatMap(route => WIDTHS.map(width => ({ route, width })));
   const results = [];
   let next = 0;

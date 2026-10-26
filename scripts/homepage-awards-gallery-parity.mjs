@@ -4,25 +4,38 @@ export const HOMEPAGE_AWARDS_GALLERY_IDS = Object.freeze([
   'pro-gallery-comp-m7uj35le',
 ]);
 
-export function awardGalleryItemWidth(scrollerWidth) {
+// Wix picks the phone layout by user agent; on it each strip shows ~3.3 fixed-size laurels whatever the width.
+export const AWARD_PHONE_MAX_VIEWPORT = 600;
+export const AWARD_PHONE_ITEM_WIDTH_PX = 116;
+export const AWARD_PHONE_STEP_PX = 115;
+export const AWARD_PHONE_TAIL_PX = 101;
+
+export function isAwardPhoneViewport(viewportWidth) {
+  const width = Number(viewportWidth);
+  return Number.isFinite(width) && width > 0 && width <= AWARD_PHONE_MAX_VIEWPORT;
+}
+
+export function awardGalleryItemWidth(scrollerWidth, viewportWidth) {
+  if (isAwardPhoneViewport(viewportWidth)) return AWARD_PHONE_ITEM_WIDTH_PX;
   const width = Number(scrollerWidth);
   if (!Number.isFinite(width) || width <= 0) return 0;
   return Math.max(0, Math.round((width - 125) / 5));
 }
 
-export function awardGalleryStep(itemWidth) {
+export function awardGalleryStep(itemWidth, viewportWidth) {
   const width = Number(itemWidth);
-  return Number.isFinite(width) && width > 0 ? width + 25 : 0;
+  if (!Number.isFinite(width) || width <= 0) return 0;
+  return isAwardPhoneViewport(viewportWidth) ? AWARD_PHONE_STEP_PX : width + 25;
 }
 
-export function awardGalleryStartOffset(itemWidth) {
-  return awardGalleryStep(itemWidth) + 1;
+export function awardGalleryStartOffset(itemWidth, viewportWidth) {
+  return isAwardPhoneViewport(viewportWidth) ? 0 : awardGalleryStep(itemWidth) + 1;
 }
 
-export function awardGalleryItemLeft(index, itemWidth = 49) {
+export function awardGalleryItemLeft(index, itemWidth = 49, viewportWidth) {
   const itemIndex = Number(index);
   if (!Number.isInteger(itemIndex) || itemIndex < 0) return 0;
-  return itemIndex * awardGalleryStep(itemWidth);
+  return itemIndex * awardGalleryStep(itemWidth, viewportWidth);
 }
 
 export const AWARD_GALLERY_START_OFFSET_PX = 75;
@@ -35,15 +48,16 @@ export function updateAwardsGalleryGeometry(gallery) {
   if (!scroller) return null;
 
   const scrollerWidth = scroller.clientWidth || scroller.getBoundingClientRect?.().width || 0;
-  const itemWidth = awardGalleryItemWidth(scrollerWidth);
-  const step = awardGalleryStep(itemWidth);
+  const viewport = gallery.ownerDocument?.defaultView?.innerWidth;
+  const itemWidth = awardGalleryItemWidth(scrollerWidth, viewport);
+  const step = awardGalleryStep(itemWidth, viewport);
   const items = [...gallery.querySelectorAll('[data-hook="item-container"]')];
   const inner = scroller.querySelector?.('.gallery-horizontal-scroll-inner');
-  const contentWidth = items.length * step + 88;
+  const contentWidth = items.length * step + (isAwardPhoneViewport(viewport) ? AWARD_PHONE_TAIL_PX : 88);
 
   inner?.style.setProperty('--deedee-award-content-width', `${contentWidth}px`);
   for (const [index, item] of items.entries()) {
-    const left = awardGalleryItemLeft(index, itemWidth);
+    const left = awardGalleryItemLeft(index, itemWidth, viewport);
     const group = item.closest('[data-hook="group-view"]');
     group?.style.setProperty('--group-left', `${left}px`);
     group?.style.setProperty('--group-width', `${step}px`);
@@ -51,7 +65,7 @@ export function updateAwardsGalleryGeometry(gallery) {
     item.style.setProperty('--deedee-award-item-width', `${itemWidth}px`);
   }
 
-  return { contentWidth, itemWidth, step, startOffset: awardGalleryStartOffset(itemWidth) };
+  return { contentWidth, itemWidth, step, startOffset: awardGalleryStartOffset(itemWidth, viewport) };
 }
 
 function cubicBezierProgress(progress) {
@@ -102,7 +116,7 @@ function installAwardsCarousel(gallery, win) {
     const target = state.target;
     const duration = Math.max(
       120,
-      AWARD_GALLERY_MOVE_DURATION_MS * Math.min(1, Math.abs(target - from) / awardGalleryStep(awardGalleryItemWidth(scroller.clientWidth))),
+      AWARD_GALLERY_MOVE_DURATION_MS * Math.min(1, Math.abs(target - from) / awardGalleryStep(awardGalleryItemWidth(scroller.clientWidth, win.innerWidth), win.innerWidth)),
     );
     const startedAt = win.performance.now();
 
@@ -130,9 +144,9 @@ function installAwardsCarousel(gallery, win) {
   };
   function advance() {
     if (!canMove()) return;
-    const itemWidth = awardGalleryItemWidth(scroller.clientWidth);
-    const step = awardGalleryStep(itemWidth);
-    const startOffset = awardGalleryStartOffset(itemWidth);
+    const itemWidth = awardGalleryItemWidth(scroller.clientWidth, win.innerWidth);
+    const step = awardGalleryStep(itemWidth, win.innerWidth);
+    const startOffset = awardGalleryStartOffset(itemWidth, win.innerWidth);
     const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
     if (maxScroll <= startOffset || step <= 0) {
       schedule(AWARD_GALLERY_INTERVAL_MS);
@@ -166,7 +180,7 @@ function installAwardsCarousel(gallery, win) {
     state.pausedReasons.delete('offscreen');
     if (!state.initialized) {
       const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
-      const startOffset = awardGalleryStartOffset(awardGalleryItemWidth(scroller.clientWidth));
+      const startOffset = awardGalleryStartOffset(awardGalleryItemWidth(scroller.clientWidth, win.innerWidth), win.innerWidth);
       scroller.scrollLeft = Math.min(startOffset, maxScroll);
       state.initialized = true;
       scroller.dataset.deedeeAwardsMotionStarted = 'true';

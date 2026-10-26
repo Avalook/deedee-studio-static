@@ -11,3 +11,11 @@ export function contextOptions(width, height = 900) {
   if (width >= PHONE_MAX) return base;
   return { ...base, isMobile: true, hasTouch: true, userAgent: devices['Pixel 7'].userAgent };
 }
+
+// CLASSIC_SCROLLBARS=1 shows real 15px scrollbars like Windows and macOS with a mouse, instead of hidden/overlay ones.
+// Wix scales many sizes with the scrollbar width, so both environments need checking.
+export function launchOptions() {
+  const base = { channel: 'chrome', headless: true };
+  if (process.env.CLASSIC_SCROLLBARS !== '1') return base;
+  return { ...base, ignoreDefaultArgs: ['--hide-scrollbars'], args: ['--disable-features=OverlayScrollbar,OverlayScrollbarFlashAfterAnyScrollUpdate'] };
+}

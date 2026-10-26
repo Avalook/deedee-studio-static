@@ -8,7 +8,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
-import { contextOptions } from './env.mjs';
+import { contextOptions, launchOptions } from './env.mjs';
 
 const [route = '/', widthArg = '1440', ...rest] = process.argv.slice(2);
 const width = Number(widthArg);
@@ -43,7 +43,7 @@ async function collect(browser, base) {
   return data;
 }
 
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const browser = await chromium.launch(launchOptions());
 const [live, local] = await Promise.all([collect(browser, LIVE), collect(browser, LOCAL)]);
 await browser.close();
 
