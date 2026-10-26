@@ -498,8 +498,10 @@ async function mountNewsTab({
   const totalItems = archiveCards.length + extras.length;
   const pageCount = getNewsPageCount(tab, language);
   let currentPage = 1;
+  let usedWidth;
 
   const render = page => {
+    usedWidth = gallery.parentElement?.clientWidth;
     const indices = getNewsPageIndices(tab, page, totalItems, language);
     if (indices.length === 0) return false;
 
@@ -534,18 +536,18 @@ async function mountNewsTab({
   render(1);
 
   // This can run before the page's stylesheets have laid the gallery's parent out, so the first measurement may be
-  // the captured 1265px width. Lay out again once the page has loaded and whenever the parent changes width.
-  document.defaultView?.addEventListener('load', () => render(currentPage), { once: true });
+  // the captured 1265px width. Lay out again whenever the parent's width differs from the one last used: on load,
+  // when the parent resizes, and a few times shortly after (stylesheets and fonts can land at any moment).
   const parent = gallery.parentElement;
-  const ResizeObserverImpl = document.defaultView?.ResizeObserver;
-  if (parent && typeof ResizeObserverImpl === 'function') {
-    let lastWidth = parent.clientWidth;
-    new ResizeObserverImpl(() => {
-      if (parent.clientWidth === lastWidth) return;
-      lastWidth = parent.clientWidth;
-      render(currentPage);
-    }).observe(parent);
-  }
+  const relayoutIfParentChanged = () => {
+    if (!parent || parent.clientWidth === usedWidth) return;
+    usedWidth = parent.clientWidth;
+    render(currentPage);
+  };
+  const view = document.defaultView;
+  view?.addEventListener('load', relayoutIfParentChanged, { once: true });
+  if (typeof view?.ResizeObserver === 'function' && parent) new view.ResizeObserver(relayoutIfParentChanged).observe(parent);
+  for (const delay of [250, 1000, 2500]) view?.setTimeout?.(relayoutIfParentChanged, delay);
   return true;
 }
 
