@@ -31,6 +31,8 @@ const MAX_MISMATCH = Number(args['max-mismatch'] ?? config.thresholds.maxMismatc
 const MAX_HEIGHT_DELTA = Number(args['max-height-delta'] ?? config.thresholds.maxHeightDeltaPct);
 const OUT = path.resolve(HERE, args.out ?? `out/${new Date().toISOString().replace(/[:.]/g, '-')}`);
 const VIEWPORT_HEIGHT = 900;
+// Viewer-requested layout changes (scripts/viewer-feedback.mjs) are switched off so the diff measures fidelity to live.
+const LIVE_LAYOUT = '?deedee-live-layout=1';
 const BAND = 300;
 
 const slug = route => (route === '/' ? 'home' : route.replace(/^\//, '').replace(/[^\p{L}\p{N}]+/gu, '_'));
@@ -173,7 +175,7 @@ async function runCell(browser, route, width) {
   try {
     const [live, local] = await Promise.all([
       capture(browser, LIVE + encoded, width, liveFile),
-      capture(browser, LOCAL + encoded, width, localFile),
+      capture(browser, LOCAL + encoded + LIVE_LAYOUT, width, localFile),
     ]);
     cell.live = live;
     cell.local = local;

@@ -21,7 +21,7 @@ void path.dirname(fileURLToPath(import.meta.url));
 async function collect(browser, base) {
   const context = await browser.newContext(contextOptions(width));
   const page = await context.newPage();
-  await page.goto(base + route.split('/').map(encodeURIComponent).join('/'), { waitUntil: 'load', timeout: 60000 });
+  await page.goto(base + route.split('/').map(encodeURIComponent).join('/') + (base === LOCAL ? '?deedee-live-layout=1' : ''), { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(async () => {
     for (let y = 0; y < document.documentElement.scrollHeight; y += 720) { scrollTo(0, y); await new Promise(r => setTimeout(r, 120)); }
     scrollTo(0, 0);
