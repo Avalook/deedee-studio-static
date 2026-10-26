@@ -525,8 +525,10 @@ export function installPartnerMarquee(root = document) {
     win.innerWidth,
     win.innerHeight
   );
-  state.motionQuery = win.matchMedia?.('(prefers-reduced-motion: reduce)');
-  state.reducedMotion = Boolean(state.motionQuery?.matches);
+  // The live Wix ticker keeps scrolling when the OS asks for reduced motion, and viewers with that setting
+  // reported the mirror as "not running". Match the original: do not read the preference.
+  state.motionQuery = undefined;
+  state.reducedMotion = false;
   const cycleWidth = layoutPartner(state, win.innerWidth);
   if (cycleWidth <= 0) return false;
   gallery.dataset.deedeeMarqueeInstalled = 'true';

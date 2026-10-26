@@ -6,6 +6,7 @@ import { PHONE_COUNTRIES, searchPhoneCountries, phoneCountrySelection } from './
 import { installPhoneCountrySelector } from './phone-country-selector.mjs';
 import { installProjectDetailBack } from './project-detail-navigation.mjs';
 import { installGalleryScaling } from './gallery-scale.mjs';
+import { installLanguageSwitch } from './language-switch.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');
@@ -366,9 +367,15 @@ export function syncScrollbarWidth(root = document, win = globalThis.window) {
   return width;
 }
 
+/** The project lists use "Xem thêm" (VI) and "See more" (EN); testimonials say "Show More". */
+export function isLoadMoreLabel(label) {
+  return /(?:show|see) more|xem thêm/i.test(String(label ?? ''));
+}
+
 export function installSiteControls(root = document, pathname = location.pathname) {
   syncScrollbarWidth(root);
   installGalleryScaling(root);
+  installLanguageSwitch(root);
   globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);
@@ -380,7 +387,7 @@ export function installSiteControls(root = document, pathname = location.pathnam
     const testimonial = event.target.closest?.('button[data-testid="ellipsis_text_viewer_expand_control"]');
     if (testimonial && toggleTestimonial(testimonial)) { event.preventDefault(); return; }
     const more = event.target.closest?.('[data-testid="buttonElement"]');
-    if (!more || !/show more|xem thêm/i.test(more.getAttribute('aria-label') || more.textContent)) return;
+    if (!more || !isLoadMoreLabel(more.getAttribute('aria-label') || more.textContent)) return;
     const current = normalizePageRoute(pathname);
     event.preventDefault();
     const data = await loadProjectData();

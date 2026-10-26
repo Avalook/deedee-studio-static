@@ -6,6 +6,7 @@ import {
   formDropdownOptions,
   installFormDropdowns,
   installSiteControls,
+  isLoadMoreLabel,
   loadProjectData,
   observeEmptyWixImages,
   projectPage,
@@ -484,4 +485,9 @@ test('syncScrollbarWidth mirrors the real scrollbar width onto the body like the
   assert.equal(syncScrollbarWidth(root, { innerWidth: 1440 }), 0);
   assert.equal(props['--scrollbar-width'], '0px');
   assert.equal(syncScrollbarWidth({ documentElement: {}, body: null }, { innerWidth: 1440 }), null);
+});
+
+test('load-more buttons are recognised in Vietnamese and in both English wordings', () => {
+  for (const label of ['Xem thêm', 'See more', 'Show More', 'SEE MORE']) assert.equal(isLoadMoreLabel(label), true, label);
+  for (const label of ['Contact us', 'Check out our work', '', null, undefined]) assert.equal(isLoadMoreLabel(label), false, String(label));
 });

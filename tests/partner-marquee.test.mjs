@@ -493,3 +493,9 @@ test('both homepages load the partner marquee controller', () => {
     assert.match(html, /data-deedee-media-motion/);
   }
 });
+
+test('the partner ticker ignores the OS reduced-motion preference like the live Wix ticker', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const source = await readFile(new URL('../scripts/partner-marquee.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /matchMedia\([^)]*prefers-reduced-motion/);
+});

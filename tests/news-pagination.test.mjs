@@ -10,6 +10,9 @@ import {
   getNewsPageCount,
   getNewsPageIndices,
   getResponsiveNewsGalleryLayout,
+  newsLanguageFor,
+  NEWS_PAGE_INDICES_EN,
+  NEWS_UNARCHIVED_ITEMS_EN,
 } from '../scripts/news-pagination.mjs';
 
 import { createHash } from 'node:crypto';
@@ -286,4 +289,35 @@ test('modified and non-primary clicks keep native anchor behavior', () => {
   assert.equal(isPlainPaginationClick({ button: 0, ctrlKey: true }), false);
   assert.equal(isPlainPaginationClick({ button: 0, shiftKey: true }), false);
   assert.equal(isPlainPaginationClick({ button: 0, altKey: true }), false);
+});
+
+// English tabs hold their own posts (measured on the live site: 48 / 39 / 33 items in 6 / 5 / 4 pages).
+test('English news tabs follow the live page counts and place every item exactly once', () => {
+  assert.deepEqual([getNewsPageCount('activity', 'en'), getNewsPageCount('expert', 'en'), getNewsPageCount('knowledge', 'en')], [6, 5, 4]);
+  assert.equal(getNewsPageCount('activity'), 6, 'Vietnamese counts are unchanged');
+  const expectedItems = { activity: 48, expert: 39, knowledge: 33 };
+  for (const [tab, count] of Object.entries(expectedItems)) {
+    const all = NEWS_PAGE_INDICES_EN[tab].flat();
+    assert.equal(all.length, count, `${tab} items`);
+    assert.equal(new Set(all).size, count, `${tab} has no duplicates`);
+    const archiveCards = count - (NEWS_UNARCHIVED_ITEMS_EN[tab]?.length ?? 0);
+    assert.deepEqual([...all].sort((a, b) => a - b), Array.from({ length: count }, (_, i) => i), `${tab} indices are contiguous`);
+    assert.ok(archiveCards > 0);
+    assert.ok(NEWS_PAGE_INDICES_EN[tab].every(page => page.length <= 9));
+  }
+  assert.deepEqual(getNewsPageIndices('expert', 1, 39, 'en').slice(0, 2), [38, 0], 'a post missing from the archive leads page 1');
+  assert.deepEqual(getNewsPageIndices('activity', 7, 48, 'en'), []);
+});
+
+test('news language is taken from the route', () => {
+  assert.equal(newsLanguageFor('/deedee-studio-static/en/news/'), 'en');
+  assert.equal(newsLanguageFor('/en/news'), 'en');
+  assert.equal(newsLanguageFor('/deedee-studio-static/news/'), 'vi');
+  assert.equal(newsLanguageFor('/deedee-studio-static/post/pen-and-ink'), 'vi');
+  assert.equal(newsLanguageFor(undefined), 'vi');
+});
+
+test('the English news page loads the pagination script', async () => {
+  const html = await (await import('node:fs/promises')).readFile(new URL('../en/news/index.html', import.meta.url), 'utf8');
+  assert.match(html, /scripts\/news-pagination\.mjs/);
 });

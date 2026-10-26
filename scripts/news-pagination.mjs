@@ -82,12 +82,119 @@ export const NEWS_UNARCHIVED_ACTIVITY_ITEMS = Object.freeze([
   }),
 ]);
 
-export function getNewsPageCount(tab) {
-  return NEWS_PAGE_INDICES[tab]?.length ?? 0;
+const TABS_EN = Object.freeze({
+  activity: Object.freeze({
+    panel: '[aria-labelledby="tab-comp-m7vil34i"]',
+    galleryId: 'pro-gallery-margin-container-comp-m8hjc0l3',
+    archive: '../en/blog/categories/hoạt-động-1/',
+  }),
+  expert: Object.freeze({
+    panel: '[aria-labelledby="tab-comp-m71mchwk3"]',
+    galleryId: 'pro-gallery-margin-container-comp-m8hj86vd',
+    archive: '../en/blog/categories/talk-interview-2/',
+  }),
+  knowledge: Object.freeze({
+    panel: '[aria-labelledby="tab-comp-m71mchwr4"]',
+    galleryId: 'pro-gallery-margin-container-comp-m8hj0fsh',
+    archive: '../en/blog/categories/knowledge-1/',
+  }),
+});
+
+export const NEWS_PAGE_INDICES_EN = Object.freeze({
+  activity: Object.freeze([
+    Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8]),
+    Object.freeze([9, 10, 11, 12, 13, 14, 15, 16, 17]),
+    Object.freeze([18, 19, 20, 21, 22, 23, 24, 25, 26]),
+    Object.freeze([27, 28, 29, 30, 31, 32, 33, 34, 35]),
+    Object.freeze([36, 37, 38, 39, 40, 41, 42, 43, 44]),
+    Object.freeze([45, 46, 47]),
+  ]),
+  expert: Object.freeze([
+    Object.freeze([38, 0, 1, 2, 3, 4, 5, 6, 7]),
+    Object.freeze([8, 9, 10, 11, 12, 13, 14, 15, 16]),
+    Object.freeze([17, 18, 19, 20, 21, 22, 23, 24, 25]),
+    Object.freeze([26, 27, 28, 29, 30, 31, 32, 33, 34]),
+    Object.freeze([35, 36, 37]),
+  ]),
+  knowledge: Object.freeze([
+    Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8]),
+    Object.freeze([9, 10, 11, 12, 13, 14, 15, 16, 17]),
+    Object.freeze([18, 19, 20, 21, 22, 23, 24, 25, 26]),
+    Object.freeze([27, 28, 29, 30, 31, 32]),
+  ]),
+});
+
+export const NEWS_UNARCHIVED_ITEMS_EN = Object.freeze({
+  activity: Object.freeze([
+  Object.freeze({
+    title: 'DeeDee x FPT University: Talkshow \'Cartoon From A- Z\' (2020)',
+    href: '/deedee-studio-static/en/post/deedee-x-fpt-university-talkshow-cartoon-from-a-z-2020-1/',
+  }),
+  Object.freeze({
+    title: 'DeeDee Trip (2020)',
+    href: '/deedee-studio-static/en/post/deedee-trip-2020-1/',
+  }),
+  Object.freeze({
+    title: 'A Visiting From Mr. Frederic Alliod (2020)',
+    href: '/deedee-studio-static/en/post/a-visiting-from-mr-frederic-alliod-2020-1/',
+  }),
+  Object.freeze({
+    title: 'A Visiting From Mr. Phạm Quang Vinh - Director Of Kim Dong Publishing House (2020)',
+    href: '/deedee-studio-static/en/post/a-visiting-from-mr-ph%E1%BA%A1m-quang-vinh-director-of-kim-dong-publishing-house-2020-1/',
+  }),
+  Object.freeze({
+    title: 'A Visiting From Mr. Daniel Santos - Director of Sales - EMEA & APAC Of Toon Boom (2020)',
+    href: '/deedee-studio-static/en/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020-1/',
+  }),
+  Object.freeze({
+    title: 'DeeDee Attended Asia TV Forum & Market (2019)',
+    href: '/deedee-studio-static/en/post/deedee-attended-asia-tv-forum-market-2019-1/',
+  }),
+  Object.freeze({
+    title: '21st Viet Nam Film Festival (2019)',
+    href: '/deedee-studio-static/en/post/21st-viet-nam-film-festival-2019-1/',
+  }),
+  Object.freeze({
+    title: 'Golden Kite Film Festival (2019)',
+    href: '/deedee-studio-static/en/post/golden-kite-film-festival-2019/',
+  }),
+]),
+  expert: Object.freeze([
+  Object.freeze({
+    title: 'Does Adult Animation Always Look Mature?',
+    href: '/deedee-studio-static/en/post/does-adult-animation-always-look-mature/',
+  }),
+]),
+  knowledge: Object.freeze([]),
+});
+
+/**
+ * The English tabs hold different posts than the Vietnamese ones (separate slugs, 48 / 39 / 33 items, measured
+ * on the live site), so each language has its own archive, page map and "not in the archive" cards.
+ */
+const NEWS_LANGUAGES = Object.freeze({
+  vi: Object.freeze({
+    tabs: TABS,
+    pageIndices: NEWS_PAGE_INDICES,
+    extras: Object.freeze({ activity: NEWS_UNARCHIVED_ACTIVITY_ITEMS }),
+  }),
+  en: Object.freeze({
+    tabs: TABS_EN,
+    pageIndices: NEWS_PAGE_INDICES_EN,
+    extras: NEWS_UNARCHIVED_ITEMS_EN,
+  }),
+});
+
+export function newsLanguageFor(pathname = '') {
+  return /(?:^|\/)en(?:\/|$)/.test(String(pathname).replace(/^\/deedee-studio-static/, '')) ? 'en' : 'vi';
 }
 
-export function getNewsPageIndices(tab, page, totalItems = Infinity) {
-  const pages = NEWS_PAGE_INDICES[tab];
+export function getNewsPageCount(tab, language = 'vi') {
+  return NEWS_LANGUAGES[language]?.pageIndices[tab]?.length ?? 0;
+}
+
+export function getNewsPageIndices(tab, page, totalItems = Infinity, language = 'vi') {
+  const pages = NEWS_LANGUAGES[language]?.pageIndices[tab];
   if (!pages || !Number.isInteger(page) || page < 1) return [];
   const indices = pages[page - 1];
   if (!indices || indices.some(index => index >= totalItems)) return [];
@@ -362,6 +469,7 @@ async function mountNewsTab({
   document,
   fetchImpl,
   Parser,
+  language = 'vi',
 }) {
   const panel = document.querySelector(config.panel);
   const gallery = document.getElementById(config.galleryId);
@@ -376,13 +484,13 @@ async function mountNewsTab({
     loadArchiveCards(config, fetchImpl, Parser),
     loadCardImageMap(fetchImpl),
   ]);
-  const extras = tab === 'activity' ? NEWS_UNARCHIVED_ACTIVITY_ITEMS : [];
+  const extras = NEWS_LANGUAGES[language].extras[tab] ?? [];
   const totalItems = archiveCards.length + extras.length;
-  const pageCount = getNewsPageCount(tab);
+  const pageCount = getNewsPageCount(tab, language);
   let currentPage = 1;
 
   const render = page => {
-    const indices = getNewsPageIndices(tab, page, totalItems);
+    const indices = getNewsPageIndices(tab, page, totalItems, language);
     if (indices.length === 0) return false;
 
     const cards = indices
@@ -407,7 +515,7 @@ async function mountNewsTab({
         : hook.endsWith('__previous') ? currentPage - 1
           : hook.endsWith('__next') ? currentPage + 1
             : hook.endsWith('__last') ? pageCount : null;
-    if (target === null || !getNewsPageIndices(tab, target, totalItems).length) return;
+    if (target === null || !getNewsPageIndices(tab, target, totalItems, language).length) return;
     event.preventDefault();
     render(target);
   });
@@ -423,8 +531,9 @@ export async function mountNewsPagination({
   Parser = globalThis.DOMParser,
 } = {}) {
   if (!document || !fetchImpl || !Parser) return false;
-  const results = await Promise.all(Object.entries(TABS).map(([tab, config]) => (
-    mountNewsTab({ tab, config, document, fetchImpl, Parser })
+  const language = newsLanguageFor(document.location?.pathname);
+  const results = await Promise.all(Object.entries(NEWS_LANGUAGES[language].tabs).map(([tab, config]) => (
+    mountNewsTab({ tab, config, document, fetchImpl, Parser, language })
       .catch(() => false)
   )));
   return results.some(Boolean);
