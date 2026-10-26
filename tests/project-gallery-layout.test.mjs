@@ -152,32 +152,21 @@ test('EN service tablet galleries keep source cards and captions inside each til
   );
 });
 
-test('The Naugh-Nice desktop gallery retains its Wix authored vertical viewport', () => {
+// Gallery height must follow the row count. Fixed heights (480px / 983.25px) were right only for
+// 2-row and Naugh-Nice-sized galleries and cut off every other project, e.g. Awaken's 4 rows.
+test('desktop project galleries derive their height from the row count, not a fixed value', () => {
   const css = fs.readFileSync(galleryStylesheet, 'utf8');
-  const page = fs.readFileSync(path.join(root, 'all-project', 'the-naugh-nice-business', 'index.html'), 'utf8');
-
-  assert.match(page, /data-deedee-project-gallery/);
-  assert.match(css, /#comp-m7dloa7s/);
-  assert.match(css, /height:\s*983\.25px/);
-});
-
-
-test('desktop project galleries use the Wix row height and isolate the Naugh-Nice long viewport', () => {
-  const css = fs.readFileSync(galleryStylesheet, 'utf8');
-  const upzi = fs.readFileSync(path.join(root, 'all-project', 'upzi', 'index.html'), 'utf8');
   const naughNice = fs.readFileSync(path.join(root, 'all-project', 'the-naugh-nice-business', 'index.html'), 'utf8');
 
-  assert.ok(naughNice.includes('data-deedee-project-gallery-vertical="true"'));
-  assert.doesNotMatch(upzi, /data-deedee-project-gallery-vertical="true"/);
-  assert.ok(css.includes('body[data-deedee-project-gallery-vertical="true"] #comp-m73m1h5l #comp-m7dloa7s'));
-  assert.ok(css.includes('body[data-deedee-project-gallery="true"]:not([data-deedee-project-gallery-vertical="true"]) #comp-m73m1h5l #comp-m7dloa7s'));
+  assert.match(naughNice, /data-deedee-project-gallery/);
   assert.ok(css.includes('@media (min-width: 751px)'));
-  assert.ok(css.includes('height: calc(37.5vw - 60px) !important'));
-  assert.ok(css.includes('max-width: none !important'));
+  assert.ok(css.includes('aspect-ratio: 16 / 9 !important'));
   assert.ok(css.includes('grid-template-rows: none !important'));
   assert.ok(css.includes('grid-auto-rows: auto !important'));
+  assert.ok(css.includes('max-width: none !important'));
+  assert.doesNotMatch(css, /height:\s*983\.25px/);
+  assert.doesNotMatch(css, /calc\(37\.5vw - 60px\)/);
 });
-
 
 test('contact forms use Wix zero-scrollbar layout scaling', () => {
   for (const route of ['contact-short-form', 'contact-long-form']) {
@@ -244,7 +233,8 @@ test('gallery CSS restores visible tiles and a responsive three-column grid', ()
   assert.match(css, /\.gallery-item-container[^}]*opacity:\s*1\s*!important/s);
   assert.match(css, /aspect-ratio:\s*16\s*\/\s*9/);
   assert.match(css, /\.gallery-item-container > div:not\(\[data-hook="item-action"\]\)\s*\{[^}]*height:\s*100%\s*!important;[^}]*position:\s*absolute\s*!important/s);
-  assert.match(css, /#masterPage\s*\{[^}]*--scrollbar-width:\s*15px\s*!important/s);
+  // The scrollbar width is synced at runtime (site-controls.mjs); forcing 15px skewed every vw-scaled size by ~1%.
+  assert.doesNotMatch(css, /#masterPage\s*\{[^}]*--scrollbar-width/s);
   assert.match(css, /\.gallery-item-wrapper[^}]*margin:\s*-5px\s*!important;[^}]*width:\s*calc\(100%\s*\+\s*10px\)\s*!important/s);
   assert.match(css, /\.gallery-item-wrapper[^}]*height:\s*calc\(100%\s*\+\s*10px\)\s*!important/s);
 });
