@@ -1,0 +1,61 @@
+# Bàn giao website DeeDee Studio (bản clone)
+
+Cập nhật 26/10/2026 · commit `f6682c68`
+
+## 1. Đây là gì
+
+- **Trang chạy công khai:** https://avalook.github.io/deedee-studio-static/ (GitHub Pages, tự cập nhật khi push vào nhánh `main`).
+- **Mã nguồn:** https://github.com/Avalook/deedee-studio-static
+- Đây là **bản sao tĩnh** của https://www.deedeestudio.net/ (Wix). Trang Wix gốc **không bị thay đổi** và vẫn chạy bình thường. Muốn khách dùng bản này làm trang thật thì phải trỏ tên miền sang GitHub Pages (hoặc chép lên hosting riêng); việc đó chưa làm.
+- 606 đường dẫn (tiếng Việt và tiếng Anh): trang chủ, dự án, giới thiệu, dịch vụ, studio, testimonials, tin tức, tuyển dụng, liên hệ, blog, bài viết.
+
+## 2. Độ giống bản gốc
+
+Đo bằng bộ so ảnh tự động (`tools/visual-diff`, so từng khổ 1920/1440/1037/787/419px; đạt khi lệch dưới 3%).
+
+| Nhóm | Tình trạng |
+| --- | --- |
+| Trang chủ, Dự án, Dịch vụ, Giới thiệu (VI/EN), Studio, Testimonials, Liên hệ, Chính sách | Đạt ở hầu hết khổ màn hình |
+| Blog "Hoạt động" | Đạt cả 5 khổ |
+| Tin tức (VI/EN) | Đạt ở khổ lớn; khổ tablet/phone lệch 3–5% (cách thu nhỏ ảnh) |
+| Bài viết (desktop, tablet) | Đạt; **phone lệch 11–26%** |
+| Trang dự án trên phone | Đạt (thư viện ảnh 2 cột) |
+| Tuyển dụng VI | Đạt desktop/tablet, phone lệch 4,5% |
+
+**Chưa giống:** `/en/careers` (còn ảnh mờ), `/carrers` và `/en/carrers` (đường dẫn gõ sai), bài viết trên điện thoại, ảnh bìa thẻ tin ở trang chủ phone (cắt khác), 5 ảnh chưa tìm được địa chỉ. Một số trang (Our work, Service, Contact, Studio) chưa đo lại sau đợt sửa cuối.
+Video YouTube của 3 trang dự án báo "Video unavailable" vì YouTube chặn nhúng bài VEVO ngoài tên miền gốc.
+Chưa thử trên điện thoại thật.
+
+## 3. Phần "backend": form liên hệ → Supabase
+
+Form liên hệ (VI/EN) kiểm tra dữ liệu rồi gửi vào Supabase. **Chưa cấu hình nên hiện form báo "chưa được kết nối nơi nhận dữ liệu"** (không giả vờ đã gửi).
+Để bật:
+1. Tạo project Supabase (miễn phí), vào SQL Editor chạy `docs/supabase-form-schema.sql`.
+2. Điền `url` và `anonKey` (khóa public, **không** dùng `service_role`) vào `supabase-config.json`, commit và push.
+3. Xem dữ liệu ở Supabase → Table editor → `form_submissions`. Muốn nhận email thì thêm Database Webhook.
+Có ô ẩn chống bot và giãn cách 15 giây; nếu bị spam thì thêm Turnstile/hCaptcha.
+
+Mục **Bình luận** dưới bài viết chỉ để hiển thị giống bản gốc, **không đăng được bình luận**.
+
+## 4. CMS: tự sửa nội dung bản clone
+
+Chạy trên máy của người quản trị (GitHub Pages không chạy được server):
+
+```sh
+python3 serve.py                 # cửa sổ 1, trong thư mục dự án (cổng 4173)
+cd cms/grapesjs && npm ci && npm start    # cửa sổ 2 (cổng 4174), mở http://127.0.0.1:4174/admin
+```
+
+1. Đăng nhập `editor` / `editor-demo` để sửa và lưu nháp; `publisher` / `publisher-demo` để **Xuất bản**.
+   **Đổi mật khẩu trước khi dùng thật** (`POC_EDITOR_PASSWORD`, `POC_PUBLISHER_PASSWORD`, xem `cms/grapesjs/README.md`).
+2. Chọn trang, sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình, thêm khối chữ/nút/ảnh. Lưu nháp, xem trước.
+3. Nhấn **Xuất bản**: CMS ghi `site-overrides.json`, ảnh tải lên vào `assets/cms/` và `scripts/cms-runtime.js`.
+4. Commit và push các file đó (hoặc chạy CMS với `CMS_GIT_PUSH=1` để tự đẩy). Khoảng 1 phút sau trang công khai cập nhật.
+
+Giới hạn: không sửa được HTML tự do, menu, SEO từng trang, hiệu ứng; không phải bản thay thế đầy đủ cho Wix Editor. Mỗi lần sửa phải kiểm tra lại ở khổ desktop, tablet, phone.
+
+## 5. Kiểm tra và bảo trì
+
+- `npm test` (329 test) và `cd cms/grapesjs && npm test` (38 test). Ngưỡng coverage 80% hiện chưa đạt (khoảng 76%), lệnh vẫn báo lỗi dù mọi test đạt.
+- `node tools/visual-diff/run.mjs --routes /,/news --widths 1440,419` so ảnh với trang gốc; `node tools/visual-diff/functional.mjs --pages` kiểm chức năng trên trang công khai (26 kiểm tra).
+- Ảnh và nội dung sao chép từ trang Wix gốc; nếu Wix gốc đổi nội dung thì bản clone **không tự cập nhật**.
