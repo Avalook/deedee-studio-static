@@ -57,6 +57,16 @@ Các lệnh sửa chạy lại không thay đổi kết quả khi tài nguyên �
 Server xem local vẫn dùng Python qua `Start.command` hoặc `python3 serve.py`.
 Không coi `validation.json` của bản chụp cũ là bằng chứng toàn trang giống bản gốc.
 
+## Form liên hệ gửi dữ liệu vào Supabase
+
+Các form `contact-short-form` / `contact-long-form` (VI và EN) kiểm tra dữ liệu rồi gửi thẳng tới Supabase bằng khóa `anon` công khai (`scripts/form-submit.mjs`). Chưa cấu hình thì form báo rõ "chưa được kết nối nơi nhận dữ liệu" chứ không giả vờ đã gửi.
+
+1. Tạo project Supabase, mở SQL Editor và chạy [docs/supabase-form-schema.sql](docs/supabase-form-schema.sql). Khóa `anon` chỉ được INSERT, không đọc được dữ liệu của ai.
+2. Điền `url` (dạng `https://<id>.supabase.co`) và `anonKey` (khóa public, **không** dùng `service_role`) vào [supabase-config.json](supabase-config.json), commit và push.
+3. Xem các lượt gửi trong Supabase → Table editor → `form_submissions`. Muốn nhận email thì thêm Database Webhook hoặc Edge Function khi có dòng mới.
+
+Form có ô ẩn chống bot và giãn cách 15 giây mỗi trình duyệt; nếu có spam thì thêm Turnstile/hCaptcha.
+
 ## Chỉnh sửa nội dung bằng CMS
 
 `cms/grapesjs` là trình chỉnh sửa chạy trên máy: sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình và thêm khối mới. Nhấn **Xuất bản** sẽ ghi `site-overrides.json` (cùng ảnh đã tải lên và `scripts/cms-runtime.js`); các trang tĩnh tự áp dụng khi tải, HTML gốc không bị sửa. Commit và push các file đó để GitHub Pages cập nhật. Cách chạy, biến môi trường và lưu ý bảo mật: [cms/grapesjs/README.md](cms/grapesjs/README.md#publishing-to-the-clone-site-github-pages).

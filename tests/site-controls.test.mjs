@@ -491,3 +491,14 @@ test('load-more buttons are recognised in Vietnamese and in both English wording
   for (const label of ['Xem thêm', 'See more', 'Show More', 'SEE MORE']) assert.equal(isLoadMoreLabel(label), true, label);
   for (const label of ['Contact us', 'Check out our work', '', null, undefined]) assert.equal(isLoadMoreLabel(label), false, String(label));
 });
+
+test('English forms offer the same dropdown choices as the live Wix forms', () => {
+  assert.deepEqual(formDropdownOptions('Type of project', '/deedee-studio-static/en/contact-short-form/'),
+    ['Game cinematic / Trailer', 'Brand / Commercial animation', 'Short film', 'Proof of Concept', 'Music Video', 'Others']);
+  assert.deepEqual(formDropdownOptions('Type of project', '/deedee-studio-static/en/contact-long-form/'),
+    ['2D Series', '3D / Hybrid Series', 'Feature Film', 'Co-production / Co-development', 'Others']);
+  assert.deepEqual(formDropdownOptions('Current status', '/en/contact-long-form/'),
+    ['Have funding already / Greenlit', 'Call for funding, need quotation to pitch', 'Finding co-production partner']);
+  assert.deepEqual(formDropdownOptions('Expected timeline to start', '/en/contact-long-form/'), ['In next 3 months', '3 - 6 months', '6 - 12 months']);
+  assert.deepEqual(formDropdownOptions('Unknown label', '/en/contact-long-form/'), []);
+});

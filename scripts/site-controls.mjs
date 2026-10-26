@@ -10,6 +10,7 @@ import { installLanguageSwitch } from './language-switch.mjs';
 import './project-video-player.mjs';
 import { installCmsOverrides } from './cms-overrides.mjs';
 import { installViewerFeedbackStyles } from './viewer-feedback.mjs';
+import { installFormSubmit } from './form-submit.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');
@@ -257,6 +258,10 @@ const LOCAL_FORM_DROPDOWN_OPTIONS = Object.freeze({
   'Loại dự án': Object.freeze(['2D Series', '3D / Hybrid Series', 'Feature Film', 'Co-production / Co-development', 'Khác']),
   'Trạng thái dự án': Object.freeze(['Đã có kinh phí / Được phê duyệt', 'Kêu gọi tài trợ, cần báo giá để thuyết trình', 'Tìm kiếm đối tác đồng sản xuất']),
   'Thời gian dự kiến bắt đầu': Object.freeze(['Trong 3 tháng tới', 'Từ 3 - 6 tháng tới', 'Từ 6 - 12 tháng tới']),
+  // English forms (options read from the live Wix dropdowns).
+  'Type of project': Object.freeze(['2D Series', '3D / Hybrid Series', 'Feature Film', 'Co-production / Co-development', 'Others']),
+  'Current status': Object.freeze(['Have funding already / Greenlit', 'Call for funding, need quotation to pitch', 'Finding co-production partner']),
+  'Expected timeline to start': Object.freeze(['In next 3 months', '3 - 6 months', '6 - 12 months']),
 });
 
 const formDropdownRoots = new WeakSet();
@@ -270,6 +275,9 @@ export function formDropdownOptions(label, pathname = '') {
     }
     if (normalizedLabel === 'Thời gian dự kiến bắt đầu') {
       return ['Trong 3 tháng tới', '3 - 6 tháng tới', '6 - 12 tháng tới'];
+    }
+    if (normalizedLabel === 'Type of project') {
+      return ['Game cinematic / Trailer', 'Brand / Commercial animation', 'Short film', 'Proof of Concept', 'Music Video', 'Others'];
     }
   }
   return [...(LOCAL_FORM_DROPDOWN_OPTIONS[normalizedLabel] || [])];
@@ -381,6 +389,7 @@ export function installSiteControls(root = document, pathname = location.pathnam
   installLanguageSwitch(root);
   installCmsOverrides(root, globalThis.window);
   installViewerFeedbackStyles(root, globalThis.window);
+  installFormSubmit(root, globalThis.window);
   globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);

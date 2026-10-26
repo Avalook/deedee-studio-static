@@ -146,13 +146,62 @@ for (const [route, label] of [['/news', 'VI'], ['/en/news', 'EN']]) {
   });
 }
 
-// 6. Contact form: what happens on submit (backend wiring).
-await check('contact form has a working submit target', async () => {
-  const p = await page('/contact-us');
-  await scrollAll(p);
-  const form = await p.evaluate(() => { const f = document.querySelector('form'); return f ? { action: f.getAttribute('action'), method: f.getAttribute('method'), fields: f.querySelectorAll('input,textarea,select').length } : null; });
-  return { ok: !!form && !!form.action && !/^#?$/.test(form.action), note: JSON.stringify(form) };
-});
+// 6. Forms: validation, honest "not configured" message, and a submission sent to a (mocked) Supabase project.
+const TEST_CONFIG = { url: 'https://abcdefghijkl.supabase.co', anonKey: 'sb_publishable_' + 'x'.repeat(24), table: 'form_submissions' };
+async function formPage(route, { configured }) {
+  const context = await browser.newContext(contextOptions(width));
+  const p = await context.newPage();
+  const sent = [];
+  await p.route('**/supabase-config.json*', r => r.fulfill({ contentType: 'application/json', body: JSON.stringify(configured ? TEST_CONFIG : { url: '', anonKey: '', table: 'form_submissions' }) }));
+  await p.route('https://abcdefghijkl.supabase.co/**', async r => { sent.push({ url: r.request().url(), headers: r.request().headers(), body: r.request().postDataJSON() }); await r.fulfill({ status: 201, body: '' }); });
+  await p.goto(BASE + route, { waitUntil: 'load', timeout: 60000 });
+  await p.waitForTimeout(1500);
+  p.sent = sent;
+  return p;
+}
+const pickDropdowns = async p => {
+  const triggers = p.locator('form:visible button[data-hook="dropdown-base"]:visible');
+  for (let i = 0; i < await triggers.count(); i++) {
+    await triggers.nth(i).click();
+    await p.locator('[data-local-form-listbox] [role="option"]:visible').first().click();
+  }
+};
+const fillForm = async (p, values) => { await pickDropdowns(p); for (const [type, value] of Object.entries(values)) await p.locator(`form:visible [data-field-type="${type}"] input:visible, form:visible [data-field-type="${type}"] textarea:visible`).first().fill(value); };
+
+for (const [route, values, language] of [
+  ['/contact-short-form/', { CONTACTS_FIRST_NAME: 'Nguyễn Test', CONTACTS_EMAIL: 'test@example.com', CONTACTS_PHONE: '0903415890', TEXT_INPUT: '10.000 USD', TEXT_AREA: 'Dự án thử' }, 'vi'],
+  ['/en/contact-short-form/', { CONTACTS_FIRST_NAME: 'Test User', CONTACTS_EMAIL: 'test@example.com', CONTACTS_PHONE: '0903415890', TEXT_INPUT: '10,000 USD', TEXT_AREA: 'Hello DeeDee' }, 'en'],
+  ['/contact-long-form/', { CONTACTS_FIRST_NAME: 'Nguyễn Test', CONTACTS_EMAIL: 'test@example.com', CONTACTS_PHONE: '0903415890', TEXT_INPUT: '10.000 USD' }, 'vi'],
+  ['/en/contact-long-form/', { CONTACTS_FIRST_NAME: 'Test User', CONTACTS_EMAIL: 'test@example.com', CONTACTS_PHONE: '0903415890', TEXT_INPUT: '10,000 USD' }, 'en'],
+]) {
+  await check(`form ${route}: invalid input shows errors, nothing is sent`, async () => {
+    const p = await formPage(route, { configured: true });
+    await p.locator('form:visible [data-hook="submit-button"]').first().click();
+    await p.waitForTimeout(500);
+    const errors = await p.evaluate(() => [...document.querySelectorAll('form [data-hook^="field-error-"]')].map(e => e.textContent.trim()).filter(Boolean));
+    return { ok: errors.length > 0 && p.sent.length === 0, note: `${errors.length} errors, e.g. "${errors[0]}", requests=${p.sent.length}` };
+  });
+  await check(`form ${route}: without Supabase config it says so instead of pretending`, async () => {
+    const p = await formPage(route, { configured: false });
+    await fillForm(p, values);
+    await p.locator('form:visible [data-hook="submit-button"]').first().click();
+    await p.waitForTimeout(800);
+    const alert = await p.evaluate(() => document.querySelector('form [data-deedee-form-message]')?.textContent ?? '');
+    return { ok: /(chưa được kết nối|not connected)/i.test(alert) && p.sent.length === 0, note: `"${alert.slice(0, 70)}"` };
+  });
+  await check(`form ${route}: valid submission reaches Supabase (mocked) and confirms`, async () => {
+    const p = await formPage(route, { configured: true });
+    await fillForm(p, values);
+    await p.locator('form:visible [data-hook="submit-button"]').first().click();
+    await p.waitForTimeout(1200);
+    const status = await p.evaluate(() => document.querySelector('form [data-deedee-form-message]')?.textContent ?? '');
+    const request = p.sent[0];
+    const body = request?.body;
+    const ok = !!request && request.url.endsWith('/rest/v1/form_submissions') && request.headers.apikey === TEST_CONFIG.anonKey
+      && body?.email === 'test@example.com' && body?.language === language && /Cảm ơn|Thank you/.test(status);
+    return { ok, note: `requests=${p.sent.length} email=${body?.email} lang=${body?.language} fields=${body?.fields?.length} status="${status.slice(0, 40)}"` };
+  });
+}
 
 await browser.close();
 const pad = (s, n) => String(s).padEnd(n);
