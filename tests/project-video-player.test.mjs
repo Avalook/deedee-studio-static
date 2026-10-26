@@ -82,7 +82,16 @@ function createDocument(containerId) {
 }
 
 test('the player source map contains only video sources verified in the live Wix DOM', () => {
-  assert.equal(VERIFIED_PLAYERS.length, 3);
+  // Every entry comes from the live Wix DOM (tools: crawl of all 168 project pages, 2026-10-26): one embed per
+  // route, in the page's video component, on an allowlisted host with a strict embed path.
+  assert.ok(VERIFIED_PLAYERS.length >= 3);
+  assert.equal(new Set(VERIFIED_PLAYERS.map(({ route }) => route)).size, VERIFIED_PLAYERS.length, 'one player per route');
+  for (const entry of VERIFIED_PLAYERS) {
+    assert.ok(/^https:\/\/www\.youtube\.com\/embed\/[\w-]+$/.test(entry.src) || /^https:\/\/player\.vimeo\.com\/video\/\d+$/.test(entry.src), entry.route);
+    assert.match(entry.containerId, /^comp-[a-z0-9]+$/, entry.route);
+    assert.ok(entry.title.length > 0 || /vimeo/.test(entry.src), entry.route);
+  }
+  assert.ok(VERIFIED_PLAYERS.some(({ src }) => src.startsWith('https://player.vimeo.com/video/')), 'Vimeo embeds are supported');
   const player = VERIFIED_PLAYERS.find(({ route }) => route === VERIFIED_ROUTE);
   assert.deepEqual(player, {
     route: VERIFIED_ROUTE,
@@ -180,4 +189,14 @@ test('the frame factory rejects sources outside the verified allowlist', () => {
   for (const src of ['javascript:alert(1)', 'not a url', 'http://www.youtube.com/embed/IZis5cqW0dM', 'https://evil.example/embed/IZis5cqW0dM', 'https://www.youtube.com/watch?v=IZis5cqW0dM']) {
     assert.equal(createEmbedFrame(doc, { src, title: 'x' }), null);
   }
+});
+
+test('Vimeo embeds are accepted only in the player.vimeo.com/video/<id> form', () => {
+  const doc = { createElement: tag => new TestElement(tag) };
+  const frame = createEmbedFrame(doc, { src: 'https://player.vimeo.com/video/768002424', title: 'x' });
+  assert.equal(frame.getAttribute('src'), 'https://player.vimeo.com/video/768002424');
+  assert.equal(createEmbedFrame(doc, { src: 'https://player.vimeo.com/video/abc', title: 'x' }), null);
+  assert.equal(createEmbedFrame(doc, { src: 'https://player.vimeo.com/embed/123', title: 'x' }), null);
+  assert.equal(createEmbedFrame(doc, { src: 'https://www.youtube.com/video/123', title: 'x' }), null);
+  assert.equal(createEmbedFrame(doc, { src: 'https://evil.example/video/123', title: 'x' }), null);
 });

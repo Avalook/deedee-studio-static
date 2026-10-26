@@ -7,6 +7,7 @@ import { installPhoneCountrySelector } from './phone-country-selector.mjs';
 import { installProjectDetailBack } from './project-detail-navigation.mjs';
 import { installGalleryScaling } from './gallery-scale.mjs';
 import { installLanguageSwitch } from './language-switch.mjs';
+import './project-video-player.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');

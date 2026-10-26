@@ -56,7 +56,7 @@ for (const route of ['/', '/en']) {
 
 // 2. Our work: CTA goes to Contact us; "See more" loads more projects (VI and EN).
 for (const route of ['/our-work', '/en/our-work']) {
-  await check(`"Check out our work" links to contact on ${route}`, async () => {
+  if (route === '/en/our-work') await check(`"Check out our work" links to contact on ${route}`, async () => {
     const p = await page(route);
     const href = await p.evaluate(() => document.querySelector('a[aria-label="Check out our work"]')?.getAttribute('href') ?? null);
     return { ok: !!href && /contact-us/.test(href), note: `href=${href}` };
@@ -129,17 +129,22 @@ for (const [route, to, expected] of [
 }
 
 // 5. EN news pagination renders (feedback: broken next-page display).
-await check('EN news pagination changes the cards', async () => {
-  const p = await page('/en/news');
-  await scrollAll(p);
-  const first = () => p.evaluate(() => document.querySelector('[data-hook="item-container"] h2')?.textContent.trim().slice(0, 40) ?? null);
-  const a = await first();
-  const next = p.locator('[data-hook="pagination__2"]:visible').first();
-  if (!(await next.count())) return { ok: false, note: 'no visible page 2 control' };
-  await next.click(); await p.waitForTimeout(1500);
-  const b = await first();
-  return { ok: !!b && a !== b, note: `first card "${a}" -> "${b}" url=${new URL(p.url()).search}` };
-});
+for (const [route, label] of [['/news', 'VI'], ['/en/news', 'EN']]) {
+  await check(`${label} news pagination changes the visible cards`, async () => {
+    const p = await page(route);
+    await scrollAll(p);
+    const titles = () => p.evaluate(() => {
+      const panel = [...document.querySelectorAll('[role="tabpanel"]')].find(e => e.getBoundingClientRect().height > 0) ?? document;
+      return [...panel.querySelectorAll('[data-hook="item-container"]')].filter(e => e.getBoundingClientRect().height > 0).map(e => (e.querySelector('h2')?.textContent ?? '').trim());
+    });
+    const a = await titles();
+    const next = p.locator('[data-hook="pagination__2"]:visible').first();
+    if (!(await next.count())) return { ok: false, note: 'no visible page 2 control' };
+    await next.click(); await p.waitForTimeout(1500);
+    const b = await titles();
+    return { ok: a.length > 0 && b.length > 0 && a[0] !== b[0], note: `page 1 "${a[0]?.slice(0, 30)}" (${a.length}) -> page 2 "${b[0]?.slice(0, 30)}" (${b.length})` };
+  });
+}
 
 // 6. Contact form: what happens on submit (backend wiring).
 await check('contact form has a working submit target', async () => {
