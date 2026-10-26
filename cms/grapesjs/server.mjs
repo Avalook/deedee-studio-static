@@ -12,6 +12,9 @@ import {
   MAX_JSON_BYTES,
   MAX_UPLOAD_BYTES,
   PORT,
+  EXPORT_DIR,
+  EXPORT_ENABLED,
+  GIT_PUSH_ENABLED,
   PREVIEW_TTL_MS,
   PUBLIC_DIR,
   SEED_DIR,
@@ -36,6 +39,8 @@ import { createArchiveProxy } from './lib/archive-proxy.mjs';
 import { ContentPolicyError, sanitizeCss, sanitizeHtml } from './lib/sanitize.mjs';
 import { validateSiteDocument } from './lib/site-document.mjs';
 import { manifestRoutes, normalizePageIdFromUrl, siteDocumentFor, withPageDocument } from './lib/site-pages.mjs';
+import { exportStaticSite } from './lib/export.mjs';
+import { commitAndPush } from './lib/git-publish.mjs';
 import {
   escapeHtml,
   getClientIp,
@@ -406,13 +411,40 @@ async function handleRestore(req, res, session, revisionId) {
   sendJson(res, 200, { revision: revisionSummary(restored) });
 }
 
+/** Write the published overrides where the static site can read them; never fails the publish itself. */
+async function exportRelease(release, actor) {
+  if (!EXPORT_ENABLED) return { enabled: false };
+  try {
+    const exported = await exportStaticSite({
+      release,
+      outDir: EXPORT_DIR,
+      uploadsDir: path.join(DATA_DIR, 'uploads'),
+      runtimeFile: path.join(PUBLIC_DIR, 'cms-runtime.js'),
+    });
+    const result = { enabled: true, dir: EXPORT_DIR, ...exported };
+    if (GIT_PUSH_ENABLED) {
+      try {
+        result.git = await commitAndPush({ repoDir: EXPORT_DIR, files: exported.files, message: `cms: publish ${release.revisionId} by ${actor}` });
+      } catch (error) {
+        console.error('CMS git publish failed:', error.message);
+        result.gitError = 'Git commit or push failed; the files were written but not published.';
+      }
+    }
+    return result;
+  } catch (error) {
+    console.error('CMS static export failed:', error.message);
+    return { enabled: true, error: 'The release was saved but writing the static site files failed.' };
+  }
+}
+
 async function handlePublish(req, res, session, revisionId) {
   requireCsrf(req, session);
   requirePublisher(session);
   const revision = await store.getRevision(revisionId);
   if (!revision) throw new HttpError(404, 'Revision not found', 'NOT_FOUND');
   const release = await store.publishRevision(revisionId, session.user.username);
-  sendJson(res, 200, { release: releaseSummary(release), revision: revisionSummary(revision) });
+  const exported = await exportRelease(release, session.user.username);
+  sendJson(res, 200, { release: releaseSummary(release), revision: revisionSummary(revision), export: exported });
 }
 
 async function handleUpload(req, res, session) {

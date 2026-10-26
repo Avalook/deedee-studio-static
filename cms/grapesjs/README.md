@@ -44,6 +44,41 @@ Environment variables are read directly; `.env` is not loaded automatically. Dem
 - Save creates an immutable draft revision. Preview uses a signed, expiring revision token. Publisher publish creates an immutable site release containing the full route map. Restore copies an older revision into a new draft.
 - The CMS proxy injects the runtime into archive HTML pages and serves non-HTML assets from the archive origin. Stop the CMS to see the untouched archive on port 4173.
 
+## Publishing to the clone site (GitHub Pages)
+
+GitHub Pages is static and cannot run this server, so **Publish** also writes the files the static pages read:
+
+| File | What it is |
+| --- | --- |
+| `site-overrides.json` | Every approved edit, per route. Replaced on each publish (publishing an older revision restores it). |
+| `assets/cms/<uuid>.<ext>` | Images uploaded in the editor that those edits use. |
+| `scripts/cms-runtime.js` | The same runtime the editor preview uses; the static pages load it from `scripts/site-controls.mjs`. |
+
+The archived HTML is never edited. Each page fetches `site-overrides.json` on load and applies the edits for its route (text, image, link, visibility, size, colours, per-device position, inserted blocks).
+
+Day-to-day flow, run on your own computer:
+
+```sh
+python3 serve.py                       # terminal 1, from the repository root: the archive on :4173
+cd cms/grapesjs && npm start           # terminal 2: the editor on :4174, open /admin
+```
+
+1. Sign in as an editor, pick a page, edit, **Save draft**, check the preview.
+2. Sign in as a publisher and press **Xuất bản**. The toast lists the files written to the repository.
+3. Commit and push those files (`site-overrides.json`, `assets/cms/`, `scripts/cms-runtime.js`). Pages updates about a minute later.
+
+To skip step 3, start the server with `CMS_GIT_PUSH=1`: after a publish it runs `git add` for only those files, `git commit` and `git push origin HEAD` from the repository root, using the git credentials of the account running the server. Review that before enabling it and use a branch that Pages builds.
+
+Settings (environment variables):
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `CMS_EXPORT` | on | `0` stops publish from writing static-site files. |
+| `CMS_EXPORT_DIR` | repository root | Where the files are written (tests use a temp folder). |
+| `CMS_GIT_PUSH` | off | `1` commits and pushes the exported files after each publish. |
+
+Change `POC_EDITOR_PASSWORD` and `POC_PUBLISHER_PASSWORD` (see above) before using this on real content; anyone who can sign in as a publisher can change what the public site shows.
+
 ## Verify
 
 ```sh
@@ -59,7 +94,7 @@ The Node test suite covers authentication and CSRF, validation/sanitization, imm
 
 - Replace demo credentials with managed accounts, secure password reset/MFA, persistent sessions, HTTPS-only cookies, and deployment-grade rate limits.
 - Move revisions, uploads, and sessions to a backed-up database/object store with multi-instance concurrency controls and a tested restore process.
-- Deploy the backend and CMS proxy to a server-capable host; configure a real DeeDee domain and rollback plan. GitHub Pages remains a static mirror only.
+- To let staff edit from anywhere, host this server (it can stay off the public internet and push to the repository with `CMS_GIT_PUSH=1`). The public clone itself stays on GitHub Pages.
 - Add staff usability/accessibility review, full responsive visual checks, SEO controls, localized route/content support, media rights tracking, upload scanning, monitoring, and a formal security review.
 - The editor can move selected elements within the archived page and preview four preset widths; it is not an unrestricted Wix canvas and does not yet provide reusable CMS collections, animation editing, custom breakpoint rules, page SEO, menus, forms, app integrations, or collaborative editing.
 

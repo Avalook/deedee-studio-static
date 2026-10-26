@@ -40,3 +40,9 @@ export const LIMITS = {
   css: 500_000,
   projectData: 6_000_000,
 };
+
+// Publishing also writes the files the static site needs (site-overrides.json, uploaded images, runtime).
+export const EXPORT_DIR = path.resolve(process.env.CMS_EXPORT_DIR || STATIC_SITE_DIR);
+export const EXPORT_ENABLED = process.env.CMS_EXPORT !== '0';
+// Opt-in: commit the exported files and push the current branch so GitHub Pages updates.
+export const GIT_PUSH_ENABLED = process.env.CMS_GIT_PUSH === '1';

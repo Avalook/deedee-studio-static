@@ -57,5 +57,9 @@ Các lệnh sửa chạy lại không thay đổi kết quả khi tài nguyên �
 Server xem local vẫn dùng Python qua `Start.command` hoặc `python3 serve.py`.
 Không coi `validation.json` của bản chụp cũ là bằng chứng toàn trang giống bản gốc.
 
+## Chỉnh sửa nội dung bằng CMS
+
+`cms/grapesjs` là trình chỉnh sửa chạy trên máy: sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình và thêm khối mới. Nhấn **Xuất bản** sẽ ghi `site-overrides.json` (cùng ảnh đã tải lên và `scripts/cms-runtime.js`); các trang tĩnh tự áp dụng khi tải, HTML gốc không bị sửa. Commit và push các file đó để GitHub Pages cập nhật. Cách chạy, biến môi trường và lưu ý bảo mật: [cms/grapesjs/README.md](cms/grapesjs/README.md#publishing-to-the-clone-site-github-pages).
+
 Yêu cầu editor kéo thả tự do và tiêu chí triển khai được ghi trong
 [đề xuất thiết kế editor](docs/editor-design.md); tài liệu này chưa phải tính năng đã triển khai.

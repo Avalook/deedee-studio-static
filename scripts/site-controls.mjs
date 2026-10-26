@@ -8,6 +8,7 @@ import { installProjectDetailBack } from './project-detail-navigation.mjs';
 import { installGalleryScaling } from './gallery-scale.mjs';
 import { installLanguageSwitch } from './language-switch.mjs';
 import './project-video-player.mjs';
+import { installCmsOverrides } from './cms-overrides.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');
@@ -377,6 +378,7 @@ export function installSiteControls(root = document, pathname = location.pathnam
   syncScrollbarWidth(root);
   installGalleryScaling(root);
   installLanguageSwitch(root);
+  installCmsOverrides(root, globalThis.window);
   globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);

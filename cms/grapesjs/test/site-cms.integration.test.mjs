@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import net from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
@@ -76,6 +76,9 @@ test('CMS saves a real-page override as draft and exposes it only after publishe
       POC_HOST: '127.0.0.1',
       POC_PORT: String(cmsPort),
       POC_DATA_DIR: path.join(tempDir, 'data'),
+      // Never export into the real repository from a test.
+      CMS_EXPORT_DIR: path.join(tempDir, 'site'),
+      CMS_GIT_PUSH: '0',
       POC_STATIC_SITE_ORIGIN: staticOrigin,
       POC_EDITOR_PASSWORD: 'editor-integration-password',
       POC_PUBLISHER_PASSWORD: 'publisher-integration-password',
@@ -139,6 +142,17 @@ test('CMS saves a real-page override as draft and exposes it only after publishe
     method: 'POST', headers: { Cookie: publisher.cookies, 'X-CSRF-Token': publisher.csrf },
   });
   assert.equal(publisherPublish.status, 200);
+  // Publishing also writes what the static GitHub Pages site needs.
+  const publishPayload = await publisherPublish.json();
+  assert.equal(publishPayload.export.enabled, true);
+  assert.ok(publishPayload.export.pages >= 1);
+  assert.equal(publishPayload.export.dir, path.join(tempDir, 'site'));
+  const exported = JSON.parse(await readFile(path.join(tempDir, 'site', 'site-overrides.json'), 'utf8'));
+  assert.equal(exported.revisionId, aboutSaved.revisionId);
+  assert.equal(exported.publishedBy, 'publisher');
+  assert.deepEqual(exported.pages['/aboutus'], aboutDocument);
+  assert.equal(await readFile(path.join(tempDir, 'site', 'scripts', 'cms-runtime.js'), 'utf8'),
+    await readFile(path.join(CMS_DIR, 'public', 'cms-runtime.js'), 'utf8'));
   const publicAfter = await (await fetch(`${cmsOrigin}/api/site-state/public`)).json();
   assert.deepEqual(publicAfter.document, document);
   const publicAbout = await (await fetch(`${cmsOrigin}/api/site-state/public?pageId=%2Faboutus`)).json();

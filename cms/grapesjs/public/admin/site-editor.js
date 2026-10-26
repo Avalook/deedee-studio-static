@@ -198,10 +198,15 @@
   async function publishDraft() {
     if (state.user?.role !== 'publisher') return toast('Tài khoản publisher mới được xuất bản.', 'error');
     if (state.dirty && !(await saveDraft())) return;
-    if (!window.confirm('Xuất bản các thay đổi này lên trang CMS?')) return;
+    if (!window.confirm('Xuất bản các thay đổi này? Trang clone sẽ hiển thị chúng sau khi các file xuất ra được đưa lên GitHub.')) return;
     try {
-      await api(`/api/versions/${state.revisionId}/publish`, { method: 'POST', csrf: true });
-      toast('Đã xuất bản lên trang CMS. Bản tĩnh gốc vẫn được giữ làm dự phòng.');
+      const result = await api(`/api/versions/${state.revisionId}/publish`, { method: 'POST', csrf: true });
+      const exported = result?.export;
+      if (!exported?.enabled) toast('Đã xuất bản trong CMS. Xuất file cho trang tĩnh đang tắt (CMS_EXPORT=0).');
+      else if (exported.error) toast(exported.error, 'error');
+      else if (exported.gitError) toast(exported.gitError, 'error');
+      else if (exported.git?.pushed) toast(`Đã xuất bản và đẩy lên GitHub (${exported.pages} trang). Trang clone cập nhật sau khoảng 1 phút.`);
+      else toast(`Đã ghi ${exported.files.length} file cho trang tĩnh (${exported.pages} trang, ${exported.operations} chỉnh sửa). Commit và push chúng để lên GitHub Pages.`);
     } catch (error) {
       toast(error.message, 'error');
     }

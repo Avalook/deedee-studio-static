@@ -1,11 +1,24 @@
 (() => {
   'use strict';
 
+  // One runtime serves the CMS proxy (editor, preview and API-backed public mode) and the published static site.
+  // On the static site the page tag carries data-overrides (published JSON) and data-base (path prefix).
+  if (window.__deedeeCmsRuntime) return;
+  window.__deedeeCmsRuntime = true;
+  const script = document.currentScript;
+  const overridesUrl = (script && script.dataset.overrides) || '';
+  const basePath = (script && script.dataset.base) || '';
+
   const query = new URLSearchParams(window.location.search);
   const editorMode = query.get('cms-editor') === '1';
   const previewToken = query.get('cmsPreviewToken') || (location.pathname === '/preview' ? query.get('token') : '');
   const originals = new WeakMap();
-  const pageId = (query.get('pageId') || location.pathname.replace(/\/$/, '') || '/');
+  const routeFromPath = (pathname) => {
+    let route = pathname;
+    if (basePath && (route === basePath || route.startsWith(`${basePath}/`))) route = route.slice(basePath.length);
+    return route.replace(/\/$/, '') || '/';
+  };
+  const pageId = (query.get('pageId') || routeFromPath(location.pathname));
   let documentModel = { schemaVersion: 1, pageId, operations: [], insertions: [] };
   let selected = null;
   let drag = null;
@@ -306,6 +319,26 @@ function isTextEditable(element) {
     send('ready');
   }
 
+  function pageFromOverrides(payload) {
+    const pages = payload && payload.pages;
+    if (!pages || typeof pages !== 'object') return null;
+    // Non-ASCII routes are stored decoded by the editor but location.pathname is percent-encoded.
+    let decoded = pageId;
+    try { decoded = decodeURI(pageId); } catch { /* keep the raw route */ }
+    return pages[decoded] || pages[pageId] || null;
+  }
+
+  async function bootStatic() {
+    try {
+      const response = await fetch(overridesUrl, { cache: 'no-cache' });
+      if (!response.ok) return;
+      const published = pageFromOverrides(await response.json());
+      if (published) applyDocument({ ...published, pageId });
+    } catch {
+      // No published overrides: the archived page is shown as captured.
+    }
+  }
+
   async function bootPublic() {
     try {
       const endpoint = previewToken
@@ -328,5 +361,9 @@ function isTextEditable(element) {
   });
 
   if (editorMode) beginEditor();
-  else bootPublic();
+  else if (overridesUrl) {
+    bootStatic();
+    // Re-apply once the page's own scripts (galleries, ticker) have finished building the DOM.
+    window.addEventListener('load', () => { if (documentModel.operations.length || documentModel.insertions.length) applyDocument(documentModel); }, { once: true });
+  } else bootPublic();
 })();
