@@ -53,6 +53,9 @@ async function tileShot(page, width, totalHeight, file) {
           if (pos === 'fixed' || pos === 'sticky') { e.setAttribute('data-vd-hidden', ''); e.style.visibility = 'hidden'; }
         }
       }
+      // Large PNGs paint blank until decoded; wait for the images that are on screen.
+      const onScreen = [...document.images].filter(img => { const r = img.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight && r.width > 0; });
+      await Promise.all(onScreen.map(img => img.decode?.().catch(() => {})));
       await new Promise(r => setTimeout(r, 250));
     }, { y, first: y === 0 });
     const actualY = await page.evaluate(() => Math.round(window.scrollY));
@@ -78,6 +81,9 @@ async function capture(browser, url, width, file) {
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply); else apply();
     }, FREEZE);
     const response = await page.goto(url, { waitUntil: 'load', timeout: 60000 });
+    // Alias routes redirect with <meta http-equiv=refresh>; let the navigation finish before touching the page.
+    await page.waitForTimeout(700);
+    await page.waitForLoadState('load');
     await page.evaluate(() => document.fonts?.ready);
     // Walk the page so lazy images and reveal-on-scroll content hydrate before the shot.
     await page.evaluate(async step => {

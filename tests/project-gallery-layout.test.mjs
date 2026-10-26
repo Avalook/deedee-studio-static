@@ -39,7 +39,7 @@ test('Service mobile galleries use the measured Wix columns and section heights'
   assert.match(englishService, /<link rel="stylesheet" data-deedee-service-gallery[^>]*project-gallery-parity\.css/);
   assert.match(englishService, /<body[^>]*data-deedee-service-gallery="true"/);
   assert.match(englishService, /<body[^>]*data-deedee-en-service-gallery="true"/);
-  assert.match(css, /body\[data-deedee-en-service-gallery="true"\][\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+  assert.match(css, /body\[data-deedee-service-gallery="true"\][\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(css, /#comp-l9qgdb88\s*\{[^}]*height:\s*168\.75vw/s);
   assert.match(css, /#comp-l9qgmdrv\s*\{[^}]*height:\s*112\.5vw/s);
   assert.match(css, /#comp-l9qgpx94\s*\{[^}]*height:\s*168\.75vw/s);
@@ -47,7 +47,7 @@ test('Service mobile galleries use the measured Wix columns and section heights'
   assert.match(css, /grid-auto-rows:\s*56\.25vw/);
   assert.match(
     css,
-    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?width:\s*100%\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?width:\s*100%\s*!important/,
   );
 });
 
@@ -122,33 +122,33 @@ test('EN service galleries retain all source-verified tiles and assets', () => {
   }
 });
 
-test('EN service tablet galleries keep source cards and captions inside each tile', () => {
+test('Service tablet galleries (VI and EN) keep source cards and captions inside each tile', () => {
   const css = fs.readFileSync(galleryStylesheet, 'utf8');
   const enTabletRules = css.match(
-    /\/\* The EN Wix tablet gallery[\s\S]*?@media \(min-width:\s*601px\) and \(max-width:\s*1000px\) \{([\s\S]*?)^\}/m,
+    /\/\* The Wix tablet service galleries[\s\S]*?@media \(min-width:\s*601px\) and \(max-width:\s*1000px\) \{([\s\S]*?)^\}/m,
   )?.[1];
 
-  assert.ok(enTabletRules, 'expected a route-specific EN tablet rule block');
+  assert.ok(enTabletRules, 'expected a shared tablet service rule block');
 
   assert.match(
     enTabletRules,
-    /body\[data-deedee-en-service-gallery="true"\] #comp-l9qgpx94 \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] #comp-l9qgpx94 \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
   );
   assert.match(
     enTabletRules,
-    /body\[data-deedee-en-service-gallery="true"\] #comp-l9qgun5r \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] #comp-l9qgun5r \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
   );
   assert.match(
     enTabletRules,
-    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
   );
   assert.match(
     enTabletRules,
-    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-text[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-text[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
   );
   assert.match(
     enTabletRules,
-    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-title[\s\S]*?-webkit-line-clamp:\s*2\s*!important/,
+    /body\[data-deedee-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-title[\s\S]*?-webkit-line-clamp:\s*2\s*!important/,
   );
 });
 
@@ -176,15 +176,18 @@ test('contact forms use Wix zero-scrollbar layout scaling', () => {
 });
 
 
-test('about page tablet team gallery matches the two-card Wix layout', () => {
+test('about page team gallery derives tile size from the container width at every viewport', () => {
   const page = fs.readFileSync(path.join(root, 'aboutus', 'index.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'project-gallery-parity.css'), 'utf8');
 
   assert.ok(page.includes('data-deedee-project-gallery-parity'));
-  assert.ok(css.includes('@media screen and (min-width: 751px) and (max-width: 1000px)'));
-  assert.ok(css.includes('#comp-la6iaw362 [data-hook="item-container"][data-idx="0"]'));
-  assert.ok(css.includes('height: 192px !important'));
-  assert.ok(css.includes('height: 384px !important'));
+  // Wix shows all seven portraits: four square tiles per row on tablet/desktop, one per row on phones.
+  assert.ok(css.includes('--team-tile: calc((100vw - var(--scrollbar-width, 0px)) / 4)'));
+  assert.ok(css.includes('--team-tile: calc(100vw - var(--scrollbar-width, 0px))'));
+  assert.ok(css.includes('#comp-la6iaw362 [data-hook="item-container"][data-idx="6"]'));
+  assert.doesNotMatch(css, /#comp-la6iaw362[^{]*\{[^}]*height:\s*(192|384)px/);
+  // A 100% wrapper blanked the section's paint and a 100% <img> collapsed inside its inline <picture>.
+  assert.doesNotMatch(css, /#comp-la6iaw362 \.gallery-item-wrapper,\s*#comp-la6iaw362 \.gallery-item-content/);
 });
 
 
