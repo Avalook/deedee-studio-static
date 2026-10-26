@@ -18,6 +18,7 @@ import {
   partnerRowHeight,
   partnerViewportScale,
   partnerWidgetWidthPercent,
+  resolvePartnerParent,
   scaledPartnerLength,
   startAnimation,
   updatePartnerGalleryVisibility,
@@ -62,6 +63,16 @@ const DESKTOP_GROUPS = [
   { left: 329, width: 104 },
   { left: 6266, width: 102 },
 ];
+
+test('partner wrapper selection supports both Wix and archived gallery markup', () => {
+  const wixParent = {};
+  const wixGallery = { closest: selector => selector === '.pro-gallery-parent-container' ? wixParent : null };
+  assert.equal(resolvePartnerParent(wixGallery), wixParent);
+
+  const archivedParent = {};
+  const archivedGallery = { closest: selector => selector === '.comp-m6vwcy1k' ? archivedParent : null };
+  assert.equal(resolvePartnerParent(archivedGallery), archivedParent);
+});
 
 test('small viewports scale the 80px source logos down to 50px', () => {
   assert.equal(PARTNER_BASE_LOGO_HEIGHT, 80);

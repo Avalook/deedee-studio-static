@@ -160,7 +160,7 @@ test('activity-category feed reserves height for each visible mobile batch', () 
 
 test('activity-category mobile grid aligns its cards to the 350px Wix feed width', async () => {
   const css = await readFile(new URL('../assets/blog-category-grid.css', import.meta.url), 'utf8');
-  assert.match(css, /@media\s*\(max-width:\s*640px\)[\s\S]*?\[data-hook="post-list-pro-gallery-container"\]\s*\{[^}]*margin:\s*0\s*!important;/s);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)[\s\S]*?\[data-hook="post-list-pro-gallery-container"\]\s*\{[^}]*margin:\s*20px\s*!important;/s);
   assert.match(css, /@media\s*\(max-width:\s*640px\)[\s\S]*?#pro-gallery-margin-container-pro-blog\s*\{[^}]*gap:\s*12px\s*!important;/s);
 });
 

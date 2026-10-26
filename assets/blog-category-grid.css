@@ -203,7 +203,7 @@
     position: absolute;
     top: 100%;
     width: max-content !important;
-    z-index: 100;
+    z-index: 1000 !important;
   }
 
   [data-hook="feed-page-root"] .deedee-mobile-blog-category-options > li {

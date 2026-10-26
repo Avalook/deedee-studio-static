@@ -1618,6 +1618,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const activateTab = (tab, updateUrl = true) => {
     const widget = tab.closest('.Tabscomponent1176390459__root');
     if (!widget) return;
+    const label = tab.querySelector('[data-hook="tab-item-label"]')?.textContent?.trim();
+    if (label) {
+      const url = new URL(location.href);
+      url.pathname = url.pathname.replace(/\/+$/, '');
+      url.search = label === 'Originals' ? '' : `?.=${encodeURIComponent(label)}`;
+      history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }
     const tabs = [...widget.querySelectorAll('[data-hook="tab-item"][role="tab"]')];
     const panelId = tab.getAttribute('aria-controls');
     const panels = [...widget.querySelectorAll('[data-hook="TabPanel"]')];

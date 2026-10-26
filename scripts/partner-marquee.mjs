@@ -500,10 +500,16 @@ export function startAnimation(state) {
   });
 }
 
+export function resolvePartnerParent(gallery) {
+  return gallery?.closest?.('.pro-gallery-parent-container')
+    || gallery?.closest?.('.comp-m6vwcy1k')
+    || null;
+}
+
 export function installPartnerMarquee(root = document) {
   const gallery = root.querySelector(GALLERY_SELECTOR);
   const track = gallery?.querySelector('.gallery-horizontal-scroll-inner');
-  const parent = gallery?.closest('.pro-gallery-parent-container');
+  const parent = resolvePartnerParent(gallery);
   const outer = gallery?.closest('.pro-gallery');
   const widget = gallery?.closest('#comp-m6vwcy1k');
   const doc = root.nodeType === 9 ? root : root.ownerDocument;

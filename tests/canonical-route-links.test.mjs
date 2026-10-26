@@ -346,8 +346,9 @@ test('routes the retired Vietnamese explore alias to the verified English Wix 40
     'en/explore/index.html',
   ].map(file => readFile(path.join(root, file), 'utf8')));
   const refreshTarget = markup => markup.match(/<meta http-equiv="refresh" content="([^"]+)"/i)?.[1] ?? null;
+  // The Vietnamese /blog alias is intentionally repaired to the news listing; the English alias keeps Wix's /explore 404.
   assert.equal(new URL(refreshTarget(blog).split('url=')[1], 'https://local.test/deedee-studio-static/blog/').pathname,
-    '/deedee-studio-static/explore/');
+    '/deedee-studio-static/news/');
   assert.equal(new URL(refreshTarget(enBlog).split('url=')[1], 'https://local.test/deedee-studio-static/en/blog/').pathname,
     '/deedee-studio-static/en/explore/');
   assert.equal(refreshTarget(explore), '0;url=/deedee-studio-static/en/explore/');
