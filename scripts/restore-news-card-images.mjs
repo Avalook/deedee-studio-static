@@ -77,9 +77,11 @@ export function planNewsCardImages(archiveHtml, assets) {
   const unresolved = [];
   for (const html of archiveHtml) {
     for (const src of collectArchiveCardSources(html)) {
-      const basename = src.split('/').pop();
+      // Cards from the 21st on were never mirrored: their src is the remote Wix URL itself, so key by the full URL.
+      const isRemote = /^https:\/\/static\.wixstatic\.com\/media\//.test(src);
+      const basename = isRemote ? src : src.split('/').pop();
       if (images[basename]) continue;
-      const remote = reverse.get(`/assets/${basename}`);
+      const remote = isRemote ? src : reverse.get(`/assets/${basename}`);
       const uri = remote && mediaUri(remote);
       if (!uri) { unresolved.push(basename); continue; }
       const reusable = (variants.get(uri) ?? []).sort((a, b) => a.width - b.width)[0];

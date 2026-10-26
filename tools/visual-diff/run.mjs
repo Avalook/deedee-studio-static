@@ -55,9 +55,9 @@ async function tileShot(page, width, totalHeight, file) {
           if (pos === 'fixed' || pos === 'sticky') { e.setAttribute('data-vd-hidden', ''); e.style.visibility = 'hidden'; }
         }
       }
-      // Large PNGs paint blank until decoded; wait for the images that are on screen.
-      const onScreen = [...document.images].filter(img => { const r = img.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight && r.width > 0; });
-      await Promise.all(onScreen.map(img => img.decode?.().catch(() => {})));
+      // Large PNGs can paint blank until decoded; only wait for images that already finished loading, and only briefly.
+      const onScreen = [...document.images].filter(img => { const r = img.getBoundingClientRect(); return img.complete && img.naturalWidth > 0 && r.bottom > 0 && r.top < window.innerHeight && r.width > 0; });
+      await Promise.race([Promise.all(onScreen.map(img => img.decode?.().catch(() => {}))), new Promise(r => setTimeout(r, 800))]);
       await new Promise(r => setTimeout(r, 250));
     }, { y, first: y === 0 });
     const actualY = await page.evaluate(() => Math.round(window.scrollY));

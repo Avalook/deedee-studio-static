@@ -41,9 +41,12 @@ test('plan reuses a wide local 16:9 variant and schedules a download otherwise',
   assert.equal(plan.images['sq-a.jpg'], 'wide-a.jpg');
   assert.match(plan.images['sq-b.png'], /^news-card-[0-9a-f]{24}\.avif$/);
   assert.match(plan.images['sq-c.jpg'], /^news-card-[0-9a-f]{24}\.avif$/);
-  assert.deepEqual(plan.downloads.map(item => item.uri).sort(), ['bbb_2~mv2.png', 'ccc_3~mv2.jpg']);
+  assert.deepEqual(plan.downloads.map(item => item.uri).sort(), ['bbb_2~mv2.png', 'ccc_3~mv2.jpg', 'zzz_9~mv2.png']);
   assert.ok(plan.downloads.every(item => item.url === newsCardImageUrl(item.uri)));
-  assert.deepEqual(plan.unresolved, ['zzz_9~mv2.png']);
+  // A card that still points at the remote Wix thumbnail is keyed by that full URL.
+  const remoteKey = 'https://static.wixstatic.com/media/zzz_9~mv2.png/v1/fill/w_400,h_400/zzz_9~mv2.png';
+  assert.match(plan.images[remoteKey], /^news-card-[0-9a-f]{24}\.avif$/);
+  assert.deepEqual(plan.unresolved, []);
 });
 
 test('only Wix media basenames can become download URLs', () => {
@@ -81,7 +84,7 @@ test('dry run reports the plan without downloading or writing', async () => {
   let calls = 0;
   const result = await restoreNewsCardImages({ root, dryRun: true, fetchImpl: async () => { calls += 1; return imageResponse(new Uint8Array(4)); } });
   assert.equal(calls, 0);
-  assert.equal(result.toDownload, 2);
+  assert.equal(result.toDownload, 3);
   assert.equal(result.reused, 1);
   await assert.rejects(readFile(path.join(root, 'news/card-images.json')));
 });
@@ -97,10 +100,10 @@ test('restore downloads missing images, extends the manifest and writes the mapp
       return imageResponse(new Uint8Array([1, 2, 3, 4]));
     },
   });
-  assert.equal(result.downloaded, 2);
+  assert.equal(result.downloaded, 3);
   assert.ok(requested.every(url => url.startsWith('https://static.wixstatic.com/media/')));
   const mapping = JSON.parse(await readFile(path.join(root, 'news/card-images.json'), 'utf8'));
-  assert.equal(Object.keys(mapping.images).length, 3);
+  assert.equal(Object.keys(mapping.images).length, 4);
   const manifest = JSON.parse(await readFile(path.join(root, 'manifest.json'), 'utf8'));
   assert.ok(requested.every(url => manifest.assets[url]?.startsWith('/assets/news-card-')));
   // A second run has nothing left to download.
@@ -115,4 +118,11 @@ test('a failed or non-image response aborts before anything is written', async (
     /not an image/,
   );
   await assert.rejects(readFile(path.join(root, 'news/card-images.json')));
+});
+
+test('wideCardImage swaps a remote Wix thumbnail for the local 16:9 asset', () => {
+  const remote = 'https://static.wixstatic.com/media/zzz_9~mv2.png/v1/fill/w_400,h_400/zzz_9~mv2.png';
+  const swapped = wideCardImage(remote, { [remote]: 'news-card-abc.avif' });
+  assert.match(swapped, /\/assets\/news-card-abc\.avif$/);
+  assert.equal(wideCardImage(remote, {}), remote, 'unmapped remote URLs are left alone');
 });

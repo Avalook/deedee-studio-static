@@ -402,6 +402,8 @@ function updateGalleryHeight(gallery, cards) {
  * news/card-images.json (built by scripts/restore-news-card-images.mjs) maps a thumbnail to a 16:9 image of the same photo.
  */
 export function wideCardImage(source, imageMap = {}) {
+  // Remote Wix thumbnails (never mirrored) are keyed by their full URL and replaced by a local asset.
+  if (Object.hasOwn(imageMap, source)) return new URL(`../assets/${imageMap[source]}`, import.meta.url).pathname;
   const basename = source.slice(source.lastIndexOf('/') + 1);
   const wide = Object.hasOwn(imageMap, basename) ? imageMap[basename] : null;
   return wide ? source.slice(0, source.length - basename.length) + wide : source;
