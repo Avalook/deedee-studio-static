@@ -5,6 +5,7 @@ import { PHONE_COUNTRIES, searchPhoneCountries, phoneCountrySelection } from './
 
 import { installPhoneCountrySelector } from './phone-country-selector.mjs';
 import { installProjectDetailBack } from './project-detail-navigation.mjs';
+import { installGalleryScaling } from './gallery-scale.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');
@@ -367,6 +368,7 @@ export function syncScrollbarWidth(root = document, win = globalThis.window) {
 
 export function installSiteControls(root = document, pathname = location.pathname) {
   syncScrollbarWidth(root);
+  installGalleryScaling(root);
   globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);
