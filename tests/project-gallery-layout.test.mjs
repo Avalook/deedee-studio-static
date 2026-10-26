@@ -184,10 +184,12 @@ test('about page team gallery derives tile size from the container width at ever
   // Wix shows all seven portraits: four square tiles per row on tablet/desktop, one per row on phones.
   assert.ok(css.includes('--team-tile: calc((100vw - var(--scrollbar-width, 0px)) / 4)'));
   assert.ok(css.includes('--team-tile: calc(100vw - var(--scrollbar-width, 0px))'));
-  assert.ok(css.includes('#comp-la6iaw362 [data-hook="item-container"][data-idx="6"]'));
-  assert.doesNotMatch(css, /#comp-la6iaw362[^{]*\{[^}]*height:\s*(192|384)px/);
+  // Same rules for the old template used by Studio (comp-l9pnpcoc) via :is().
+  assert.ok(css.includes(':is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="6"]'));
+  assert.ok(css.includes(':is(#comp-la6iaw32, #comp-l9pnod66)'));
+  assert.doesNotMatch(css, /comp-la6iaw362[^{]*\{[^}]*height:\s*(192|384)px/);
   // A 100% wrapper blanked the section's paint and a 100% <img> collapsed inside its inline <picture>.
-  assert.doesNotMatch(css, /#comp-la6iaw362 \.gallery-item-wrapper,\s*#comp-la6iaw362 \.gallery-item-content/);
+  assert.doesNotMatch(css, /comp-l9pnpcoc\) \.gallery-item-wrapper,\s*:is\(#comp-la6iaw362, #comp-l9pnpcoc\) \.gallery-item-content/);
 });
 
 

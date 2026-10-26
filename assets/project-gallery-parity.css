@@ -606,78 +606,78 @@ body.deedee-gallery-lightbox-open {
   }
 }
 
-/* About us team portraits: Wix lays the seven tiles out as squares, four per row (one per row on phones).
+/* Team portraits on About us (new template: comp-la6iaw32) and Studio (old template: comp-l9pnod66): Wix lays the seven tiles out as squares, four per row (one per row on phones).
    The archive froze the pixel sizes of the capture width, so derive every size from the container width. */
-#comp-la6iaw32 {
+:is(#comp-la6iaw32, #comp-l9pnod66) {
   --team-tile: calc((100vw - var(--scrollbar-width, 0px)) / 4);
 }
 
-#comp-la6iaw32 #pro-gallery-comp-la6iaw362,
-#comp-la6iaw32 #pro-gallery-container-comp-la6iaw362,
-#comp-la6iaw32 #pro-gallery-margin-container-comp-la6iaw362,
-#comp-la6iaw32 #gallery-wrapper-comp-la6iaw362,
-#comp-la6iaw32 .pro-gallery-parent-container {
+:is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-comp-la6iaw362, #pro-gallery-comp-l9pnpcoc),
+:is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-container-comp-la6iaw362, #pro-gallery-container-comp-l9pnpcoc),
+:is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-margin-container-comp-la6iaw362, #pro-gallery-margin-container-comp-l9pnpcoc),
+:is(#comp-la6iaw32, #comp-l9pnod66) :is(#gallery-wrapper-comp-la6iaw362, #gallery-wrapper-comp-l9pnpcoc),
+:is(#comp-la6iaw32, #comp-l9pnod66) .pro-gallery-parent-container {
   height: calc(var(--team-tile) * 2) !important;
   min-height: 0 !important;
   width: 100% !important;
 }
 
-#comp-la6iaw362 .pro-gallery-margin-container,
-#comp-la6iaw362 [data-hook="item-link-wrapper"] {
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .pro-gallery-margin-container,
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-link-wrapper"] {
   width: 100% !important;
 }
 
-#comp-la6iaw362 [data-hook="item-container"] {
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"] {
   height: var(--team-tile) !important;
   width: var(--team-tile) !important;
 }
 
-#comp-la6iaw362 [data-hook="item-container"][data-idx="0"], #comp-la6iaw362 [data-hook="item-container"][data-idx="4"] { left: 0 !important; }
-#comp-la6iaw362 [data-hook="item-container"][data-idx="1"], #comp-la6iaw362 [data-hook="item-container"][data-idx="5"] { left: var(--team-tile) !important; }
-#comp-la6iaw362 [data-hook="item-container"][data-idx="2"], #comp-la6iaw362 [data-hook="item-container"][data-idx="6"] { left: calc(var(--team-tile) * 2) !important; }
-#comp-la6iaw362 [data-hook="item-container"][data-idx="3"] { left: calc(var(--team-tile) * 3) !important; }
-#comp-la6iaw362 [data-hook="item-container"][data-idx="0"], #comp-la6iaw362 [data-hook="item-container"][data-idx="1"],
-#comp-la6iaw362 [data-hook="item-container"][data-idx="2"], #comp-la6iaw362 [data-hook="item-container"][data-idx="3"] { top: 0 !important; }
-#comp-la6iaw362 [data-hook="item-container"][data-idx="4"], #comp-la6iaw362 [data-hook="item-container"][data-idx="5"],
-#comp-la6iaw362 [data-hook="item-container"][data-idx="6"] { top: var(--team-tile) !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="0"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="4"] { left: 0 !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="1"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="5"] { left: var(--team-tile) !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="2"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="6"] { left: calc(var(--team-tile) * 2) !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="3"] { left: calc(var(--team-tile) * 3) !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="0"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="1"],
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="2"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="3"] { top: 0 !important; }
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="4"], :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="5"],
+:is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="6"] { top: var(--team-tile) !important; }
 
-#comp-la6iaw362 .gallery-item-content,
-#comp-la6iaw362 .gallery-item-hover,
-#comp-la6iaw362 .item-hover-flex-container {
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .gallery-item-content,
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .gallery-item-hover,
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .item-hover-flex-container {
   height: 100% !important;
   width: 100% !important;
 }
 
 /* Percentage sizes are unsafe here: the <img> sits in an inline <picture> (height resolves to 0) and a 100%
    .gallery-item-wrapper blanked the section's paint, so size the wrapper and image from the tile variable. */
-#comp-la6iaw362 .gallery-item-wrapper,
-#comp-la6iaw362 .gallery-item-visible {
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .gallery-item-wrapper,
+:is(#comp-la6iaw362, #comp-l9pnpcoc) .gallery-item-visible {
   height: var(--team-tile) !important;
   object-fit: cover;
   width: var(--team-tile) !important;
 }
 
 @media screen and (max-width: 750px) {
-  #comp-la6iaw32 {
+  :is(#comp-la6iaw32, #comp-l9pnod66) {
     --team-tile: calc(100vw - var(--scrollbar-width, 0px));
   }
 
-  #comp-la6iaw32 #pro-gallery-comp-la6iaw362,
-  #comp-la6iaw32 #pro-gallery-container-comp-la6iaw362,
-  #comp-la6iaw32 #pro-gallery-margin-container-comp-la6iaw362,
-  #comp-la6iaw32 #gallery-wrapper-comp-la6iaw362,
-  #comp-la6iaw32 .pro-gallery-parent-container {
+  :is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-comp-la6iaw362, #pro-gallery-comp-l9pnpcoc),
+  :is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-container-comp-la6iaw362, #pro-gallery-container-comp-l9pnpcoc),
+  :is(#comp-la6iaw32, #comp-l9pnod66) :is(#pro-gallery-margin-container-comp-la6iaw362, #pro-gallery-margin-container-comp-l9pnpcoc),
+  :is(#comp-la6iaw32, #comp-l9pnod66) :is(#gallery-wrapper-comp-la6iaw362, #gallery-wrapper-comp-l9pnpcoc),
+  :is(#comp-la6iaw32, #comp-l9pnod66) .pro-gallery-parent-container {
     height: calc(var(--team-tile) * 7) !important;
   }
 
-  #comp-la6iaw362 [data-hook="item-container"][data-idx] { left: 0 !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="0"] { top: 0 !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="1"] { top: var(--team-tile) !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="2"] { top: calc(var(--team-tile) * 2) !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="3"] { top: calc(var(--team-tile) * 3) !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="4"] { top: calc(var(--team-tile) * 4) !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="5"] { top: calc(var(--team-tile) * 5) !important; }
-  #comp-la6iaw362 [data-hook="item-container"][data-idx="6"] { top: calc(var(--team-tile) * 6) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx] { left: 0 !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="0"] { top: 0 !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="1"] { top: var(--team-tile) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="2"] { top: calc(var(--team-tile) * 2) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="3"] { top: calc(var(--team-tile) * 3) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="4"] { top: calc(var(--team-tile) * 4) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="5"] { top: calc(var(--team-tile) * 5) !important; }
+  :is(#comp-la6iaw362, #comp-l9pnpcoc) [data-hook="item-container"][data-idx="6"] { top: calc(var(--team-tile) * 6) !important; }
 }
 
 @media screen and (min-width: 751px) and (max-width: 1000px) {

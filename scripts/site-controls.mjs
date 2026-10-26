@@ -11,6 +11,7 @@ import './project-video-player.mjs';
 import { installCmsOverrides } from './cms-overrides.mjs';
 import { installViewerFeedbackStyles } from './viewer-feedback.mjs';
 import { installFormSubmit } from './form-submit.mjs';
+import { installArticleVideoFallback } from './article-video-fallback.mjs';
 
 export function contactHref(pathname) {
   const path = String(pathname || '/');
@@ -390,6 +391,7 @@ export function installSiteControls(root = document, pathname = location.pathnam
   installCmsOverrides(root, globalThis.window);
   installViewerFeedbackStyles(root, globalThis.window);
   installFormSubmit(root, globalThis.window);
+  installArticleVideoFallback(root);
   globalThis.window?.addEventListener?.('resize', () => syncScrollbarWidth(root));
   installPhoneCountrySelector(root);
   installFormDropdowns(root);
