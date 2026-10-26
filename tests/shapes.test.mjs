@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { collectShapeBackgrounds, repairFooterHtml, FOOTER_REPAIR_CSS } from '../scripts/shape-backgrounds.mjs';
+import { collectShapeBackgrounds, repairFooterHtml } from '../scripts/shape-backgrounds.mjs';
 
 const info = { displayMode: 'fill', alignType: 'center', imageData: { uri: 'abc_shape~mv2.png', width: 1425, height: 811, hasAnimation: false, focalPoint: { x: 50, y: 70 } } };
 const node = (data, attrs = '') => `<wow-image class="bgImage" data-image-info="${JSON.stringify(data).replaceAll('"', '&quot;')}" ${attrs}><img src="/assets/crop.png"></wow-image>`;
@@ -25,17 +25,12 @@ test('does not infer a source from invalid metadata or path-like URIs', () => {
   assert.throws(() => collectShapeBackgrounds(node({ ...info, imageData: { ...info.imageData, uri: '../private.png' } })), /media/i);
 });
 
-test('footer correction is scoped to desktop footer only and is idempotent', () => {
-  const html = '<html><head></head><body><nav>Header</nav><footer><nav>Footer</nav></footer></body></html>';
+test('removes the footer feedback override so the footer follows the live Wix wrapping', () => {
+  const css = '@media (min-width: 1001px) { footer nav ul { flex-wrap: nowrap !important; } }';
+  const html = `<html><head><style>a{}</style><style data-deedee-footer-repairs>${css}</style></head><body><footer><nav>Footer</nav></footer></body></html>`;
   const result = repairFooterHtml(html);
-  assert.equal(result.match(/data-deedee-footer-repairs/g).length, 1);
+  assert.ok(!result.includes('data-deedee-footer-repairs'));
+  assert.ok(!result.includes('flex-wrap: nowrap'));
+  assert.ok(result.includes('<style>a{}</style>'));
   assert.equal(repairFooterHtml(result), result);
-  assert.ok(result.includes('<nav>Header</nav>'));
-  assert.match(FOOTER_REPAIR_CSS, /@media\s*\(min-width:\s*1001px\)/);
-  assert.match(FOOTER_REPAIR_CSS, /footer nav/);
-});
-
-test('does not inject footer fixes into a page without an actual footer', () => {
-  const html = '<html><head></head><body><script>const example="<footer>";</script></body></html>';
-  assert.equal(repairFooterHtml(html), html);
 });

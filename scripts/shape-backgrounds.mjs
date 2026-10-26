@@ -6,15 +6,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 
-/** Feedback adjustments deliberately scoped to the authored desktop footer. */
-export const FOOTER_REPAIR_CSS = `
-@media (min-width: 1001px) {
-  footer nav ul { flex-wrap: nowrap !important; column-gap: 0 !important; }
-  footer nav [data-part="label"] { font-size: clamp(12px, 1.31vw, 18px) !important; }
-  footer [id$="_r_comp-mehzue58"] { margin-top: -36px !important; }
-}
-`;
-
 /** Traverse rendered HTML while keeping script text and template content inert. */
 function nodesIn(html) {
   const pending = [parse(html)];
@@ -46,12 +37,12 @@ export function collectShapeBackgrounds(html) {
   return result;
 }
 
-/** Apply the documented footer feedback once, without touching header/mobile CSS. */
+/**
+ * Strip the old footer "feedback" CSS (single-row labels, negative top margin). The live Wix footer wraps its
+ * six labels onto two rows at every desktop width (1280-2560px), so the override made local pages diverge.
+ */
 export function repairFooterHtml(html) {
-  if (html.includes('data-deedee-footer-repairs')) return html;
-  if (!nodesIn(html).some(node => node.tagName === 'footer')) return html;
-  const style = `<style data-deedee-footer-repairs>${FOOTER_REPAIR_CSS}</style>`;
-  return html.includes('</head>') ? html.replace('</head>', `${style}</head>`) : style + html;
+  return html.replace(/<style data-deedee-footer-repairs>[\s\S]*?<\/style>/g, '');
 }
 
 export function repairInteractiveRuntime(html, basePath = '/deedee-studio-static') {
