@@ -32,7 +32,36 @@ const VIEWPORT_HEIGHT = 900;
 const BAND = 300;
 
 const slug = route => (route === '/' ? 'home' : route.replace(/^\//, '').replace(/[^\p{L}\p{N}]+/gu, '_'));
-const FREEZE = `*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}`;
+// Wix reveals content by animating from opacity 0, so 'animation: none' would leave it invisible.
+// Finish every animation instantly instead; fill-mode keeps the end state.
+const FREEZE = `*,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;animation-fill-mode:forwards!important;transition-duration:0s!important;transition-delay:0s!important;caret-color:transparent!important;scroll-behavior:auto!important}`;
+
+// Playwright's fullPage shot blanks some Wix pages once they have been scrolled, so stitch viewport-sized
+// tiles instead. Fixed/sticky elements (the header) are kept in the first tile and hidden in the rest.
+async function tileShot(page, width, totalHeight, file) {
+  const tiles = [];
+  let height = totalHeight;
+  for (let y = 0; y < height; y += VIEWPORT_HEIGHT) {
+    await page.evaluate(async ({ y, first }) => {
+      window.scrollTo(0, y);
+      document.querySelectorAll('[data-vd-hidden]').forEach(e => { e.style.visibility = ''; e.removeAttribute('data-vd-hidden'); });
+      if (!first) {
+        for (const e of document.querySelectorAll('body *')) {
+          const pos = getComputedStyle(e).position;
+          if (pos === 'fixed' || pos === 'sticky') { e.setAttribute('data-vd-hidden', ''); e.style.visibility = 'hidden'; }
+        }
+      }
+      await new Promise(r => setTimeout(r, 250));
+    }, { y, first: y === 0 });
+    const actualY = await page.evaluate(() => Math.round(window.scrollY));
+    height = Math.max(height, await page.evaluate(() => document.documentElement.scrollHeight));
+    tiles.push({ y: actualY, png: PNG.sync.read(await page.screenshot({ animations: 'disabled' })) });
+  }
+  const canvas = new PNG({ width, height });
+  canvas.data.fill(255);
+  for (const { y, png } of tiles) PNG.bitblt(png, canvas, 0, 0, Math.min(width, png.width), Math.min(png.height, height - y), 0, y);
+  writeFileSync(file, PNG.sync.write(canvas));
+}
 
 async function capture(browser, url, width, file) {
   const context = await browser.newContext({
@@ -86,8 +115,7 @@ async function capture(browser, url, width, file) {
       scrollHeight: document.documentElement.scrollHeight,
       title: document.title,
     }));
-    // Clip to the viewport width: both sites overflow horizontally, and users only see the viewport column.
-    await page.screenshot({ path: file, fullPage: true, animations: 'disabled', clip: { x: 0, y: 0, width, height: metrics.scrollHeight } });
+    await tileShot(page, width, metrics.scrollHeight, file);
     return { status: response?.status() ?? 0, ...metrics };
   } finally {
     await context.close();
