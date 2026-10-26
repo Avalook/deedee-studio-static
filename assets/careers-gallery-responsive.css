@@ -1,6 +1,7 @@
-/* Restore the Wix careers gallery's responsive card grid for its smaller
-   breakpoints. The archived desktop layout is already correct above 1379px. */
-@media (max-width: 1379px) {
+/* Restore the Wix careers gallery's responsive card grid at every width.
+   Only the 4:3 image scales with the column; the 350px text block is fixed, so the archived pixel layout
+   (and scripts/gallery-scale.mjs) cannot reproduce it. */
+@media screen {
   #pro-gallery-comp-m8cy9ggi,
   #pro-gallery-comp-m8cy9ggi .pro-gallery,
   #pro-gallery-comp-m8cy9ggi .pro-gallery-container,
@@ -13,8 +14,13 @@
   #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
     display: grid !important;
     column-gap: 32px !important;
-    row-gap: 22px !important;
+    row-gap: 32px !important;
     align-items: start;
+  }
+
+  /* Wix gives every card margin-bottom: 10px; live has none (its row pitch is exactly the 32px gap). */
+  #SITE_CONTAINER #main_MF#main_MF .css-editing-scope [data-hook="post-list-root"] #pro-gallery-comp-m8cy9ggi [data-hook="item-container"] {
+    margin-bottom: 0 !important;
   }
 
   #pro-gallery-comp-m8cy9ggi .item-link-wrapper {
@@ -30,6 +36,7 @@
     width: auto !important;
     height: auto !important;
     margin: 0 !important;
+    border-width: 0 !important;
     overflow: hidden;
   }
 
@@ -58,58 +65,52 @@
   }
 }
 
-@media (max-width: 479px) {
+/* Live Wix keeps every card visible and lays them out 1 / 2 / 3 / 4 columns (measured at 320-1920px). */
+@media (max-width: 400px) {
   #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
     grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
   }
-
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="2"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="3"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="4"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="5"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
-    visibility: hidden !important;
-  }
 }
 
-@media (min-width: 480px) and (max-width: 767px) {
+@media (min-width: 401px) and (max-width: 749px) {
   #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
-
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="4"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="5"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
-    visibility: hidden !important;
-  }
 }
 
-@media (min-width: 768px) and (max-width: 1099px) {
+@media (min-width: 750px) and (max-width: 1079px) {
   #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
-
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="6"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="7"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
-    visibility: hidden !important;
-  }
 }
 
-@media (min-width: 1100px) and (max-width: 1379px) {
+@media (min-width: 1080px) and (max-width: 1437px) {
   #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
+}
 
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="8"],
-  #pro-gallery-comp-m8cy9ggi [data-hook="item-container"][data-idx="9"] {
-    visibility: hidden !important;
+/* From 1438px the live grid fits as many 262px+ cards (32px apart) as the width allows: 294n - 32. */
+@media (min-width: 1438px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1732px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 2026px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 2320px) {
+  #pro-gallery-comp-m8cy9ggi .pro-gallery-margin-container {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
   }
 }
