@@ -15,3 +15,5 @@ secrets.json
 /dist/
 /build/
 /outputs/
+/tools/visual-diff/node_modules/
+/tools/visual-diff/out/

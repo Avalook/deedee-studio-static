@@ -1,0 +1,11 @@
+{
+  "widths": [1440, 1037, 787, 419],
+  "thresholds": { "maxMismatchPct": 3, "maxHeightDeltaPct": 2 },
+  "core": [
+    "/", "/aboutus", "/our-work", "/service", "/studio", "/testimonials", "/news",
+    "/activities", "/contact-us", "/careers", "/privacy-policy",
+    "/blog/categories/hoạt-động", "/all-project/awaken", "/post/animation-la-gi",
+    "/en", "/en/aboutus", "/en/our-work", "/en/service", "/en/studio",
+    "/en/testimonials", "/en/news", "/en/contact-us", "/en/careers", "/en/privacy-policy"
+  ]
+}
