@@ -9,6 +9,10 @@ import {
   advanceMarquee,
   canAdvanceMarquee,
   partnerCycleWidth,
+  EXTRA_PARTNER_LOGOS,
+  partnerGroupLayout,
+  partnerLogoCount,
+  partnerGalleryIsVisible,
   partnerGalleryRowHeight,
   partnerItemTop,
   partnerRowHeight,
@@ -16,7 +20,42 @@ import {
   partnerWidgetWidthPercent,
   scaledPartnerLength,
   startAnimation,
+  updatePartnerGalleryVisibility,
 } from '../scripts/partner-marquee.mjs';
+
+
+
+test('responsive partner groups preserve the source 15px side margins', () => {
+  const sourceGroups = [
+    { left: 0, width: 329, items: [{ width: 299 }] },
+    { left: 329, width: 104, items: [{ width: 74 }] },
+    { left: 433, width: 232, items: [{ width: 202 }] },
+  ];
+
+  assert.deepEqual(
+    sourceGroups.map((group, index) => partnerGroupLayout(group, index, 0.375)),
+    [
+      { left: 0, width: 142.125 },
+      { left: 142.125, width: 57.75 },
+      { left: 199.875, width: 105.75 },
+    ],
+  );
+});
+
+test('the archive follows Wix 25-logo tablet and 36-logo desktop layouts', () => {
+  assert.equal(EXTRA_PARTNER_LOGOS.length, 11);
+  assert.deepEqual(
+    EXTRA_PARTNER_LOGOS.map(logo => logo.width),
+    [529, 392, 247, 166, 541, 102, 175, 108, 439, 287, 286],
+  );
+  assert.equal(partnerLogoCount(390), 25);
+  assert.equal(partnerLogoCount(750), 25);
+  assert.equal(partnerLogoCount(751), 25);
+  assert.equal(partnerLogoCount(1024), 25);
+  assert.equal(partnerLogoCount(1100), 25);
+  assert.equal(partnerLogoCount(1101), 36);
+  assert.equal(partnerLogoCount(1440), 36);
+});
 
 const DESKTOP_GROUPS = [
   { left: 0, width: 329 },
@@ -113,17 +152,122 @@ test('reduced motion and user state block automatic marquee movement', () => {
   assert.equal(canAdvanceMarquee(visible), true);
   assert.equal(canAdvanceMarquee({ ...visible, reducedMotion: true }), false);
   assert.equal(canAdvanceMarquee({ ...visible, paused: true }), false);
+  assert.equal(canAdvanceMarquee({ ...visible, inViewport: false }), false);
   assert.equal(canAdvanceMarquee({ ...visible, visibilityState: 'hidden' }), false);
   assert.equal(canAdvanceMarquee({ ...visible, hasPreviousFrame: false }), false);
   assert.equal(canAdvanceMarquee({ ...visible, cycleWidth: 0 }), false);
 });
 
+test('gallery visibility requires an intersection with the viewport', () => {
+  assert.equal(partnerGalleryIsVisible({ left: 10, right: 110, top: 10, bottom: 60 }, 390, 844), true);
+  assert.equal(partnerGalleryIsVisible({ left: -110, right: -1, top: 10, bottom: 60 }, 390, 844), false);
+  assert.equal(partnerGalleryIsVisible({ left: 10, right: 110, top: 844, bottom: 900 }, 390, 844), false);
+});
+
+test('offscreen gallery waits to animate and stops until it re-enters view', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+  state.inViewport = false;
+
+  startAnimation(state);
+  assert.equal(harness.pendingFrameCount(), 0);
+
+  updatePartnerGalleryVisibility(state, true);
+  assert.equal(harness.pendingFrameCount(), 1);
+  harness.runFrame(16);
+  assert.equal(harness.pendingFrameCount(), 1);
+
+  updatePartnerGalleryVisibility(state, false);
+  assert.equal(state.animationStarted, false);
+  assert.equal(state.lastFrame, 0);
+  assert.equal(harness.pendingFrameCount(), 0);
+
+  updatePartnerGalleryVisibility(state, true);
+  assert.equal(harness.pendingFrameCount(), 1);
+});
+
+test('IntersectionObserver starts and cancels the ticker on visibility changes', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+  state.inViewport = false;
+  harness.installIntersectionObserver();
+
+  startAnimation(state);
+  assert.equal(harness.observedGallery(), state.gallery);
+  assert.equal(harness.pendingFrameCount(), 0);
+
+  harness.triggerIntersection(true);
+  assert.equal(harness.pendingFrameCount(), 1);
+  harness.runFrame(16);
+  harness.triggerIntersection(false);
+  assert.equal(state.animationStarted, false);
+  assert.equal(harness.pendingFrameCount(), 0);
+});
+
+test('scroll fallback starts and stops the ticker as the gallery crosses the viewport', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+  state.inViewport = false;
+  harness.setGalleryBounds({ left: 0, right: 100, top: 900, bottom: 950 });
+
+  startAnimation(state);
+  assert.equal(harness.pendingFrameCount(), 0);
+
+  harness.setGalleryBounds({ left: 0, right: 100, top: 800, bottom: 844 });
+  harness.dispatchWindowEvent('scroll');
+  assert.equal(harness.pendingFrameCount(), 1);
+
+  harness.setGalleryBounds({ left: 0, right: 100, top: 900, bottom: 950 });
+  harness.dispatchWindowEvent('scroll');
+  assert.equal(state.animationStarted, false);
+  assert.equal(harness.pendingFrameCount(), 0);
+});
+
+test('resize fallback recomputes visibility after responsive layout', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+  let visibleAfterLayout = false;
+  let layoutMadeGalleryVisible = false;
+  state.inViewport = false;
+  state.containers = [];
+  state.groupStyles = [];
+  state.groups = [];
+  state.parent = { style: {} };
+  state.outer = { style: {} };
+  state.widget = { style: {} };
+  state.track = { style: {}, querySelectorAll: () => [], append: () => {} };
+  state.gallery.style = {};
+  Object.defineProperty(state.gallery.style, 'height', {
+    set: () => { layoutMadeGalleryVisible = visibleAfterLayout; },
+  });
+  state.gallery.getBoundingClientRect = () => layoutMadeGalleryVisible
+    ? { left: 0, right: 100, top: 800, bottom: 844 }
+    : { left: 0, right: 100, top: 900, bottom: 950 };
+
+  startAnimation(state);
+  visibleAfterLayout = true;
+  harness.dispatchWindowEvent('resize');
+  assert.equal(harness.pendingFrameCount(), 1);
+
+  visibleAfterLayout = false;
+  harness.dispatchWindowEvent('resize');
+  assert.equal(state.animationStarted, false);
+  assert.equal(harness.pendingFrameCount(), 0);
+});
+
 function createMarqueeHarness(initiallyReducedMotion) {
   let onPreferenceChange;
   let nextFrameId = 0;
+  let galleryBounds = { left: 0, right: 100, top: 0, bottom: 50 };
+  let intersectionCallback;
+  let observedGallery;
   const frames = new Map();
+  const galleryListeners = new Map();
+  const windowListeners = new Map();
   const state = {
     animationStarted: false,
+    animationFrameId: 0,
+    inViewport: true,
     doc: {
       visibilityState: 'visible',
       addEventListener: () => {},
@@ -131,8 +275,13 @@ function createMarqueeHarness(initiallyReducedMotion) {
     gallery: {
       dataset: { deedeeMarqueeCycle: '100' },
       scrollLeft: 0,
-      addEventListener: () => {},
+      addEventListener: (type, listener) => {
+        const listeners = galleryListeners.get(type) ?? [];
+        listeners.push(listener);
+        galleryListeners.set(type, listeners);
+      },
       contains: () => false,
+      getBoundingClientRect: () => galleryBounds,
     },
     lastFrame: 0,
     listenersInstalled: false,
@@ -146,12 +295,19 @@ function createMarqueeHarness(initiallyReducedMotion) {
     position: 0,
     reducedMotion: initiallyReducedMotion,
     win: {
-      addEventListener: () => {},
+      innerWidth: 390,
+      innerHeight: 844,
+      addEventListener: (type, listener) => {
+        const listeners = windowListeners.get(type) ?? [];
+        listeners.push(listener);
+        windowListeners.set(type, listeners);
+      },
       requestAnimationFrame: callback => {
         const id = ++nextFrameId;
         frames.set(id, callback);
         return id;
       },
+      cancelAnimationFrame: id => frames.delete(id),
     },
     written: false,
   };
@@ -162,6 +318,30 @@ function createMarqueeHarness(initiallyReducedMotion) {
       assert.equal(typeof onPreferenceChange, 'function');
       onPreferenceChange({ matches });
     },
+    dispatchGalleryEvent(type, event = {}) {
+      for (const listener of galleryListeners.get(type) ?? []) listener(event);
+    },
+    dispatchWindowEvent(type) {
+      for (const listener of windowListeners.get(type) ?? []) listener();
+    },
+    setGalleryBounds(bounds) {
+      galleryBounds = bounds;
+    },
+    installIntersectionObserver() {
+      state.win.IntersectionObserver = class {
+        constructor(callback) {
+          intersectionCallback = callback;
+        }
+        observe(gallery) {
+          observedGallery = gallery;
+        }
+      };
+    },
+    triggerIntersection(isIntersecting) {
+      assert.equal(typeof intersectionCallback, 'function');
+      intersectionCallback([{ isIntersecting }]);
+    },
+    observedGallery: () => observedGallery,
     pendingFrameCount: () => frames.size,
     runFrame(time) {
       const next = frames.entries().next().value;
@@ -225,6 +405,61 @@ test('the marquee advances 100px per 2.5s and wraps at one cycle', () => {
   assert.equal(advanceMarquee(0, 0, 3980), 0);
   assert.equal(advanceMarquee(0, 1000, 0), 0);
   assert.equal(advanceMarquee(NaN, 1000, 3980), 0);
+});
+
+test('desktop hover pauses and resumes the existing animation frame loop', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+
+  startAnimation(state);
+  harness.runFrame(16);
+  harness.runFrame(32);
+  const positionAtHover = state.position;
+  assert.ok(positionAtHover > 0);
+
+  harness.dispatchGalleryEvent('pointerenter');
+  assert.equal(state.paused, true);
+  assert.equal(harness.pendingFrameCount(), 1);
+  harness.runFrame(1000);
+  assert.equal(state.position, positionAtHover, 'hover must pause movement');
+
+  harness.dispatchGalleryEvent('pointerleave');
+  assert.equal(state.paused, false);
+  assert.equal(state.lastFrame, 0);
+  harness.runFrame(2000);
+  assert.equal(state.position, positionAtHover, 'resume should establish a fresh frame time');
+  harness.runFrame(2025);
+  assert.ok(state.position > positionAtHover, 'leaving hover should resume movement');
+  assert.equal(harness.pendingFrameCount(), 1);
+});
+
+test('touch drag remains paused through pointercancel until touchend', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+
+  startAnimation(state);
+  harness.runFrame(16);
+  harness.runFrame(32);
+  const positionAtDrag = state.position;
+  assert.ok(positionAtDrag > 0);
+
+  harness.dispatchGalleryEvent('pointerdown', { pointerType: 'touch' });
+  assert.equal(state.paused, true, 'touch input should stop auto-scroll while dragging');
+  harness.dispatchGalleryEvent('pointerleave', { pointerType: 'touch' });
+  assert.equal(state.paused, true, 'leaving the gallery during a drag must not restart auto-scroll');
+
+  harness.dispatchGalleryEvent('pointercancel', { pointerType: 'touch' });
+  assert.equal(state.paused, true, 'pointer cancellation during native scrolling must not end the touch drag');
+  harness.runFrame(1000);
+  assert.equal(state.position, positionAtDrag, 'auto-scroll must not compete with touch drag');
+
+  harness.dispatchGalleryEvent('touchend');
+  assert.equal(state.paused, false, 'touch release should resume auto-scroll');
+  assert.equal(state.lastFrame, 0);
+  harness.runFrame(2000);
+  harness.runFrame(2025);
+  assert.ok(state.position > positionAtDrag);
+  assert.equal(harness.pendingFrameCount(), 1);
 });
 
 test('a float accumulator keeps 60fps playback at 40px/s', () => {

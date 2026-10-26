@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>DeeDee CMS — Trình chỉnh sửa website</title>
+  <link rel="stylesheet" href="/admin/site-editor.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="brand" href="/admin" aria-label="DeeDee CMS">DeeDee <span>CMS</span></a>
+    <div class="page-info"><label for="route-picker">Trang</label><select id="route-picker" aria-label="Chọn trang để chỉnh sửa"></select><span id="status">Đang tải…</span></div>
+    <div class="actions">
+      <button id="undo" type="button">Hoàn tác</button>
+      <button id="save" type="button" class="primary">Lưu nháp</button>
+      <button id="preview" type="button">Xem trước</button>
+      <button id="publish" type="button" class="publish">Xuất bản</button>
+      <button id="versions" type="button">Phiên bản</button>
+      <span id="user"></span>
+      <button id="logout" type="button" class="quiet">Thoát</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="side components">
+      <h1>Thành phần</h1>
+      <p>Chọn một thành phần trong trang để kéo, sửa hoặc thay ảnh.</p>
+      <button type="button" data-add="text">＋ Thêm văn bản</button>
+      <button type="button" data-add="button">＋ Thêm nút liên kết</button>
+      <button type="button" id="add-image">＋ Thêm ảnh</button>
+      <input id="upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+      <hr>
+      <label class="switch"><input id="free-move" type="checkbox" checked> Kéo tự do</label>
+      <p class="note">Kéo trực tiếp trên trang. Vị trí, kích thước, cỡ chữ và màu lưu riêng theo từng cỡ xem.</p>
+      <a class="open-site" href="/" target="_blank" rel="noreferrer">Mở trang công khai</a>
+    </aside>
+
+    <section class="canvas-area" aria-label="Bản xem trang chủ">
+      <nav class="devices" aria-label="Kích thước xem">
+        <button type="button" data-width="1440" class="active">Màn lớn</button>
+        <button type="button" data-width="1024">Laptop</button>
+        <button type="button" data-width="768">Tablet</button>
+        <button type="button" data-width="390">Điện thoại</button>
+      </nav>
+      <div class="frame-scroll"><iframe id="site-frame" title="Bản xem DeeDee Studio có thể chỉnh sửa"></iframe></div>
+    </section>
+
+    <aside class="side inspector">
+      <h2>Thuộc tính</h2>
+      <p id="selection-label" class="selection-label">Chưa chọn thành phần</p>
+      <label>Nội dung
+        <textarea id="text" rows="4" placeholder="Chọn một dòng chữ để sửa"></textarea>
+      </label>
+      <label>Đường dẫn liên kết
+        <input id="href" type="url" placeholder="/duong-dan-trong-web" disabled>
+      </label>
+      <label>Đường dẫn ảnh
+        <div class="inline"><input id="image" type="text" placeholder="Chọn một ảnh"><button id="replace-image" type="button">Dùng ảnh tải lên</button></div>
+      </label>
+      <div class="two-col">
+        <label>Rộng (px)<input id="width" type="number" min="0" max="5000" step="1"></label>
+        <label>Cao (px)<input id="height" type="number" min="0" max="5000" step="1"></label>
+        <label>Cỡ chữ (px)<input id="font-size" type="number" min="8" max="200" step="1"></label>
+        <label>Màu chữ<input id="color" type="color" value="#111111"></label>
+        <label>Màu nền<input id="background" type="color" value="#ffffff"></label>
+        <label>Ẩn thành phần<select id="hidden"><option value="false">Hiện</option><option value="true">Ẩn</option></select></label>
+      </div>
+      <div class="offsets">
+        <h3>Vị trí trong khung đang xem</h3>
+        <div class="two-col">
+          <label>Dịch ngang<input id="offset-x" type="number" step="1"></label>
+          <label>Dịch dọc<input id="offset-y" type="number" step="1"></label>
+        </div>
+      </div>
+      <p class="note">Trang gốc vẫn giữ nguyên. Nháp chỉ hiện trong xem trước; chỉ publisher mới xuất bản.</p>
+    </aside>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="versions-dialog">
+    <header><h2>Lịch sử phiên bản</h2><button id="versions-close" type="button">Đóng</button></header>
+    <div id="version-list"></div>
+  </dialog>
+  <script src="/admin/site-editor.js" defer></script>
+</body>
+</html>

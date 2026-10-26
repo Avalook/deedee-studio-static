@@ -1,0 +1,78 @@
+/* Responsive layout for the six Wix gallery cards on the Free Fire routes. */
+#comp-l9pb4sld,
+#comp-l9pb4sld .pro-gallery,
+#comp-l9pb4sld .pro-gallery-prerender,
+#comp-l9pb4sld .pro-gallery-parent-container,
+#comp-l9pb4sld #pro-gallery-container-comp-l9pb4sld,
+#comp-l9pb4sld #pro-gallery-margin-container-comp-l9pb4sld {
+    box-sizing: border-box !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+#comp-l9pb4sld #pro-gallery-margin-container-comp-l9pb4sld {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 5px !important;
+}
+
+#comp-l9pb4sld [data-hook="item-link-wrapper"] {
+    box-sizing: border-box !important;
+    display: block !important;
+    height: auto !important;
+    min-width: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* Wix's masonry places each next card in the currently shorter column. */
+#comp-l9pb4sld [data-hook="item-link-wrapper"][data-idx="2"] {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+#comp-l9pb4sld [data-hook="item-link-wrapper"][data-idx="3"] {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+#comp-l9pb4sld [data-hook="item-link-wrapper"][data-idx="4"] {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+}
+
+#comp-l9pb4sld [data-hook="item-link-wrapper"][data-idx="5"] {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+#comp-l9pb4sld [data-hook="item-container"] {
+    aspect-ratio: 16 / 9 !important;
+    display: block !important;
+    height: auto !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+#comp-l9pb4sld [data-hook="item-container"] > div:not([data-hook="item-action"]),
+#comp-l9pb4sld [data-hook="item-wrapper"],
+#comp-l9pb4sld [data-hook="image-item"],
+#comp-l9pb4sld [data-hook="gallery-item-image-img"] {
+    box-sizing: border-box !important;
+    height: 100% !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    position: absolute !important;
+    width: 100% !important;
+}
+
+#comp-l9pb4sld [data-hook="gallery-item-image-img"] {
+  display: block !important;
+  object-fit: cover !important;
+}

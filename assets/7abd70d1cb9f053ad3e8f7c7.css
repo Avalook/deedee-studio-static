@@ -1,7 +1,6 @@
-/* Scoped repair for the mirrored mobile blog gallery comp-m8e63qxx.
-   The original snapshot was taken while the gallery had zero layout width, so
-   its prerender CSS hard-coded 0/1px sizes. Restore the live 3-column card row
-   without touching global site CSS. */
+/* Scoped repair for the mirrored homepage news gallery comp-m8e63qxx.
+   The archived snapshot had zero layout width and 0/1px prerender sizes.
+   Restore the desktop card grid while preserving Wix's one-column mobile layout. */
 #pro-gallery-comp-m8e63qxx,
 #pro-gallery-comp-m8e63qxx .pro-gallery,
 #pro-gallery-comp-m8e63qxx .pro-gallery-container,
@@ -99,9 +98,19 @@
 }
 
 @media (max-width: 750px) {
+  #pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    column-gap: 32px !important;
+    row-gap: 0 !important;
+  }
+
   #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper {
     width: calc(100% + 2px) !important;
-    height: 72.75px !important;
-    aspect-ratio: auto !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3 !important;
+  }
+
+  #pro-gallery-comp-m8e63qxx .O16KGI::before {
+    top: 104px;
   }
 }

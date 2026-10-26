@@ -1,0 +1,19 @@
+{
+  "name": "deedee-cms-poc-grapesjs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local DeeDee archive editing CMS with a Node backend.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "grapesjs": "0.23.8",
+    "sanitize-html": "2.18.1"
+  }
+}

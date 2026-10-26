@@ -1,6 +1,19 @@
 # Route status
 
-Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; captured project routes required by the current project list: 42/102; missing project routes: 60; manifest errors recorded: 42.
+## Exhaustive viewport tracking
+
+The route-by-route four-width source/local audit is tracked in [`VIEWPORT_AUDIT.md`](VIEWPORT_AUDIT.md). That matrix is generated from all 610 current manifest routes (2,440 standard route/viewport cells); this document’s route table has only 538 rows and must not be used as the complete inventory. A cell remains “Chưa đo” until the hydrated Wix page and matching local route have both been inspected at that exact width.
+
+Snapshot: 2026-10-25. The manifest contains 610 unique routes and all 610 manifest page files are present (609 source pages plus one Wix 404 route). The archive contains 84 Vietnamese and 84 English project-detail folders. The manifest still records 42 errors; AUD-02 has not been resolved. A static scan found 26,575 local anchor references and 14,645 direct local image/media references with no missing targets. A repair normalized 1,423 Wix-transformed asset references in 156 pages. The pre-addition HTTP check served all 607 baseline manifest routes (200 HTML); a separate check verified 3,750 unique local asset URL references with no missing targets. The link audit found two destinations outside the manifest that are archived locally (`/en/aboutus`, `/en/service`) and `/en/explore`, which also returns 404 on Wix. Webinar routes `/en/webinar` and `/en/webinar-popular-types-animation` have now been captured; `/en/explore/categories/12-rules` reflects the verified source 404. These checks verify files and paths, not complete visual or interaction parity.
+
+### Live checks (2026-10-25)
+
+- Homepage hero text and contact controls match Wix bounding boxes within 0.1px at 360px, 375px, 390px, 414px and 430px. The partner ticker advances about 100px per 2.5 seconds on desktop and mobile; pointer hover pauses it, matching the source. A fresh 1885px source/local comparison found one extra visible legacy homepage news card in the archive; it is now hidden locally, and both pages expose the same two visible article cards. After aligning the page wrapper's scrollbar scale, measured section bounds and document scroll height match at 1440, 1024, 768, and 390px; the out-of-main footer begins 1px early at 1024px.
+- `/activities` grid positions and gallery heights were measured against Wix across 390–1440px, including widths 390, 431, 432, 479, 480, 520, 559, 560, 599, 600, 640, 768, 900, 959, 960, 999, 1000, 1024, 1100, 1200, 1280, 1300, 1319, 1320, 1339, 1340, 1344, 1350, 1359, 1360, 1364, 1365 and 1440px. Initial counts match the source at sampled widths; scrolling to the bottom reveals all 23 cards on both source and local. Three-column card geometry and full eight-row gallery heights match at the sampled sizes.
+- `/all-project/5-super-heroes` was compared at 1440px and 360/390/414px. A shared responsive spacing repair now covers 162 Vietnamese/English project-detail routes; the representative page’s main mobile sections align, while the full page still ends about 5–6px shorter than Wix at the sampled widths. This new stylesheet is present locally but is not on the currently deployed GitHub Pages site.
+- `/blog/categories/hoạt-động`, `/talk-interview` and `/knowledge` were compared at 390px and 1440px. Their feed container and card bounds now match Wix at those viewports; the Explore section is moved before the feed on desktop as on the source. The category feeds retain their archived post counts and reveal subsequent batches while scrolling.
+- `/freefirehack` was checked against Wix at 390px, 768px and 1440px. The empty video placeholder now loads the verified YouTube embed; gallery cards are restored from hidden zero-size tiles to the source two-column grid. Gallery item positions/sizes match the live source at 390px (193/192 × 109/108), 768px (374 × 210) and 1440px (710 × 399), with no horizontal overflow. Six gallery images and the 797px video frame are present locally. `node --test tests/*.test.mjs` passes 176/176.
+- This is targeted visual evidence for those route/view pairs, not a sign-off of all 607 routes, all controls or all tablet breakpoints.
 
 `HTML lokal gespeichert` chỉ xác nhận file tồn tại. Nó không chứng minh route đã giống bản gốc hoặc mọi nút, form, video và ảnh đều chạy.
 
@@ -8,94 +21,94 @@ Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; capt
 |---|---|---|---|
 | `/` | `index.html` | DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/aboutus` | `aboutus/index.html` | ABOUT US \| DeeDee Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/activities` | `activities/index.html` | Hoạt động \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/5-super-heroes` | `all-project/5-super-heroes/index.html` | 5 SUPER HEROES \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/a-greyhound-of-a-girl` | `all-project/a-greyhound-of-a-girl/index.html` | A GREYHOUND OF A GIRL \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/adm-iq-gold` | `all-project/adm-iq-gold/index.html` | ADM IQ GOLD \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/an-unexpected-guest` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/activities` | `activities/index.html` | Hoạt động \| DeeDee Animation Studio | Sampled responsive grid and initial counts match Wix; all 23 cards appear after scrolling to the bottom |
+| `/all-project/5-super-heroes` | `all-project/5-super-heroes/index.html` | 5 SUPER HEROES \| DeeDee Animation Studio | Representative Wix/local comparison at 1440px and 360/390/414px; shared mobile layout repair covers project-detail routes; remaining page-end differences still need review |
+| `/all-project/a-greyhound-of-a-girl` | `all-project/a-greyhound-of-a-girl/index.html` | A GREYHOUND OF A GIRL \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/adm-iq-gold` | `all-project/adm-iq-gold/index.html` | ADM IQ GOLD \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/an-unexpected-guest` | `all-project/an-unexpected-guest/index.html` | AN UNEXPECTED GUEST \| DeeDee Animation Studio | Alias local chuyển đến `/en/all-project/an-unexpected-guest`; nguồn canonical đã xác minh |
 | `/all-project/awaken` | `all-project/awaken/index.html` | AWAKEN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/bartali's-bicycle` | `all-project/bartali's-bicycle/index.html` | BARTALI'S BICYCLE \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/blue-zone` | `all-project/blue-zone/index.html` | BLUE ZONE \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/bartali's-bicycle` | `all-project/bartali's-bicycle/index.html` | BARTALI'S BICYCLE \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/blue-zone` | `all-project/blue-zone/index.html` | BLUE ZONE \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/broken-being:-the-prequel` | `all-project/broken-being:-the-prequel/index.html` | TÀN THỂ: TIỀN TRUYỆN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/camp-x-disney's-mickey-&-friends` | `all-project/camp-x-disney's-mickey-&-friends/index.html` | CAMP X DISNEY'S MICKEY & FRIENDS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/camp-x-disney's-mickey-&-friends` | `all-project/camp-x-disney's-mickey-&-friends/index.html` | CAMP X DISNEY'S MICKEY & FRIENDS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/chimimo` | `all-project/chimimo/index.html` | CHIMIMO \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/chivalware` | `all-project/chivalware/index.html` | CHIVALWARE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/christmas-just-ain't-christmas` | `all-project/christmas-just-ain't-christmas/index.html` | CHRISTMAS JUST AIN'T CHRISTMAS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/christmas-just-ain't-christmas` | `all-project/christmas-just-ain't-christmas/index.html` | CHRISTMAS JUST AIN'T CHRISTMAS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/cyberslav` | `all-project/cyberslav/index.html` | CYBERSLAV \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/có-thờ-có-thiêng` | `all-project/có-thờ-có-thiêng/index.html` | CÓ THỜ CÓ THIÊNG \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/dai-nghia-hiep-(the-hero-new-version)` | `all-project/dai-nghia-hiep-(the-hero-new-version)/index.html` | ĐẠI NGHĨA HIỆP \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/có-thờ-có-thiêng` | `all-project/có-thờ-có-thiêng/index.html` | CÓ THỜ CÓ THIÊNG \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/dai-nghia-hiep-(the-hero-new-version)` | `all-project/dai-nghia-hiep-(the-hero-new-version)/index.html` | ĐẠI NGHĨA HIỆP \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/dc's-justice-league:-cosmic-chaos` | `all-project/dc's-justice-league:-cosmic-chaos/index.html` | DC'S JUSTICE LEAGUE: COSMIC CHAOS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/family-dinner` | `all-project/family-dinner/index.html` | FAMILY DINNER \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/family-dinner` | `all-project/family-dinner/index.html` | FAMILY DINNER \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/fantastic-four` | `all-project/fantastic-four/index.html` | MEET THE FANTASTIC FOUR \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/fc-mobile-viet-nam-x-captain-boy` | `all-project/fc-mobile-viet-nam-x-captain-boy/index.html` | FC MOBILE VIỆT NAM X CAPTAIN BOY \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/free-fire` | `all-project/free-fire/index.html` | FREE FIRE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/free-fire-hack` | `all-project/free-fire-hack/index.html` | FREE FIRE HACK \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/free-fire-max` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/free-fire-max` | `all-project/free-fire-max/index.html` | FREE FIRE MAX \| DeeDee Animation Studio | Local alias redirects to `/en/all-project/free-fire-max`; target file exists; visual check pending |
 | `/all-project/freefire-x-naruto` | `all-project/freefire-x-naruto/index.html` | FREEFIRE X NARUTO \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/fun-with-traffic` | `all-project/fun-with-traffic/index.html` | FUN WITH TRAFFIC \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/general,-please-mind-your-manner` | `all-project/general,-please-mind-your-manner/index.html` | ĐẠI VƯƠNG, XIN HÃY TIẾT CHẾ \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/genevieve's-playhouse` | `all-project/genevieve's-playhouse/index.html` | GENEVIEVE'S PLAYHOUSE \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/fun-with-traffic` | `all-project/fun-with-traffic/index.html` | FUN WITH TRAFFIC \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/general,-please-mind-your-manner` | `all-project/general,-please-mind-your-manner/index.html` | ĐẠI VƯƠNG, XIN HÃY TIẾT CHẾ \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/genevieve's-playhouse` | `all-project/genevieve's-playhouse/index.html` | GENEVIEVE'S PLAYHOUSE \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/glorious-mission` | `all-project/glorious-mission/index.html` | GLORIOUS MISSION \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/green-sm` | `all-project/green-sm/index.html` | GREEN SM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/guardian-of-the-wild` | `all-project/guardian-of-the-wild/index.html` | GUARDIAN OF THE WILD \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/happy-birthday-bobby-chan` | `all-project/happy-birthday-bobby-chan/index.html` | HAPPY BIRTHDAY BOBBY-CHAN \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/guardian-of-the-wild` | `all-project/guardian-of-the-wild/index.html` | GUARDIAN OF THE WILD \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/happy-birthday-bobby-chan` | `all-project/happy-birthday-bobby-chan/index.html` | HAPPY BIRTHDAY BOBBY-CHAN \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/holiday-heroes` | `all-project/holiday-heroes/index.html` | HOLIDAY HEROES \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/home-again-tro-ve` | `all-project/home-again-tro-ve/index.html` | TRỞ VỀ \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/hot-wheels-skate` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/hot-wheels-skate` | `all-project/hot-wheels-skate/index.html` | HOT WHEELS SKATE \| DeeDee Animation Studio | Local alias redirects to `/en/all-project/hot-wheels-skate`; target file exists; visual check pending |
 | `/all-project/how-to-become-a-cult-leader` | `all-project/how-to-become-a-cult-leader/index.html` | HOW TO BECOME A CULT LEADER \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/how-to-become-a-mob-boss` | `all-project/how-to-become-a-mob-boss/index.html` | HOW TO BECOME A MOB BOSS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/hoàng-thị-thế:-fate-&-destiny` | `all-project/hoàng-thị-thế:-fate-&-destiny/index.html` | HOÀNG THỊ THẾ: FATE & DESTINY \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/huion-will-rock-you` | `all-project/huion-will-rock-you/index.html` | HUION WILL ROCK YOU \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/huion-will-rock-you` | `all-project/huion-will-rock-you/index.html` | HUION WILL ROCK YOU \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/idle-slayer-x-attack-on-titan` | `all-project/idle-slayer-x-attack-on-titan/index.html` | IDLE SLAYER X ATTACK ON TITAN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/intergalactic-goodspeed` | `all-project/intergalactic-goodspeed/index.html` | INTERGALACTIC GOODSPEED \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/intergalactic-goodspeed` | `all-project/intergalactic-goodspeed/index.html` | INTERGALACTIC GOODSPEED \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/jelly's-bean` | `all-project/jelly's-bean/index.html` | JELLY'S BEAN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/k+-sea-games-32` | `all-project/k+-sea-games-32/index.html` | K+ SEA GAMES 32 \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/let-victory-make-history` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/all-project/lord-of-goblins` | `all-project/lord-of-goblins/index.html` | LORD OF GOBLINS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/loving-kieu` | `all-project/loving-kieu/index.html` | YÊU KIỀU \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/k+-sea-games-32` | `all-project/k+-sea-games-32/index.html` | K+ SEA GAMES 32 \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/let-victory-make-history` | `all-project/let-victory-make-history/index.html` | LET VICTORY MAKE HISTORY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/all-project/lord-of-goblins` | `all-project/lord-of-goblins/index.html` | LORD OF GOBLINS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/loving-kieu` | `all-project/loving-kieu/index.html` | YÊU KIỀU \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/making-waves-valorant` | `all-project/making-waves-valorant/index.html` | MAKING WAVES - VALORANT \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/marcommate's-journey` | `all-project/marcommate's-journey/index.html` | MARCOMMATE'S JOURNEY \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/mickey-in-real-life` | `all-project/mickey-in-real-life/index.html` | MICKEY IN REAL LIFE \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/milo-collective-cards` | `all-project/milo-collective-cards/index.html` | MILO COLLECTIVE CARDS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/miracle-dirt` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/marcommate's-journey` | `all-project/marcommate's-journey/index.html` | MARCOMMATE'S JOURNEY \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/mickey-in-real-life` | `all-project/mickey-in-real-life/index.html` | MICKEY IN REAL LIFE \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/milo-collective-cards` | `all-project/milo-collective-cards/index.html` | MILO COLLECTIVE CARDS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/miracle-dirt` | `all-project/miracle-dirt/index.html` | LẤM LEM DIỆU KỲ \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/all-project/miraculous-chibi` | `all-project/miraculous-chibi/index.html` | MIRACULOUS CHIBI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/not-for-thinking` | `all-project/not-for-thinking/index.html` | NOT FOR THINKING \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/not-for-thinking` | `all-project/not-for-thinking/index.html` | NOT FOR THINKING \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/oh-my-god-yes` | `all-project/oh-my-god-yes/index.html` | Oh My God...YES! \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/okaimono-panda` | `all-project/okaimono-panda/index.html` | OKAIMONO PANDA \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/planting-home-for-all-species` | `all-project/planting-home-for-all-species/index.html` | PLANTING HOME FOR ALL SPECIES \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/probi-guardian` | `all-project/probi-guardian/index.html` | PROBI GUARDIAN \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/protecting-kids-on-the-internet` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/okaimono-panda` | `all-project/okaimono-panda/index.html` | OKAIMONO PANDA \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/planting-home-for-all-species` | `all-project/planting-home-for-all-species/index.html` | PLANTING HOME FOR ALL SPECIES \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/probi-guardian` | `all-project/probi-guardian/index.html` | PROBI GUARDIAN \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/protecting-kids-on-the-internet` | `all-project/protecting-kids-on-the-internet/index.html` | PROTECTING KIDS ON THE INTERNET \| DeeDee Animation Studio | Local alias redirects to `/en/all-project/protecting-kids-on-the-internet`; target file exists; visual check pending |
 | `/all-project/pudgy-penguins` | `all-project/pudgy-penguins/index.html` | PUDGY PENGUINS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/she-kings` | `all-project/she-kings/index.html` | SHE-KINGS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/strong-vietnam` | `all-project/strong-vietnam/index.html` | STRONG VIETNAM \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/student-with-cyber-security` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/she-kings` | `all-project/she-kings/index.html` | SHE-KINGS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/strong-vietnam` | `all-project/strong-vietnam/index.html` | STRONG VIETNAM \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/student-with-cyber-security` | `all-project/student-with-cyber-security/index.html` | STUDENT WITH CYBER SECURITY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/all-project/sunny-side-down` | `all-project/sunny-side-down/index.html` | SUNNY SIDE DOWN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/super-artist` | `all-project/super-artist/index.html` | SUPER ARTIST \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/super-artist` | `all-project/super-artist/index.html` | SUPER ARTIST \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/susu-card` | `all-project/susu-card/index.html` | SUSU CARD \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/susu-hero` | `all-project/susu-hero/index.html` | SUSU HERO \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/susu-hero` | `all-project/susu-hero/index.html` | SUSU HERO \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/th-mistori` | `all-project/th-mistori/index.html` | TH MISTORI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/the-2021-year-end-offer` | `all-project/the-2021-year-end-offer/index.html` | THE 2021 YEAR-END OFFER \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/the-archmage-legacy` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/all-project/the-hero` | `all-project/the-hero/index.html` | ĐẠI HIỆP \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/the-legend-of-hai-moc-nhi` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/all-project/the-2021-year-end-offer` | `all-project/the-2021-year-end-offer/index.html` | THE 2021 YEAR-END OFFER \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/the-archmage-legacy` | `all-project/the-archmage-legacy/index.html` | THE ARCHMAGE LEGACY \| DeeDee Animation Studio | Local alias redirects to `/en/all-project/the-archmage-legacy`; target file exists; visual check pending |
+| `/all-project/the-hero` | `all-project/the-hero/index.html` | ĐẠI HIỆP \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/the-legend-of-hai-moc-nhi` | `all-project/the-legend-of-hai-moc-nhi/index.html` | THE LEGEND OF HAI MOC NHI \| DeeDee Animation Studio | Local alias redirects to `/en/all-project/the-legend-of-hai-moc-nhi`; target file exists; visual check pending |
 | `/all-project/the-magnificent-life-of-marcel-pagnol` | `all-project/the-magnificent-life-of-marcel-pagnol/index.html` | A MAGNIFICENT LIFE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/the-naugh-nice-business` | `all-project/the-naugh-nice-business/index.html` | DỊCH VỤ QUỶ SỨ \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/the-olive-treehouse` | `all-project/the-olive-treehouse/index.html` | THE OLIVE TREEHOUSE \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/the-silver-ion-squad` | `all-project/the-silver-ion-squad/index.html` | THE SILVER ION SQUAD \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/the-wool-wool-town` | `all-project/the-wool-wool-town/index.html` | THE WOOL WOOL TOWN \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/tied-up` | `all-project/tied-up/index.html` | DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/the-naugh-nice-business` | `all-project/the-naugh-nice-business/index.html` | DỊCH VỤ QUỶ SỨ \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/the-olive-treehouse` | `all-project/the-olive-treehouse/index.html` | THE OLIVE TREEHOUSE \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/the-silver-ion-squad` | `all-project/the-silver-ion-squad/index.html` | THE SILVER ION SQUAD \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/the-wool-wool-town` | `all-project/the-wool-wool-town/index.html` | THE WOOL WOOL TOWN \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/tied-up` | `all-project/tied-up/index.html` | DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/upzi` | `all-project/upzi/index.html` | UPZI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/all-project/usual-morning` | `all-project/usual-morning/index.html` | MV 'BUỔI SÁNG BÌNH THƯỜNG' \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/vf3-sáng-tạo-chất-riêng` | `all-project/vf3-sáng-tạo-chất-riêng/index.html` | VF3 SÁNG TẠO CHẤT RIÊNG \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/vietnam-airlines-công-chiếu-hoạt-hình` | `all-project/vietnam-airlines-công-chiếu-hoạt-hình/index.html` | VIETNAM AIRLINES X DEEDEE ANIMATION ORIGINALS \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
-| `/all-project/vim-super-heroes` | `all-project/vim-super-heroes/index.html` | VIM SUPER HEROES \| DeeDee Animation Studio | Seite lokal; neu kopiert, noch ungeprüft |
+| `/all-project/usual-morning` | `all-project/usual-morning/index.html` | MV 'BUỔI SÁNG BÌNH THƯỜNG' \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/vf3-sáng-tạo-chất-riêng` | `all-project/vf3-sáng-tạo-chất-riêng/index.html` | VF3 SÁNG TẠO CHẤT RIÊNG \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/vietnam-airlines-công-chiếu-hoạt-hình` | `all-project/vietnam-airlines-công-chiếu-hoạt-hình/index.html` | VIETNAM AIRLINES X DEEDEE ANIMATION ORIGINALS \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
+| `/all-project/vim-super-heroes` | `all-project/vim-super-heroes/index.html` | VIM SUPER HEROES \| DeeDee Animation Studio | Restored locally; HTML/media and internal links checked; visual comparison pending |
 | `/all-project/vinamilk-adm` | `all-project/vinamilk-adm/index.html` | VINAMILK ADM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/vinamilk-greenfarm` | `all-project/vinamilk-greenfarm/index.html` | VINAMILK GREENFARM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/warhamer-interogator` | `all-project/warhamer-interogator/index.html` | WARHAMER INTEROGATOR \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/all-project/yo-zeno!` | `all-project/yo-zeno!/index.html` | YO ZENO! \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/blog/categories/hoạt-động` | `blog/categories/hoạt-động/index.html` | Hoạt động | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/blog/categories/knowledge` | `blog/categories/knowledge/index.html` | Kiến thức | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/blog/categories/talk-interview` | `blog/categories/talk-interview/index.html` | Góc chuyên gia | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+| `/blog/categories/hoạt-động` | `blog/categories/hoạt-động/index.html` | Hoạt động | Wix/local card and feed bounds matched at 390px and 1440px; progressive batches retained |
+| `/blog/categories/knowledge` | `blog/categories/knowledge/index.html` | Kiến thức | Wix/local card and feed bounds matched at 390px and 1440px; progressive batches retained |
+| `/blog/categories/talk-interview` | `blog/categories/talk-interview/index.html` | Góc chuyên gia | Wix/local card and feed bounds matched at 390px and 1440px; progressive batches retained |
 | `/blog/hashtags/29` | `blog/hashtags/29/index.html` | #29 | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/blog/tags/2d` | `blog/tags/2d/index.html` | 2D \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/blog/tags/adult-animation` | `blog/tags/adult-animation/index.html` | adult animation \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
@@ -157,86 +170,86 @@ Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; capt
 | `/contact-us` | `contact-us/index.html` | Liên hệ \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en` | `en/index.html` | DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/activities` | `en/activities/index.html` | Activities \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/5-super-heroes` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/a-greyhound-of-a-girl` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/adm-iq-gold` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/an-unexpected-guest` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/5-super-heroes` | `en/all-project/5-super-heroes/index.html` | 5 SUPER HEROES \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/a-greyhound-of-a-girl` | `en/all-project/a-greyhound-of-a-girl/index.html` | A GREYHOUND OF A GIRL \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/adm-iq-gold` | `en/all-project/adm-iq-gold/index.html` | ADM IQ GOLD \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/an-unexpected-guest` | `en/all-project/an-unexpected-guest/index.html` | AN UNEXPECTED GUEST \| DeeDee Animation Studio | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
 | `/en/all-project/awaken` | `en/all-project/awaken/index.html` | AWAKEN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/bartali's-bicycle` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/blue-zone` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/bartali's-bicycle` | `en/all-project/bartali's-bicycle/index.html` | BARTALI'S BICYCLE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/blue-zone` | `en/all-project/blue-zone/index.html` | BLUE ZONE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/broken-being:-the-prequel` | `en/all-project/broken-being:-the-prequel/index.html` | TÀN THỂ: TIỀN TRUYỆN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/camp-x-disney's-mickey-&-friends` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/camp-x-disney's-mickey-&-friends` | `en/all-project/camp-x-disney's-mickey-&-friends/index.html` | CAMP X DISNEY'S MICKEY & FRIENDS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/chimimo` | `en/all-project/chimimo/index.html` | CHIMIMO \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/chivalware` | `en/all-project/chivalware/index.html` | CHIVALWARE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/christmas-just-ain't-christmas` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/christmas-just-ain't-christmas` | `en/all-project/christmas-just-ain't-christmas/index.html` | CHRISTMAS JUST AIN'T CHRISTMAS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/cyberslav` | `en/all-project/cyberslav/index.html` | CYBERSLAV \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/có-thờ-có-thiêng` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/dai-nghia-hiep-(the-hero-new-version)` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/có-thờ-có-thiêng` | `en/all-project/có-thờ-có-thiêng/index.html` | CÓ THỜ CÓ THIÊNG \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/dai-nghia-hiep-(the-hero-new-version)` | `en/all-project/dai-nghia-hiep-(the-hero-new-version)/index.html` | ĐẠI NGHĨA HIỆP \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/dc's-justice-league:-cosmic-chaos` | `en/all-project/dc's-justice-league:-cosmic-chaos/index.html` | DC'S JUSTICE LEAGUE: COSMIC CHAOS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/family-dinner` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/family-dinner` | `en/all-project/family-dinner/index.html` | FAMILY DINNER \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/fantastic-four` | `en/all-project/fantastic-four/index.html` | MEET THE FANTASTIC FOUR \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/fc-mobile-viet-nam-x-captain-boy` | `en/all-project/fc-mobile-viet-nam-x-captain-boy/index.html` | FC MOBILE VIỆT NAM X CAPTAIN BOY \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/free-fire` | `en/all-project/free-fire/index.html` | FREE FIRE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/free-fire-hack` | `en/all-project/free-fire-hack/index.html` | FREE FIRE HACK \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/free-fire-max` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/free-fire-max` | `en/all-project/free-fire-max/index.html` | FREE FIRE MAX \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/freefire-x-naruto` | `en/all-project/freefire-x-naruto/index.html` | FREEFIRE X NARUTO \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/fun-with-traffic` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/general,-please-mind-your-manner` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/genevieve's-playhouse` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/fun-with-traffic` | `en/all-project/fun-with-traffic/index.html` | FUN WITH TRAFFIC \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/general,-please-mind-your-manner` | `en/all-project/general,-please-mind-your-manner/index.html` | ĐẠI VƯƠNG, XIN HÃY TIẾT CHẾ \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/genevieve's-playhouse` | `en/all-project/genevieve's-playhouse/index.html` | GENEVIEVE'S PLAYHOUSE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/glorious-mission` | `en/all-project/glorious-mission/index.html` | GLORIOUS MISSION \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/green-sm` | `en/all-project/green-sm/index.html` | GREEN SM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/guardian-of-the-wild` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/happy-birthday-bobby-chan` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/guardian-of-the-wild` | `en/all-project/guardian-of-the-wild/index.html` | GUARDIAN OF THE WILD \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/happy-birthday-bobby-chan` | `en/all-project/happy-birthday-bobby-chan/index.html` | HAPPY BIRTHDAY BOBBY-CHAN \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/holiday-heroes` | `en/all-project/holiday-heroes/index.html` | HOLIDAY HEROES \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/home-again-tro-ve` | `en/all-project/home-again-tro-ve/index.html` | TRỞ VỀ \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/hot-wheels-skate` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/hot-wheels-skate` | `en/all-project/hot-wheels-skate/index.html` | HOT WHEELS SKATE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/how-to-become-a-cult-leader` | `en/all-project/how-to-become-a-cult-leader/index.html` | HOW TO BECOME A CULT LEADER \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/how-to-become-a-mob-boss` | `en/all-project/how-to-become-a-mob-boss/index.html` | HOW TO BECOME A MOB BOSS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/hoàng-thị-thế:-fate-&-destiny` | `en/all-project/hoàng-thị-thế:-fate-&-destiny/index.html` | HOÀNG THỊ THẾ: FATE & DESTINY \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/huion-will-rock-you` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/huion-will-rock-you` | `en/all-project/huion-will-rock-you/index.html` | HUION WILL ROCK YOU \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/idle-slayer-x-attack-on-titan` | `en/all-project/idle-slayer-x-attack-on-titan/index.html` | IDLE SLAYER X ATTACK ON TITAN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/intergalactic-goodspeed` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/intergalactic-goodspeed` | `en/all-project/intergalactic-goodspeed/index.html` | INTERGALACTIC GOODSPEED \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/jelly's-bean` | `en/all-project/jelly's-bean/index.html` | JELLY'S BEAN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/k+-sea-games-32` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/let-victory-make-history` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/lord-of-goblins` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/loving-kieu` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/k+-sea-games-32` | `en/all-project/k+-sea-games-32/index.html` | K+ SEA GAMES 32 \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/let-victory-make-history` | `en/all-project/let-victory-make-history/index.html` | LET VICTORY MAKE HISTORY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/lord-of-goblins` | `en/all-project/lord-of-goblins/index.html` | LORD OF GOBLINS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/loving-kieu` | `en/all-project/loving-kieu/index.html` | YÊU KIỀU \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/making-waves-valorant` | `en/all-project/making-waves-valorant/index.html` | MAKING WAVES - VALORANT \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/marcommate's-journey` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/mickey-in-real-life` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/milo-collective-cards` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/miracle-dirt` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/marcommate's-journey` | `en/all-project/marcommate's-journey/index.html` | MARCOMMATE'S JOURNEY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/mickey-in-real-life` | `en/all-project/mickey-in-real-life/index.html` | MICKEY IN REAL LIFE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/milo-collective-cards` | `en/all-project/milo-collective-cards/index.html` | MILO COLLECTIVE CARDS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/miracle-dirt` | `en/all-project/miracle-dirt/index.html` | LẤM LEM DIỆU KỲ \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/miraculous-chibi` | `en/all-project/miraculous-chibi/index.html` | MIRACULOUS CHIBI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/not-for-thinking` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/not-for-thinking` | `en/all-project/not-for-thinking/index.html` | NOT FOR THINKING \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/oh-my-god-yes` | `en/all-project/oh-my-god-yes/index.html` | Oh My God...YES! \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/okaimono-panda` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/planting-home-for-all-species` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/probi-guardian` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/protecting-kids-on-the-internet` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/okaimono-panda` | `en/all-project/okaimono-panda/index.html` | OKAIMONO PANDA \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/planting-home-for-all-species` | `en/all-project/planting-home-for-all-species/index.html` | PLANTING HOME FOR ALL SPECIES \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/probi-guardian` | `en/all-project/probi-guardian/index.html` | PROBI GUARDIAN \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/protecting-kids-on-the-internet` | `en/all-project/protecting-kids-on-the-internet/index.html` | PROTECTING KIDS ON THE INTERNET \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/pudgy-penguins` | `en/all-project/pudgy-penguins/index.html` | PUDGY PENGUINS \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/she-kings` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/strong-vietnam` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/student-with-cyber-security` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/she-kings` | `en/all-project/she-kings/index.html` | SHE-KINGS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/strong-vietnam` | `en/all-project/strong-vietnam/index.html` | STRONG VIETNAM \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/student-with-cyber-security` | `en/all-project/student-with-cyber-security/index.html` | STUDENT WITH CYBER SECURITY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/sunny-side-down` | `en/all-project/sunny-side-down/index.html` | SUNNY SIDE DOWN \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/super-artist` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/super-artist` | `en/all-project/super-artist/index.html` | SUPER ARTIST \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/susu-card` | `en/all-project/susu-card/index.html` | SUSU CARD \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/susu-hero` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/susu-hero` | `en/all-project/susu-hero/index.html` | SUSU HERO \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/th-mistori` | `en/all-project/th-mistori/index.html` | TH MISTORI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/the-2021-year-end-offer` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-archmage-legacy` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-hero` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-legend-of-hai-moc-nhi` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/the-2021-year-end-offer` | `en/all-project/the-2021-year-end-offer/index.html` | THE 2021 YEAR-END OFFER \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-archmage-legacy` | `en/all-project/the-archmage-legacy/index.html` | THE ARCHMAGE LEGACY \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-hero` | `en/all-project/the-hero/index.html` | ĐẠI HIỆP \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-legend-of-hai-moc-nhi` | `en/all-project/the-legend-of-hai-moc-nhi/index.html` | THE LEGEND OF HAI MOC NHI \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/the-magnificent-life-of-marcel-pagnol` | `en/all-project/the-magnificent-life-of-marcel-pagnol/index.html` | A MAGNIFICENT LIFE \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/the-naugh-nice-business` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-olive-treehouse` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-silver-ion-squad` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/the-wool-wool-town` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/tied-up` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/the-naugh-nice-business` | `en/all-project/the-naugh-nice-business/index.html` | DỊCH VỤ QUỶ SỨ \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-olive-treehouse` | `en/all-project/the-olive-treehouse/index.html` | THE OLIVE TREEHOUSE \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-silver-ion-squad` | `en/all-project/the-silver-ion-squad/index.html` | THE SILVER ION SQUAD \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/the-wool-wool-town` | `en/all-project/the-wool-wool-town/index.html` | THE WOOL WOOL TOWN \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/tied-up` | `en/all-project/tied-up/index.html` | DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/upzi` | `en/all-project/upzi/index.html` | UPZI \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
-| `/en/all-project/usual-morning` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/vf3-sáng-tạo-chất-riêng` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/vietnam-airlines-công-chiếu-hoạt-hình` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
-| `/en/all-project/vim-super-heroes` | `—` | — | Chưa có trang chi tiết local (link hiện chưa được khôi phục) |
+| `/en/all-project/usual-morning` | `en/all-project/usual-morning/index.html` | MV 'BUỔI SÁNG BÌNH THƯỜNG' \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/vf3-sáng-tạo-chất-riêng` | `en/all-project/vf3-sáng-tạo-chất-riêng/index.html` | VF3 SÁNG TẠO CHẤT RIÊNG \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/vietnam-airlines-công-chiếu-hoạt-hình` | `en/all-project/vietnam-airlines-công-chiếu-hoạt-hình/index.html` | VIETNAM AIRLINES X DEEDEE ANIMATION ORIGINALS \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
+| `/en/all-project/vim-super-heroes` | `en/all-project/vim-super-heroes/index.html` | VIM SUPER HEROES \| DeeDee Animation Studio | Captured locally; visual and interaction checks pending |
 | `/en/all-project/vinamilk-adm` | `en/all-project/vinamilk-adm/index.html` | VINAMILK ADM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/vinamilk-greenfarm` | `en/all-project/vinamilk-greenfarm/index.html` | VINAMILK GREENFARM \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/all-project/warhamer-interogator` | `en/all-project/warhamer-interogator/index.html` | WARHAMER INTEROGATOR \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
@@ -284,13 +297,17 @@ Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; capt
 | `/en/blog/tags/uk` | `en/blog/tags/uk/index.html` | UK \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/blog/tags/vietnam-film-festival` | `en/blog/tags/vietnam-film-festival/index.html` | Vietnam Film Festival \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/blog/tags/vtv-1` | `en/blog/tags/vtv-1/index.html` | vtv \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+| `/en/careers` | `en/careers/index.html` | Tuyển dụng2 \| DeeDee Animation Studio | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
 | `/en/carrers` | `en/carrers/index.html` | Career \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/contact-long-form` | `en/contact-long-form/index.html` | Contact - Series \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/contact-short-form` | `en/contact-short-form/index.html` | Contact - Short film \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/contact-us` | `en/contact-us/index.html` | Contact us \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+| `/en/explore/categories/12-rules` | `en/explore/categories/12-rules/index.html` | 404 Error: Page not found | Wix source returns HTTP 404; local route reuses the branded Wix 404 appearance |
 | `/en/home-again` | `en/home-again/index.html` | Home Again Animated Short Film \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/news` | `en/news/index.html` | News \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/our-work` | `en/our-work/index.html` | Our work \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+| `/en/webinar` | `en/webinar/index.html` | WEBINAR \| DeeDee Animation Studio | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
+| `/en/webinar-popular-types-animation` | `en/webinar-popular-types-animation/index.html` | Webinar 1 - Popular types of animation in advertising | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
 | `/en/portfolio-tabs/2` | `en/portfolio-tabs/2/index.html` | Our work \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/portfolio-tabs/3` | `en/portfolio-tabs/3/index.html` | Our work \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/portfolio-tabs/4` | `en/portfolio-tabs/4/index.html` | Our work \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
@@ -413,6 +430,7 @@ Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; capt
 | `/en/studio` | `en/studio/index.html` | STUDIO \| DeeDee Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/en/testimonials` | `en/testimonials/index.html` | Testimonials \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/freefire` | `freefire/index.html` | GARENA FREE FIRE \| DeeDee Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+| `/freefirehack` | `freefirehack/index.html` | NÊN LÀM GÌ KHI GẶP HACK? \| DeeDee Studio | Compared with Wix at 390/768/1440px; verified video restored and gallery grid geometry matches |
 | `/news` | `news/index.html` | Tin tức \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/our-work` | `our-work/index.html` | Dự án \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/portfolio-tabs/2` | `portfolio-tabs/2/index.html` | Dự án \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
@@ -536,3 +554,10 @@ Snapshot: 2026-10-24. Manifest entries: 536; unique normalized routes: 470; capt
 | `/service` | `service/index.html` | SERVICE \| DeeDee Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/studio` | `studio/index.html` | STUDIO \| DeeDee Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
 | `/testimonials` | `testimonials/index.html` | Testimonials \| DeeDee Animation Studio | HTML lokal gespeichert; Interaktion/Visuals nicht voll geprüft |
+
+## Additional confirmed Wix routes
+| Route | File | Page title | Status |
+|---|---|---|---|
+| `/en/freefire` | `en/freefire/index.html` | GARENA FREE FIRE \| DeeDee Studio | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
+| `/en/freefirehack` | `en/freefirehack/index.html` | HOW TO REPOR HACK? \| DeeDee Studio | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |
+| `/en/post/does-adult-animation-always-look-mature` | `en/post/does-adult-animation-always-look-mature/index.html` | Does Adult Animation Always Look Mature? | Trang chi tiết đã phục hồi từ Wix; title/canonical đã xác minh; asset path đã kiểm tra |

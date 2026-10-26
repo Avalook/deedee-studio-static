@@ -1,29 +1,34 @@
 # DeeDee Studio static mirror — AI handoff
 
-Checkpoint date: 2026-10-24. The public website remains at
+Checkpoint date: 2026-10-25. The public website remains at
 <https://www.deedeestudio.net/>. The existing public mirror is
 <https://github.com/Avalook/deedee-studio-static> and its Pages site is
 <https://avalook.github.io/deedee-studio-static/>.
 
 ## State at handoff
 
-This is a static archive of the rendered Wix site, not the Wix Editor source.
-There is no application framework, CMS, API server, database, authentication,
-or editable content model in this checkout. The proposal in
-[`editor-design.md`](editor-design.md) is design guidance only; a Wix-like
-free-positioning editor has not been built.
+This is a static archive of the rendered Wix site, not the Wix Editor source. A local CMS/editor prototype is now present at `cms/grapesjs/`; it proxies the archive and stores validated per-route overrides, drafts, releases, media, and revision history on local disk. It supports editing text, image, link, basic styles, responsive size/color overrides, position offsets, insertions, preview, publish, and restore. It does not reproduce all Wix Editor capabilities and is not a production deployment.
 
-The last known pushed commit before this checkpoint was `e291cc6` on `main`
-(`fix: restore responsive background crops and sharp homepage images`). The
-local checkout now includes uncommitted website, runtime, media, manifest,
-documentation, and route-archive changes. Keep them as a checkpoint; do not
-assume every changed route has received a final browser review.
+The active checkout is on `wip/visual-parity-20261024` at `09db434`, with a
+large uncommitted working tree. The latest observed `origin/main` is
+`8cbb172`; this checkout is 12 commits behind it. The current working tree has
+not been pushed or deployed as a whole. Preserve its existing changes while
+reviewing them; do not treat the last commit as the complete site.
 
-The route manifest currently contains 536 page entries and 5,561 asset
-mappings. The 42 manifest errors need a route-by-route review. The project
-archive was interrupted while capturing newly discovered project detail
-pages; see [`ROUTE_STATUS.md`](ROUTE_STATUS.md) for the present inventory and
-missing routes. No final publish of this checkpoint has been verified.
+The route manifest contains 607 unique page entries and 5,869 asset mappings;
+all 607 manifest page files are present and serve as HTTP 200 HTML locally.
+There are 84 Vietnamese and 84 English project-detail folders. The manifest
+still records 42 errors pending AUD-02 review. A static scan found 26,575 local
+anchor references and 14,645 direct local image/media references with no
+missing targets. A repair normalized 1,423 Wix-transformed asset references
+across 156 pages. The latest audit also verified 3,750 unique local asset URL
+references and added the localized `/freefirehack` route with its verified
+video and responsive gallery. The static test suite passes 176/176. These
+checks establish route/file/asset integrity and selected visual parity, not
+full visual or interaction parity across the archive; see
+[`ROUTE_STATUS.md`](ROUTE_STATUS.md) for measured results and remaining gaps.
+
+The static archive runs at `http://127.0.0.1:4173/`; the local CMS proxy/admin runs at `http://127.0.0.1:4174/` and `/admin`. The local editor can move selected elements and save/publish route overrides. Its responsive preview supports 1440, 1037, 787, and 419 CSS-pixel widths. CMS tests passed 31/31 on 2026-10-25. This is local evaluation only: CMS data/session persistence is not production-grade, GitHub Pages cannot run its backend, and no public deployment has been made. Visual verification remains incomplete across 607 routes and all device classes; see `ROUTE_STATUS.md`.
 
 ## Stack and tools
 
@@ -39,7 +44,9 @@ missing routes. No final publish of this checkpoint has been verified.
   controls, and capture visual evidence. The screenshots are in
   [`screenshots/`](screenshots/).
 - The user supplied the open-source `morluto/rea` repository as the original
-  capture tool reference. No framework, CMS, or new skill was installed.
+  capture tool reference. The CMS prototype uses the existing Node.js stack and
+  GrapesJS; it is separate from the static archive source and does not change
+  GitHub Pages hosting.
 
 ## Important files and directories
 
@@ -88,8 +95,12 @@ missing routes. No final publish of this checkpoint has been verified.
   controls. Those need independent review.
 - **Forms do not submit to a backend.** No receiver, database, or delivery
   service is configured, so successful submission cannot be claimed.
-- **There is no visual drag-and-drop editor or CMS.** Content edits currently
-  require source changes and republishing the static site.
+- **The local CMS is limited.** Staff can edit selected existing content and
+  links, replace images, apply basic per-device sizing/color and position
+  changes, add simple text/button/image elements, preview drafts, publish a
+  local release, and restore a prior revision. It does not yet provide
+  unrestricted Wix-style canvas editing, reusable content collections, forms,
+  SEO editing, animation authoring, or hosted multi-user operations.
 - The missing project-detail capture batch was stopped at the user's request.
   Verify every added detail page, asset, internal link, and compressed image
   before publishing this snapshot.
@@ -111,9 +122,17 @@ npm run repair:shapes
 python3 serve.py
 ```
 
-The last known test run before the capture was halted reported 37 passing
-tests and 81.02% line coverage across the test suite. Rerun tests and visual
-checks against the exact checkpoint before publishing. Use
+CMS local evaluation is separate from the static site. In `cms/grapesjs`, run `npm test` and then `npm start`; open `http://127.0.0.1:4174/admin`. Keep the archive server on port 4173 running. Read `cms/grapesjs/README.md` for local demo credentials and production limitations.
+
+On 2026-10-25, the static-site `npm test` ran 161 tests successfully, but the command exits
+with a coverage-gate failure: 69.65% lines, 77.91% branches, and 74.53%
+functions versus the configured 80% thresholds. Focused layout and behavior
+suites pass; coverage remains below the project threshold. Visual checks now
+cover the homepage, `/activities`, three blog category routes, and a
+representative project detail page at selected desktop/mobile widths; the rest
+of the 607-route archive still needs browser comparison before publishing. The
+new mobile project-detail stylesheet is available locally, but has not been
+deployed to GitHub Pages. Use
 `http://127.0.0.1:4173/` if the local server is running.
 
 ## Decisions to preserve

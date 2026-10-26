@@ -1,11 +1,21 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { animationDuration, normalizePageRoute, safeMediaSource, partnerItems, createPlayer } from '../scripts/media-motion.mjs';
+import { advanceMarquee } from '../scripts/partner-marquee.mjs';
 
 test('uses the observed 40px/s marquee speed for one complete loop', () => {
   assert.equal(animationDuration(2245), 56125);
   assert.equal(animationDuration(0), 0);
   assert.equal(animationDuration(NaN), 0);
+});
+
+test('advances the partner marquee smoothly and wraps at one complete track', () => {
+  assert.equal(advanceMarquee(100, 2500, 2245), 200);
+  assert.equal(advanceMarquee(100, 2500, 2245, 0.5), 300);
+  assert.equal(advanceMarquee(2200, 2000, 2245), 35);
+  assert.equal(advanceMarquee(0, 1000, 0), 0);
+  assert.equal(advanceMarquee(0, 1000, 100, 0), 0);
+  assert.equal(advanceMarquee(0, NaN, 100), 0);
 });
 
 test('normalizes encoded and Pages-prefixed article routes', () => {

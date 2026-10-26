@@ -1,0 +1,77 @@
+@media screen and (min-width: 320px) and (max-width: 750px) {
+  #comp-l9pnaaou {
+    min-height: 497px !important;
+  }
+
+  #comp-l9pnm92f,
+  #comp-l9pnoo98 {
+    width: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  #comp-l9pnctwy {
+    min-height: 196px !important;
+  }
+
+  #comp-l9pnlsph {
+    min-height: 111px !important;
+  }
+
+  #comp-l9pnod66 {
+    min-height: 2771px !important;
+  }
+
+  .comp-l9pnod66-container {
+    grid-template-rows: minmax(31px, max-content) minmax(2740px, max-content) !important;
+  }
+
+  #comp-l9pnpcoc,
+  #comp-l9pnpcoc > .comp-l9pnpcoc {
+    width: 100% !important;
+    height: 2740px !important;
+    min-height: 2740px !important;
+  }
+
+  #gallery-wrapper-comp-l9pnpcoc,
+  #pro-gallery-comp-l9pnpcoc,
+  #pro-gallery-container-comp-l9pnpcoc,
+  #pro-gallery-margin-container-comp-l9pnpcoc {
+    width: 100% !important;
+    height: 194px !important;
+  }
+
+  #pro-gallery-margin-container-comp-l9pnpcoc {
+    position: relative !important;
+  }
+
+  #pro-gallery-margin-container-comp-l9pnpcoc > [data-hook="item-link-wrapper"]:nth-child(n + 3) {
+    display: none !important;
+  }
+
+  #pro-gallery-margin-container-comp-l9pnpcoc > [data-hook="item-link-wrapper"]:nth-child(-n + 2) [data-hook="item-container"] {
+    width: 98px !important;
+    height: 97px !important;
+    top: 0 !important;
+  }
+
+  #pro-gallery-margin-container-comp-l9pnpcoc > [data-hook="item-link-wrapper"]:nth-child(1) [data-hook="item-container"] {
+    left: 0 !important;
+  }
+
+  #pro-gallery-margin-container-comp-l9pnpcoc > [data-hook="item-link-wrapper"]:nth-child(2) [data-hook="item-container"] {
+    left: 98px !important;
+  }
+
+  #comp-l9pnpcoc [data-hook="item-wrapper"],
+  #comp-l9pnpcoc [data-hook="image-item"],
+  #comp-l9pnpcoc [data-hook="gallery-item-image-img"],
+  #comp-l9pnpcoc [data-hook^="item-hover-"],
+  #comp-l9pnpcoc [data-hook="info-element"] {
+    width: 98px !important;
+    height: 97px !important;
+  }
+
+  #comp-l9pnpcoc [data-hook="item-description"] {
+    display: none !important;
+  }
+}

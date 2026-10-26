@@ -6,14 +6,62 @@ export const PARTNER_SMALL_LOGO_HEIGHT = 50;
 export const PARTNER_ROW_HEIGHT = 80;
 export const PARTNER_SMALL_BREAKPOINT = 750;
 
+export const PARTNER_GROUP_GUTTER = 30;
+
+export function partnerGroupLayout(group, index, scale) {
+  const groupIndex = Number.isInteger(index) && index >= 0 ? index : 0;
+  const itemWidth = group?.items?.length === 1
+    ? group.items[0]?.width
+    : Number.isFinite(group?.width)
+      ? group.width - PARTNER_GROUP_GUTTER
+      : 0;
+  const sourceLeft = Number.isFinite(group?.left) ? group.left : 0;
+  const contentLeft = sourceLeft - groupIndex * PARTNER_GROUP_GUTTER;
+
+  return {
+    left: scaledPartnerLength(contentLeft, scale) + groupIndex * PARTNER_GROUP_GUTTER,
+    width: scaledPartnerLength(itemWidth, scale) + PARTNER_GROUP_GUTTER,
+  };
+}
+
+export const PARTNER_MOBILE_LOGO_COUNT = 25;
+export const PARTNER_WIDE_LOGO_COUNT = 36;
+
+export const EXTRA_PARTNER_LOGOS = [
+  { id: '398383_663b91cc40034fe289ad5dc186065726', width: 529 },
+  { id: '398383_af7071e161cf407c85462f88e75fe418', width: 392 },
+  { id: '398383_a6f4a6d6a1ea40d3b9a29ded3ff6f836', width: 247 },
+  { id: '398383_1f9d1ce8d2174520bfa8fa7580377619', width: 166 },
+  { id: '398383_e75e8dd2e8b748d0b3929a5a3f9d5dd1', width: 541 },
+  { id: '398383_6a607d87ed0b4ed0bf7456695f2ffb56', width: 102 },
+  { id: '398383_2e7d6711ac7145d79b56c98ec1dfa53a', width: 175 },
+  { id: '398383_72c369cb644c4cc985a173a2d1c9075b', width: 108 },
+  { id: '398383_c9ae09d39f14429bb3a1777ece459429', width: 439 },
+  { id: '398383_e1cd7f3792e1494bbbf467ff364172bd', width: 287 },
+  { id: '398383_bff5764945aa44b2809a8c740de05cce', width: 286 },
+];
+
+export function partnerLogoCount(viewportWidth) {
+  return Number.isFinite(viewportWidth) && viewportWidth <= PARTNER_TABLET_MAX_WIDTH
+    ? PARTNER_MOBILE_LOGO_COUNT
+    : PARTNER_WIDE_LOGO_COUNT;
+}
+
 export function advanceMarquee(position, elapsedMs, cycleWidth, visualScale = 1) {
   if (!Number.isFinite(position) || !Number.isFinite(elapsedMs) || !Number.isFinite(cycleWidth) ||
       !Number.isFinite(visualScale) || elapsedMs <= 0 || cycleWidth <= 0 || visualScale <= 0) return 0;
   return (position + elapsedMs * MARQUEE_SPEED / visualScale / 1000) % cycleWidth;
 }
 
+export function partnerGalleryIsVisible(bounds, viewportWidth, viewportHeight) {
+  return Boolean(bounds) && Number.isFinite(viewportWidth) &&
+    Number.isFinite(viewportHeight) && bounds.right > 0 && bounds.bottom > 0 &&
+    bounds.left < viewportWidth && bounds.top < viewportHeight;
+}
+
 export function canAdvanceMarquee(state) {
-  return Boolean(state) && !state.reducedMotion && !state.paused &&
+  return Boolean(state) && state.inViewport !== false &&
+    !state.reducedMotion && !state.paused &&
     state.visibilityState === 'visible' && state.hasPreviousFrame &&
     Number.isFinite(state.cycleWidth) && state.cycleWidth > 0;
 }
@@ -53,10 +101,14 @@ export function scaledPartnerLength(value, scale) {
 
 export function partnerCycleWidth(groups, scale = 1) {
   if (!Array.isArray(groups)) return 0;
-  return groups.reduce((width, group) => {
-    const left = scaledPartnerLength(group?.left, scale);
-    const groupWidth = scaledPartnerLength(group?.width, scale);
-    return Math.max(width, left + groupWidth);
+  return groups.reduce((width, group, index) => {
+    const layout = group?.items?.length === 1
+      ? partnerGroupLayout(group, index, scale)
+      : {
+        left: scaledPartnerLength(group?.left, scale),
+        width: scaledPartnerLength(group?.width, scale),
+      };
+    return Math.max(width, layout.left + layout.width);
   }, 0);
 }
 
@@ -116,10 +168,12 @@ function captureGroup(group) {
   return { group, left, width, items };
 }
 
-function applyPartnerItem(item, scale, rowHeight) {
+function applyPartnerItem(item, scale, rowHeight, groupLeft = NaN) {
   const width = scaledPartnerLength(item.width, scale);
   const height = scaledPartnerLength(item.height, scale);
-  const left = scaledPartnerLength(item.left, scale);
+  const left = Number.isFinite(groupLeft)
+    ? groupLeft
+    : scaledPartnerLength(item.left, scale);
   const top = partnerItemTop(rowHeight, height);
   const { container, wrapper, content, hoverFrame, hover, image } = item.elements;
 
@@ -129,7 +183,7 @@ function applyPartnerItem(item, scale, rowHeight) {
   container.style.right = 'auto';
   container.style.bottom = 'auto';
   container.style.left = px(left);
-  container.style.margin = '0';
+  container.style.margin = '15px';
   container.style.width = px(width);
   container.style.height = px(height);
 
@@ -191,8 +245,65 @@ function duplicateGroup(capture, cycleWidth) {
   return duplicate;
 }
 
+function ensureWidePartnerGroups(track) {
+  const originals = [...track.querySelectorAll(':scope > [data-hook="group-view"]')]
+    .filter(group => group.dataset.deedeeMarqueeClone !== 'true');
+  const existingIds = new Set(originals.map(group => group.dataset.deedeePartnerLogo).filter(Boolean));
+  const template = originals.at(-1);
+  if (!template) return;
+
+  let left = originals.reduce((end, group) => Math.max(
+    end,
+    parsePx(group.style.getPropertyValue('--group-left')) +
+      parsePx(group.style.getPropertyValue('--group-width')),
+  ), 0);
+
+  EXTRA_PARTNER_LOGOS.forEach((logo, extraIndex) => {
+    if (existingIds.has(logo.id)) return;
+    const group = template.cloneNode(true);
+    const container = group.querySelector('[data-hook="item-container"]');
+    const image = container?.querySelector('img');
+    if (!container || !image) return;
+
+    group.removeAttribute('id');
+    group.querySelectorAll('[id], [tabindex]').forEach(element => {
+      element.removeAttribute('id');
+      element.removeAttribute('tabindex');
+    });
+    group.dataset.deedeePartnerExtra = 'true';
+    group.dataset.deedeePartnerLogo = logo.id;
+    group.setAttribute('aria-hidden', 'false');
+    group.style.setProperty('--group-left', px(left));
+    group.style.setProperty('--group-width', px(logo.width + PARTNER_GROUP_GUTTER));
+
+    container.dataset.idx = String(originals.length + extraIndex);
+    container.dataset.id = logo.id;
+    container.dataset.hash = logo.id;
+    container.setAttribute('aria-hidden', 'false');
+    container.style.inset = '';
+    container.style.position = 'absolute';
+    container.style.top = '0';
+    container.style.right = 'auto';
+    container.style.bottom = 'auto';
+    container.style.left = px(left);
+    container.style.margin = '15px';
+    container.style.width = px(logo.width);
+    container.style.height = px(PARTNER_BASE_LOGO_HEIGHT);
+    image.removeAttribute('id');
+    image.dataset.idx = String(originals.length + extraIndex);
+    image.src = new URL(`../assets/partner-logos/${logo.id}~mv2.png`, import.meta.url).href;
+    image.style.width = '100%';
+    image.style.height = '100%';
+    image.style.objectFit = 'contain';
+
+    track.append(group);
+    left += logo.width + PARTNER_GROUP_GUTTER;
+  });
+}
+
 function ensureState(gallery, track, parent, outer, widget) {
   if (gallery.deedeePartnerMarquee) return gallery.deedeePartnerMarquee;
+  ensureWidePartnerGroups(track);
   const originals = [...track.querySelectorAll(':scope > [data-hook="group-view"]')]
     .filter(group => group.dataset.deedeeMarqueeClone !== 'true');
   const state = {
@@ -214,24 +325,30 @@ function ensureState(gallery, track, parent, outer, widget) {
 function layoutPartner(state, viewportWidth) {
   const scale = partnerViewportScale(viewportWidth);
   const rowHeight = partnerRowHeight(viewportWidth);
+  const visibleGroupCount = partnerLogoCount(viewportWidth);
   restoreStyles(state.containers);
   state.groupStyles.forEach(restoreStyles);
   applyRow(state.gallery, state.parent, state.outer, state.widget, state.track, rowHeight, viewportWidth);
 
-  state.groups.forEach(capture => {
-    capture.group.style.setProperty('--group-left', px(scaledPartnerLength(capture.left, scale)));
-    capture.group.style.setProperty('--group-width', px(scaledPartnerLength(capture.width, scale)));
-    capture.items.forEach(item => applyPartnerItem(item, scale, rowHeight));
+  state.groups.forEach((capture, index) => {
+    const hidden = index >= visibleGroupCount;
+    const layout = partnerGroupLayout(capture, index, scale);
+    capture.group.style.display = hidden ? 'none' : '';
+    capture.group.setAttribute('aria-hidden', String(hidden));
+    capture.group.style.setProperty('--group-left', px(layout.left));
+    capture.group.style.setProperty('--group-width', px(layout.width));
+    capture.items.forEach(item => applyPartnerItem(item, scale, rowHeight, layout.left));
   });
 
   state.track.querySelectorAll('[data-deedee-marquee-clone="true"]').forEach(node => node.remove());
-  const cycleWidth = partnerCycleWidth(state.groups, scale);
+  const activeGroups = state.groups.slice(0, visibleGroupCount);
+  const cycleWidth = partnerCycleWidth(activeGroups, scale);
   state.track.style.width = px(cycleWidth * 2);
   state.gallery.dataset.deedeeMarqueeCycle = String(cycleWidth);
   state.position = cycleWidth > 0 ? state.position % cycleWidth : 0;
   state.written = true;
   state.gallery.scrollLeft = state.position;
-  if (cycleWidth > 0) state.groups.forEach(capture => state.track.append(duplicateGroup(capture, cycleWidth)));
+  if (cycleWidth > 0) activeGroups.forEach(capture => state.track.append(duplicateGroup(capture, cycleWidth)));
   return cycleWidth;
 }
 
@@ -244,50 +361,143 @@ function watchReducedMotion(state, startAnimation) {
   });
 }
 
+export function updatePartnerGalleryVisibility(state, isVisible) {
+  if (!state) return;
+  state.inViewport = Boolean(isVisible);
+  if (!state.inViewport) {
+    if (state.animationFrameId) {
+      state.win.cancelAnimationFrame?.(state.animationFrameId);
+    }
+    state.animationFrameId = 0;
+    state.animationStarted = false;
+    state.lastFrame = 0;
+    return;
+  }
+  startAnimation(state);
+}
+
+function installMarqueeScrollHandler(state) {
+  state.gallery.addEventListener('scroll', () => {
+    if (state.written) { state.written = false; return; }
+    const cycleWidth = parsePx(state.gallery.dataset.deedeeMarqueeCycle);
+    state.position = cycleWidth > 0 ? state.gallery.scrollLeft % cycleWidth : 0;
+  });
+}
+
+function installMarqueePointerHandlers(state) {
+  state.gallery.addEventListener('pointerenter', event => {
+    if (event.pointerType === 'touch') return;
+    state.pointerHovered = true;
+    if (!state.touchActive) state.paused = true;
+  });
+  state.gallery.addEventListener('pointerleave', event => {
+    if (event.pointerType === 'touch') return;
+    state.pointerHovered = false;
+    if (state.touchActive) return;
+    state.paused = false;
+    state.lastFrame = 0;
+  });
+}
+
+function installMarqueeTouchHandlers(state) {
+  const startTouch = () => {
+    state.touchActive = true;
+    state.paused = true;
+  };
+  const finishTouch = event => {
+    if (event.pointerType && event.pointerType !== 'touch') return;
+    state.touchActive = false;
+    state.paused = Boolean(state.pointerHovered);
+    state.lastFrame = 0;
+  };
+  state.gallery.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'touch') startTouch();
+  });
+  state.gallery.addEventListener('pointerup', finishTouch);
+  state.gallery.addEventListener('touchstart', startTouch, { passive: true });
+  state.gallery.addEventListener('touchend', finishTouch, { passive: true });
+  state.gallery.addEventListener('touchcancel', finishTouch, { passive: true });
+}
+
+function installMarqueeKeyboardHandlers(state) {
+  state.gallery.addEventListener('focusin', () => { state.paused = true; });
+  state.gallery.addEventListener('focusout', event => {
+    if (!state.gallery.contains(event.relatedTarget)) {
+      state.paused = Boolean(state.touchActive || state.pointerHovered);
+      state.lastFrame = 0;
+    }
+  });
+}
+
+function watchPartnerGalleryVisibility(state) {
+  const updateVisibility = () => {
+    const bounds = state.gallery.getBoundingClientRect();
+    updatePartnerGalleryVisibility(state, partnerGalleryIsVisible(
+      bounds,
+      state.win.innerWidth,
+      state.win.innerHeight
+    ));
+  };
+  if (typeof state.win.IntersectionObserver === 'function') {
+    state.visibilityObserver = new state.win.IntersectionObserver(entries => {
+      const entry = entries[0];
+      if (entry) updatePartnerGalleryVisibility(state, entry.isIntersecting);
+    });
+    state.visibilityObserver.observe(state.gallery);
+    return;
+  }
+  state.win.addEventListener('scroll', updateVisibility, { passive: true });
+  state.win.addEventListener('resize', updateVisibility, { passive: true });
+}
+
+function installPartnerMarqueeListeners(state) {
+  installMarqueeScrollHandler(state);
+  installMarqueePointerHandlers(state);
+  installMarqueeTouchHandlers(state);
+  installMarqueeKeyboardHandlers(state);
+  state.doc.addEventListener('visibilitychange', () => { state.lastFrame = 0; });
+  state.win.addEventListener('resize', () => layoutPartner(state, state.win.innerWidth));
+  watchPartnerGalleryVisibility(state);
+  watchReducedMotion(state, startAnimation);
+}
+
+function animatePartnerMarquee(state, time) {
+  state.animationFrameId = 0;
+  if (state.reducedMotion || state.inViewport === false) {
+    state.animationStarted = false;
+    state.lastFrame = 0;
+    return;
+  }
+  const cycleWidth = parsePx(state.gallery.dataset.deedeeMarqueeCycle);
+  if (canAdvanceMarquee({
+    reducedMotion: state.reducedMotion,
+    paused: state.paused,
+    visibilityState: state.doc.visibilityState,
+    hasPreviousFrame: Boolean(state.lastFrame),
+    cycleWidth,
+    inViewport: state.inViewport
+  })) {
+    state.position = advanceMarquee(state.position, Math.min(time - state.lastFrame, 100), cycleWidth);
+    state.written = true;
+    state.gallery.scrollLeft = state.position;
+  }
+  state.lastFrame = time;
+  state.animationFrameId = state.win.requestAnimationFrame(nextTime => {
+    animatePartnerMarquee(state, nextTime);
+  });
+}
+
 export function startAnimation(state) {
   if (!state.listenersInstalled) {
     state.listenersInstalled = true;
-    state.gallery.addEventListener('scroll', () => {
-      if (state.written) { state.written = false; return; }
-      const cycleWidth = parsePx(state.gallery.dataset.deedeeMarqueeCycle);
-      state.position = cycleWidth > 0 ? state.gallery.scrollLeft % cycleWidth : 0;
-    });
-    state.gallery.addEventListener('pointerenter', () => { state.paused = true; });
-    state.gallery.addEventListener('pointerleave', () => { state.paused = false; state.lastFrame = 0; });
-    state.gallery.addEventListener('focusin', () => { state.paused = true; });
-    state.gallery.addEventListener('focusout', event => {
-      if (!state.gallery.contains(event.relatedTarget)) { state.paused = false; state.lastFrame = 0; }
-    });
-    state.doc.addEventListener('visibilitychange', () => { state.lastFrame = 0; });
-    state.win.addEventListener('resize', () => layoutPartner(state, state.win.innerWidth));
-    watchReducedMotion(state, startAnimation);
+    installPartnerMarqueeListeners(state);
   }
-  if (state.animationStarted || state.reducedMotion) return;
+  if (state.animationStarted || state.reducedMotion || state.inViewport === false) return;
 
   state.animationStarted = true;
-  const win = state.win;
-  const animate = time => {
-    if (state.reducedMotion) {
-      state.animationStarted = false;
-      state.lastFrame = 0;
-      return;
-    }
-    const cycleWidth = parsePx(state.gallery.dataset.deedeeMarqueeCycle);
-    if (canAdvanceMarquee({
-      reducedMotion: state.reducedMotion,
-      paused: state.paused,
-      visibilityState: state.doc.visibilityState,
-      hasPreviousFrame: Boolean(state.lastFrame),
-      cycleWidth
-    })) {
-      state.position = advanceMarquee(state.position, Math.min(time - state.lastFrame, 100), cycleWidth);
-      state.written = true;
-      state.gallery.scrollLeft = state.position;
-    }
-    state.lastFrame = time;
-    win.requestAnimationFrame(animate);
-  };
-  win.requestAnimationFrame(animate);
+  state.animationFrameId = state.win.requestAnimationFrame(time => {
+    animatePartnerMarquee(state, time);
+  });
 }
 
 export function installPartnerMarquee(root = document) {
@@ -304,6 +514,11 @@ export function installPartnerMarquee(root = document) {
   if (!state.groups.length) return false;
   state.doc = doc;
   state.win = win;
+  state.inViewport = partnerGalleryIsVisible(
+    gallery.getBoundingClientRect(),
+    win.innerWidth,
+    win.innerHeight
+  );
   state.motionQuery = win.matchMedia?.('(prefers-reduced-motion: reduce)');
   state.reducedMotion = Boolean(state.motionQuery?.matches);
   const cycleWidth = layoutPartner(state, win.innerWidth);

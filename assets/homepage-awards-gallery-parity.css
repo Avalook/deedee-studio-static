@@ -1,0 +1,93 @@
+/* Match Wix's compact, viewport-scaled award strips on phones and tablets. */
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .pro-gallery-prerender,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .pro-gallery-prerender,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .pro-gallery-prerender {
+    height: 87px !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-slider,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-slider,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-slider {
+    height: 75px !important;
+    margin: -12.5px !important;
+    overflow: visible !important;
+    width: calc(100vw - 47px) !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 #pro-gallery-container-comp-m7sdvo7i1,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 #pro-gallery-container-comp-m7uj2sj8,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le #pro-gallery-container-comp-m7uj35le {
+    height: 87px !important;
+    overflow: hidden !important;
+    width: calc(100% + 25px) !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 #gallery-horizontal-scroll-comp-m7sdvo7i1,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 #gallery-horizontal-scroll-comp-m7uj2sj8,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le #gallery-horizontal-scroll-comp-m7uj35le {
+    height: 87px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    width: 100% !important;
+    -ms-overflow-style: none !important;
+    touch-action: pan-x !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 #gallery-horizontal-scroll-comp-m7sdvo7i1::-webkit-scrollbar,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 #gallery-horizontal-scroll-comp-m7uj2sj8::-webkit-scrollbar,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le #gallery-horizontal-scroll-comp-m7uj35le::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-horizontal-scroll-inner,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-horizontal-scroll-inner,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-horizontal-scroll-inner {
+    height: 87px !important;
+    transform: none !important;
+    transition: none !important;
+    width: var(--deedee-award-content-width, 2308px) !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 [data-hook="item-container"],
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 [data-hook="item-container"],
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le [data-hook="item-container"] {
+    display: block !important;
+    height: 75px !important;
+    left: var(--deedee-award-item-left, 0px) !important;
+    margin: 12.5px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    width: var(--deedee-award-item-width, 49px) !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-item-wrapper,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-item-wrapper,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-item-wrapper,
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-item-content,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-item-content,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-item-content,
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-item-wrapper img,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-item-wrapper img,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-item-wrapper img {
+    height: 75px !important;
+    width: var(--deedee-award-item-width, 49px) !important;
+  }
+
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-item-wrapper img,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-item-wrapper img,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-item-wrapper img {
+    object-fit: cover !important;
+  }
+}
+
+@media screen and (min-width: 751px) and (max-width: 1100px) {
+  #comp-m7sdvo4r #pro-gallery-comp-m7sdvo7i1 .gallery-slider,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj2sj8 .gallery-slider,
+  #comp-m7sdvo4r #pro-gallery-comp-m7uj35le .gallery-slider {
+    width: calc(100vw - 175px) !important;
+  }
+}

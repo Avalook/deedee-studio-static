@@ -3,10 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { validateProjectData } from './site-controls.mjs';
+import { createLocalRouteSet, rewriteRouteLinksHtml } from './canonical-route-links.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const capturePath = path.resolve(root, '../../work/nav-audit/project-pages-raw.json');
 const manifest = JSON.parse(await readFile(path.join(root, 'manifest.json'), 'utf8'));
+const routes = await createLocalRouteSet(root, manifest.pages);
 const captured = JSON.parse(await readFile(capturePath, 'utf8'));
 const thumbs = new Map();
 const thumbExt = new Map([['image/jpeg', '.jpg'], ['image/png', '.png'], ['image/webp', '.webp'], ['image/avif', '.avif']]);
@@ -44,7 +46,7 @@ for (const capture of captured) {
     }
     const remoteImages = [...new Set([...html.matchAll(/(?:src|srcset)="([^"]+)"/g)].flatMap(match => match[1].split(/,\s+(?=https?:\/\/)/).map(value => value.trim().split(/\s+/)[0]).filter(value => value.startsWith('https://static.wixstatic.com/media/'))))];
     for (const remote of remoteImages) html = html.replaceAll(remote, `/deedee-studio-static${await localThumbnail(remote)}`);
-    items.push(html);
+    items.push(rewriteRouteLinksHtml(html, routes));
   }
   pages.push({ route: capture.route, panel: capture.panel, repeatId: capture.repeatId, buttonId: capture.buttonId, pageSize, items });
 }

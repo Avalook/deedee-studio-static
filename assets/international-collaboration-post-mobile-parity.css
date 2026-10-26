@@ -1,0 +1,76 @@
+/* Responsive parity overrides for the Vietnamese international-collaboration post only. */
+
+@media (max-width: 600px) {
+  section.prZ8Wc {
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 30px !important;
+    padding-left: 0 !important;
+  }
+
+  .L5x0Fp {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .ZL4A4N {
+    padding-top: 3px !important;
+  }
+
+  #content-wrapper article.tgMH9T {
+    font-size: 16px !important;
+    line-height: 22px !important;
+  }
+
+  #content-wrapper article.tgMH9T h1.H3vOVf {
+    font-size: 26px !important;
+    line-height: 36.4px !important;
+  }
+
+  #content-wrapper article.tgMH9T p {
+    font-size: 16px !important;
+    line-height: 18.4px !important;
+  }
+
+  #content-wrapper article.tgMH9T h2[id^="viewer-"] {
+    font-size: 24px !important;
+    line-height: 27.6px !important;
+  }
+}
+
+@media (min-width: 340px) and (max-width: 413px) {
+  .L5x0Fp {
+    width: calc(100% + 32px) !important;
+    margin-left: 4px !important;
+  }
+}
+
+@media (min-width: 414px) and (max-width: 600px) {
+  .L5x0Fp {
+    width: calc(100% + 32px) !important;
+    margin-left: 4px !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 746px) {
+  [data-hook="recent-posts"] [data-hook="recent-post-list-item"]:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  [data-hook="recent-posts"] [data-hook="recent-post-list-item"]:first-of-type {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (min-width: 1001px) and (max-width: 1024px) {
+  #content-wrapper article.tgMH9T[data-hook="post"] footer[data-hook="post-footer"] {
+    height: 108px !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  #comp-m8cfkxz1 > section[data-block-level-container="Section"] {
+    padding-bottom: 8px !important;
+  }
+}

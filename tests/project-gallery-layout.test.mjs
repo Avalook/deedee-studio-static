@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
+import { parse } from 'parse5';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,6 +23,7 @@ function getProjectPages() {
 
 test('Service mobile galleries use the measured Wix columns and section heights', () => {
   const service = fs.readFileSync(path.join(root, 'service', 'index.html'), 'utf8');
+  const englishService = fs.readFileSync(path.join(root, 'en', 'service', 'index.html'), 'utf8');
   const css = fs.readFileSync(galleryStylesheet, 'utf8');
 
   assert.match(service, /data-deedee-service-gallery/);
@@ -33,6 +35,121 @@ test('Service mobile galleries use the measured Wix columns and section heights'
   assert.match(css, /#comp-l9qgun5r/);
   assert.match(css, /aspect-ratio:\s*16\s*\/\s*9/);
   assert.match(css, /grid-template-columns:\s*repeat\(2,/);
+
+  assert.match(englishService, /<link rel="stylesheet" data-deedee-service-gallery[^>]*project-gallery-parity\.css/);
+  assert.match(englishService, /<body[^>]*data-deedee-service-gallery="true"/);
+  assert.match(englishService, /<body[^>]*data-deedee-en-service-gallery="true"/);
+  assert.match(css, /body\[data-deedee-en-service-gallery="true"\][\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+  assert.match(css, /#comp-l9qgdb88\s*\{[^}]*height:\s*168\.75vw/s);
+  assert.match(css, /#comp-l9qgmdrv\s*\{[^}]*height:\s*112\.5vw/s);
+  assert.match(css, /#comp-l9qgpx94\s*\{[^}]*height:\s*168\.75vw/s);
+  assert.match(css, /#comp-l9qgun5r\s*\{[^}]*height:\s*168\.75vw/s);
+  assert.match(css, /grid-auto-rows:\s*56\.25vw/);
+  assert.match(
+    css,
+    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?width:\s*100%\s*!important/,
+  );
+});
+
+test('EN service galleries retain all source-verified tiles and assets', () => {
+  const html = fs.readFileSync(path.join(root, 'en', 'service', 'index.html'), 'utf8');
+  const expectedCounts = {
+    'comp-l9qgdb88': 3,
+    'comp-l9qgmdrv': 2,
+    'comp-l9qgpx94': 3,
+    'comp-l9qgun5r': 3,
+  };
+  const galleries = new Set(Object.keys(expectedCounts));
+  const items = Object.fromEntries([...galleries].map((id) => [id, []]));
+
+  const visit = (node, activeGallery = null, activeItem = null, inTitle = false) => {
+    const attrs = Object.fromEntries((node.attrs ?? []).map(({ name, value }) => [name, value]));
+    const gallery = galleries.has(attrs.id) ? attrs.id : activeGallery;
+    const item = attrs['data-hook'] === 'item-link-wrapper'
+      ? { gallery, id: attrs['data-id'], idx: attrs['data-idx'], title: '', image: '' }
+      : activeItem;
+    const title = inTitle || attrs['data-hook'] === 'item-title';
+
+    if (node.tagName === 'img' && item && attrs['data-hook'] === 'gallery-item-image-img') {
+      item.image = attrs.src;
+    }
+    if (node.nodeName === '#text' && item && title) item.title += node.value;
+    for (const child of node.childNodes ?? []) visit(child, gallery, item, title);
+    if (attrs['data-hook'] === 'item-link-wrapper' && item) items[item.gallery].push(item);
+  };
+
+  visit(parse(html));
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(items).map(([id, entries]) => [id, entries.length])),
+    expectedCounts,
+  );
+
+  const expectedItems = [
+    {
+      gallery: 'comp-l9qgdb88',
+      id: '9ed2eac6-3af9-497b-a11c-c8ed2b149285',
+      idx: '2',
+      title: 'DIALOGUE RECORDING',
+      image: '/deedee-studio-static/assets/346f26deab1bb90937a6ffe1.png',
+    },
+    {
+      gallery: 'comp-l9qgpx94',
+      id: '8a8017bf-2697-470c-a65b-f0183a4b77ed',
+      idx: '2',
+      title: 'HYBRID ANIMATION',
+      image: '/deedee-studio-static/assets/df6b23b0eb2f493ee5e3f927.png',
+    },
+    {
+      gallery: 'comp-l9qgun5r',
+      id: '24333271-c1f0-46e1-a3e3-75ddab0f87ea',
+      idx: '2',
+      title: 'EDITING',
+      image: '/deedee-studio-static/assets/be8df158304c9e209352f191.png',
+    },
+  ];
+
+  for (const expected of expectedItems) {
+    const actual = items[expected.gallery].find(({ id }) => id === expected.id);
+    assert.ok(actual, `missing Wix item ${expected.title}`);
+    assert.deepEqual(actual, {
+      id: expected.id,
+      idx: expected.idx,
+      gallery: expected.gallery,
+      title: expected.title,
+      image: expected.image,
+    });
+    assert.ok(fs.existsSync(path.join(root, expected.image.replace('/deedee-studio-static/', ''))));
+  }
+});
+
+test('EN service tablet galleries keep source cards and captions inside each tile', () => {
+  const css = fs.readFileSync(galleryStylesheet, 'utf8');
+  const enTabletRules = css.match(
+    /\/\* The EN Wix tablet gallery[\s\S]*?@media \(min-width:\s*601px\) and \(max-width:\s*1000px\) \{([\s\S]*?)^\}/m,
+  )?.[1];
+
+  assert.ok(enTabletRules, 'expected a route-specific EN tablet rule block');
+
+  assert.match(
+    enTabletRules,
+    /body\[data-deedee-en-service-gallery="true"\] #comp-l9qgpx94 \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
+  );
+  assert.match(
+    enTabletRules,
+    /body\[data-deedee-en-service-gallery="true"\] #comp-l9qgun5r \.item-link-wrapper:nth-child\(n\+3\)[\s\S]*?display:\s*block\s*!important/,
+  );
+  assert.match(
+    enTabletRules,
+    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.item-hover-flex-container[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
+  );
+  assert.match(
+    enTabletRules,
+    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-text[\s\S]*?height:\s*100%\s*!important[\s\S]*?width:\s*100%\s*!important/,
+  );
+  assert.match(
+    enTabletRules,
+    /body\[data-deedee-en-service-gallery="true"\] \.pro-gallery-margin-container \.info-element-title[\s\S]*?-webkit-line-clamp:\s*2\s*!important/,
+  );
 });
 
 test('The Naugh-Nice desktop gallery retains its Wix authored vertical viewport', () => {
@@ -42,6 +159,23 @@ test('The Naugh-Nice desktop gallery retains its Wix authored vertical viewport'
   assert.match(page, /data-deedee-project-gallery/);
   assert.match(css, /#comp-m7dloa7s/);
   assert.match(css, /height:\s*983\.25px/);
+});
+
+
+test('desktop project galleries use the Wix row height and isolate the Naugh-Nice long viewport', () => {
+  const css = fs.readFileSync(galleryStylesheet, 'utf8');
+  const upzi = fs.readFileSync(path.join(root, 'all-project', 'upzi', 'index.html'), 'utf8');
+  const naughNice = fs.readFileSync(path.join(root, 'all-project', 'the-naugh-nice-business', 'index.html'), 'utf8');
+
+  assert.ok(naughNice.includes('data-deedee-project-gallery-vertical="true"'));
+  assert.doesNotMatch(upzi, /data-deedee-project-gallery-vertical="true"/);
+  assert.ok(css.includes('body[data-deedee-project-gallery-vertical="true"] #comp-m73m1h5l #comp-m7dloa7s'));
+  assert.ok(css.includes('body[data-deedee-project-gallery="true"]:not([data-deedee-project-gallery-vertical="true"]) #comp-m73m1h5l #comp-m7dloa7s'));
+  assert.ok(css.includes('@media (min-width: 751px)'));
+  assert.ok(css.includes('height: calc(37.5vw - 60px) !important'));
+  assert.ok(css.includes('max-width: none !important'));
+  assert.ok(css.includes('grid-template-rows: none !important'));
+  assert.ok(css.includes('grid-auto-rows: auto !important'));
 });
 
 
@@ -442,7 +576,7 @@ test('project detail routes load the measured Wix mobile spacing repair', () => 
     const html = fs.readFileSync(page, 'utf8');
     assert.match(html, /project-detail-mobile-parity\.css/, path.relative(root, page));
   }
-  assert.match(css, /#comp-m7q85i69_r_comp-m7nh18j9\s*\{[^}]*height:\s*27\.34375vw !important;/);
+  assert.match(css, /#comp-m7q85i69_r_comp-m7nh18j9\s*\{[^}]*height:\s*calc\(\(100vw - var\(--scrollbar-width, 15px\)\) \* 0\.2734375\) !important;/);
   assert.match(css, /#comp-m7r8hs8o \.comp-m7r8hs8o-container/);
   assert.match(css, /#comp-m7un1qvt \.comp-m7un1qvt-container/);
 });
@@ -481,4 +615,36 @@ test('Tab stays trapped between the lightbox controls', () => {
   const backward = press(h.doc, close, 'Tab', { shiftKey: true });
   assert.equal(backward.defaultPrevented, true);
   assert.equal(h.doc.activeElement, next, 'Shift+Tab from the first control wraps to the last');
+});
+
+test('desktop header navigation stays horizontal in the archived Wix page', () => {
+  const css = fs.readFileSync(path.join(root, 'assets', '440bd118ab3622f2cfd9ad88.css'), 'utf8');
+
+  assert.ok(css.includes('/* DeeDee desktop navigation parity */'));
+  assert.ok(css.includes('@media (min-width: 1001px)'));
+  assert.ok(css.includes('.StylableHorizontalMenu3372578893__root {'));
+  assert.ok(css.includes('.StylableHorizontalMenu3372578893__menu {'));
+  assert.ok(css.includes('display: flex !important;'));
+  assert.doesNotMatch(
+    css,
+    /body \.StylableHorizontalMenu3372578893__root\.StylableHorizontalMenu3372578893---menuMode-6-scroll \.StylableHorizontalMenu3372578893__menuItem \{[^}]*margin-inline-start:\s*0 !important;/,
+  );
+  assert.ok(css.includes('overflow-x: scroll !important;'));
+});
+
+test('footer social links retain Wix responsive icon-row sizing', () => {
+  const css = fs.readFileSync(path.join(root, 'assets', '440bd118ab3622f2cfd9ad88.css'), 'utf8');
+
+  assert.match(css, /\.eAOB3n \.tDHQQD\s*\{[^}]*display:\s*flex/);
+  assert.match(css, /\.eAOB3n \.tDHQQD \.VGXFRO\s*\{[^}]*width:\s*var\(--item-size\)[^}]*height:\s*var\(--item-size\)/);
+  assert.match(css, /\.eAOB3n \.tDHQQD \.VGXFRO:last-child\s*\{[^}]*margin-inline:\s*0/);
+});
+
+test('UPZI mobile detail geometry follows Wix crop and content sizing', () => {
+  const css = fs.readFileSync(path.join(root, 'assets', 'project-detail-mobile-parity.css'), 'utf8');
+
+  assert.match(css, /#comp-m7r6wfk8 img\s*\{[^}]*object-fit:\s*cover\s*!important/);
+  assert.match(css, /height:\s*calc\(\(100vw - var\(--scrollbar-width,\s*15px\)\)\s*\*\s*0\.2734375\)\s*!important/);
+  assert.match(css, /#comp-m7r8hs8o,\s*#comp-m7q89cml,\s*#comp-m7un1qvt\s*\{[^}]*display:\s*flex\s*!important/s);
+  assert.doesNotMatch(css, /grid-template-rows:\s*(?:72\.075|75\.6858)vw/);
 });

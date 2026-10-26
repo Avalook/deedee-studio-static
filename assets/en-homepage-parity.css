@@ -1,0 +1,134 @@
+/* Restore the three mobile cards in the English homepage testimonials gallery.
+   Wix's captured mobile cards are a single column: 356.75px-wide images,
+   16:9 media, 112px text panels, and 20px between cards at 390px viewport. */
+@media screen and (max-width: 750px) {
+  #comp-m7st7as9 {
+    margin-top: 6.8px !important;
+    padding-bottom: 2.265625px !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx {
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: calc(100vw - 33.25px) !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx,
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx .pro-gallery-prerender,
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx .pro-gallery-parent-container,
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [id^="pro-gallery-container-"],
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {
+    box-sizing: border-box !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx .pro-gallery-margin-container {
+    display: grid !important;
+    grid-auto-rows: auto !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    row-gap: 20px !important;
+    margin: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx .item-link-wrapper {
+    display: contents !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"].gallery-item-container {
+    aspect-ratio: auto !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    border-radius: 32px !important;
+    box-shadow: 0 8px 0 0 rgb(161, 57, 224) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: calc(56.25vw + 92.875px) !important;
+    inset: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper {
+    aspect-ratio: 16 / 9 !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    height: calc(56.25vw - 19.125px) !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    width: calc(100% - 0.75px) !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-content {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-wrapper img {
+    box-sizing: border-box !important;
+    display: block !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    opacity: 1 !important;
+    width: 100% !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info-outer,
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info {
+    box-sizing: border-box !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    width: 100% !important;
+  }
+
+  #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] .gallery-item-common-info {
+    background: #fff !important;
+  }
+
+  #SITE_CONTAINER #main_MF#main_MF .css-editing-scope #comp-m7st7as9 #pro-gallery-comp-m8e63qxx [data-hook="item-container"] {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Match the live Wix EN homepage's desktop-only render. The observed Wix
+   state hides its news cards, while preserving a 267px gallery area. */
+@media screen and (min-width: 1101px) {
+  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq,
+  #comp-m6xtk73u #pro-gallery-container-comp-m8h9etbq,
+  #comp-m6xtk73u #pro-gallery-margin-container-comp-m8h9etbq,
+  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq .pro-gallery-prerender {
+    height: 267px !important;
+    min-height: 267px !important;
+    max-height: 267px !important;
+  }
+
+  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq [data-hook="item-container"] {
+    display: none !important;
+  }
+
+  /* Wix wraps Career onto its own row at this width. */
+  #comp-m78h36cf_r_comp-m78h3686 #comp-m78h36cf_r_comp-m8np3cca ul {
+    gap: 10px 12px !important;
+    flex-wrap: wrap !important;
+  }
+
+  #comp-m78h36cf_r_comp-m78h3686 #comp-m78h36cf_r_comp-m8np3cca ul > li {
+    min-height: 32px !important;
+  }
+
+  #comp-m78h36cf_r_comp-m78h3686 #comp-m78h36cf_r_comp-m8np3cca ul > li:last-child {
+    flex: 0 0 100% !important;
+  }
+}

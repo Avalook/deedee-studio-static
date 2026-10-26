@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>DeeDee CMS spike — editor</title>
+<link rel="stylesheet" href="/vendor/grapes.min.css">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand__mark">DS</span>
+    <span class="brand__text">DeeDee CMS spike <small>demo data only</small></span>
+  </div>
+  <div class="topbar__meta">
+    <span id="role-badge" class="badge">…</span>
+    <span id="state-badge" class="badge badge--muted">Loading</span>
+  </div>
+  <div class="topbar__actions">
+    <div class="button-group" aria-label="History">
+      <button type="button" id="undo" class="button button--icon" title="Undo (Ctrl/Cmd+Z)">Undo</button>
+      <button type="button" id="redo" class="button button--icon" title="Redo (Ctrl/Cmd+Shift+Z)">Redo</button>
+    </div>
+    <button type="button" id="save" class="button">Save draft</button>
+    <button type="button" id="preview" class="button">Preview</button>
+    <button type="button" id="publish" class="button button--primary">Publish</button>
+    <button type="button" id="versions" class="button">Versions</button>
+    <button type="button" id="logout" class="button button--ghost">Log out</button>
+  </div>
+</header>
+
+<div class="workspace">
+  <aside class="panel panel--left">
+    <div class="panel__section">
+      <h2 class="panel__title">Blocks</h2>
+      <p class="panel__hint">Click to add, or drag onto the canvas.</p>
+      <div id="blocks" class="blocks"></div>
+    </div>
+    <div class="panel__section">
+      <h2 class="panel__title">Images</h2>
+      <p class="panel__hint">Select an image component before using “Use”. PNG, JPEG, WebP or GIF, max 2 MB.</p>
+      <button type="button" id="upload-button" class="button button--wide">Upload image</button>
+      <input id="upload-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+      <div id="asset-list" class="assets"></div>
+    </div>
+  </aside>
+
+  <main class="canvas-column">
+    <div class="devicebar">
+      <div class="devicebar__group" role="group" aria-label="Canvas width">
+        <button type="button" class="device" data-device="desktop">Desktop</button>
+        <button type="button" class="device" data-device="laptop">Laptop</button>
+        <button type="button" class="device" data-device="tablet">Tablet</button>
+        <button type="button" class="device" data-device="mobile">Mobile</button>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="free-move">
+        <span>Free positioning</span>
+      </label>
+      <span id="drag-mode" class="devicebar__note">Flow layout</span>
+    </div>
+    <div id="canvas" class="canvas"></div>
+  </main>
+
+  <aside class="panel panel--right">
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab tab--active" data-tab="style" role="tab">Style</button>
+      <button type="button" class="tab" data-tab="layers" role="tab">Layers</button>
+      <button type="button" class="tab" data-tab="traits" role="tab">Settings</button>
+    </div>
+    <div class="tab-panels">
+      <div id="style-panel" class="tab-panel"></div>
+      <div id="layers-panel" class="tab-panel" hidden></div>
+      <div id="traits-panel" class="tab-panel" hidden></div>
+    </div>
+    <div class="panel__foot">
+      <p><strong>Spike limits.</strong> Local demo accounts, file-based storage, English demo content only. Not connected to the DeeDee mirror or to production.</p>
+    </div>
+  </aside>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<dialog id="versions-dialog" class="dialog">
+  <header class="dialog__head">
+    <div>
+      <h2>Versions</h2>
+      <p>Saving creates a revision. Publishing creates a release. Restoring copies an old revision into a new draft.</p>
+    </div>
+    <button type="button" id="versions-close" class="button button--ghost">Close</button>
+  </header>
+  <div id="versions-list" class="versions"></div>
+</dialog>
+
+<dialog id="conflict-dialog" class="dialog dialog--small">
+  <h2>Draft changed elsewhere</h2>
+  <p id="conflict-message">Another session saved a newer draft. Reload the latest draft to continue.</p>
+  <div class="dialog__actions">
+    <button type="button" id="conflict-cancel" class="button button--ghost">Keep editing</button>
+    <button type="button" id="conflict-reload" class="button button--primary">Reload latest draft</button>
+  </div>
+</dialog>
+
+<script src="/vendor/grapes.min.js"></script>
+<script src="/admin/editor.js"></script>
+</body>
+</html>

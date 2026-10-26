@@ -1,0 +1,49 @@
+/* Focused parity repair for Green SM and An Unexpected Guest project pages. */
+@media (min-width: 320px) and (max-width: 1000px) {
+  body[data-deedee-project-route-geometry="true"] #masterPage {
+    --scrollbar-width: 0px !important;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 430px) {
+  body[data-deedee-project-route-geometry="true"] #comp-m7r8hs8o .comp-m7r8hs8o-container {
+    grid-template-rows: minmax(
+      max(0.5px, 0.7207614 * (var(--scaling-factor) - var(--scrollbar-width))),
+      auto
+    ) !important;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 600px) {
+  body[data-deedee-project-route-geometry="true"] #comp-m7q89cml .comp-m7q89cml-container {
+    grid-template-rows: auto auto !important;
+  }
+
+  body[data-deedee-project-route-geometry="true"] #comp-m7q89cml .pro-gallery-margin-container {
+    gap: 12px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1001px) {
+  body[data-deedee-project-route-geometry="true"] #comp-m7dloa7s {
+    height: auto !important;
+    grid-template-rows: auto !important;
+  }
+
+  body[data-deedee-project-route-geometry="true"] #comp-m7dloa7s .pro-gallery-parent-container,
+  body[data-deedee-project-route-geometry="true"] #comp-m7dloa7s [id^="gallery-wrapper-comp-"],
+  body[data-deedee-project-route-geometry="true"] #comp-m7dloa7s [id^="pro-gallery-container-"],
+  body[data-deedee-project-route-geometry="true"] #comp-m7dloa7s [id^="pro-gallery-margin-container-"] {
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  body[data-deedee-project-route-geometry="true"] #comp-m73m1h5l {
+    height: auto !important;
+  }
+
+  body[data-deedee-project-route-geometry="true"] #comp-m73m1h5l .comp-m73m1h5l-container {
+    grid-template-rows: 67px auto !important;
+  }
+}

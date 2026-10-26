@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #fff;
+  color: #000;
+  font-family: "Madefor Display", "Helvetica Neue", Arial, sans-serif;
+}
+
+.error-page {
+  display: flow-root;
+  width: 50%;
+  margin: 56.8px 0 56.8px 5%;
+}
+
+.error-page__label {
+  margin: 24px 0 0;
+  font-size: 25.7px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.error-page__code {
+  margin: 0;
+  font-size: min(20vw, 380.8px);
+  font-weight: 400;
+  line-height: 1.26;
+}
+
+.error-page__message {
+  margin: 4px 0 0;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.error-page__home {
+  display: inline-block;
+  margin: 34px 0 10px;
+  padding: 17px 53px;
+  border-radius: 50px;
+  background: #000;
+  color: #fff;
+  font-size: 28.56px;
+  line-height: 1.26;
+  text-decoration: none;
+}
+
+.error-page__home:hover,
+.error-page__home:focus-visible {
+  background: #333;
+}
+
+@media (max-width: 700px) {
+  .error-page {
+    width: calc(100% - 40px);
+    margin: 32px 20px;
+  }
+
+  .error-page__label {
+    margin-top: 18px;
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .error-page__code {
+    font-size: clamp(160px, 42vw, 240px);
+    line-height: 1.15;
+  }
+
+  .error-page__message {
+    font-size: 26px;
+    line-height: 1.35;
+  }
+
+  .error-page__home {
+    margin-top: 28px;
+    padding: 14px 28px;
+    font-size: 22px;
+  }
+}

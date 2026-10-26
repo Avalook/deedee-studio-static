@@ -1,0 +1,25 @@
+/* Restore the source Wix Ricos image dimensions for this single-image post. */
+#viewer-b3jpc {
+  position: relative;
+  top: 5px;
+  width: min(740px, 100%);
+  aspect-ratio: 4 / 3;
+  height: auto;
+  margin-inline: auto;
+}
+
+#viewer-b3jpc [data-hook="image-viewer"],
+#viewer-b3jpc [data-hook="image-viewer-b3jpc"],
+#viewer-b3jpc [data-hook="figure-IMAGE"],
+#viewer-b3jpc .Ir1sN,
+#viewer-b3jpc .x3ozD {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  #viewer-b3jpc {
+    top: 0;
+  }
+}

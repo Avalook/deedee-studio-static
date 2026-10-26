@@ -1,0 +1,35 @@
+@media screen and (max-width: 600px) {
+  #pro-gallery-container-comp-lbkb681p {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #pro-gallery-margin-container-comp-lbkb681p {
+    grid-template-columns: minmax(0, 1fr) !important;
+    --deedee-activity-card-size: 100vw !important;
+    grid-auto-rows: var(--deedee-activity-card-size) !important;
+    column-gap: 0 !important;
+    row-gap: 20px !important;
+    height: calc(2300vw + 440px) !important;
+    min-height: calc(2300vw + 440px) !important;
+  }
+
+  #pro-gallery-margin-container-comp-lbkb681p > [data-hook="item-link-wrapper"] {
+    width: 100% !important;
+    height: var(--deedee-activity-card-size) !important;
+  }
+
+  #pro-gallery-margin-container-comp-lbkb681p [data-hook="item-container"] {
+    height: var(--deedee-activity-card-size) !important;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1000px) {
+  #comp-lbkb5pkl,
+  #pro-gallery-container-comp-lbkb681p,
+  #pro-gallery-margin-container-comp-lbkb681p {
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: none !important;
+  }
+}
