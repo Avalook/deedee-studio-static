@@ -7,6 +7,7 @@
     "repair:transformed-assets": "node scripts/repair-transformed-assets.mjs",
     "repair:backgrounds": "node scripts/repair-backgrounds.mjs",
     "restore:images": "node scripts/restore-placeholder-assets.mjs",
+    "restore:news-images": "node scripts/restore-news-card-images.mjs",
     "repair:shapes": "node scripts/shape-backgrounds.mjs"
   },
   "devDependencies": {

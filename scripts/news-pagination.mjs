@@ -290,7 +290,28 @@ function updateGalleryHeight(gallery, cards) {
   }
 }
 
-function getCardForIndex(index, archiveCards, extras, layoutCards) {
+/**
+ * Category archives use cropped 400x400 thumbnails; the News tabs show 16:9 cards, as live Wix does.
+ * news/card-images.json (built by scripts/restore-news-card-images.mjs) maps a thumbnail to a 16:9 image of the same photo.
+ */
+export function wideCardImage(source, imageMap = {}) {
+  const basename = source.slice(source.lastIndexOf('/') + 1);
+  const wide = Object.hasOwn(imageMap, basename) ? imageMap[basename] : null;
+  return wide ? source.slice(0, source.length - basename.length) + wide : source;
+}
+
+async function loadCardImageMap(fetchImpl) {
+  try {
+    const response = await fetchImpl(new URL('../news/card-images.json', import.meta.url));
+    if (!response.ok) return {};
+    const data = await response.json();
+    return data && typeof data.images === 'object' && data.images ? data.images : {};
+  } catch {
+    return {};
+  }
+}
+
+function getCardForIndex(index, archiveCards, extras, layoutCards, imageMap = {}) {
   const layoutCard = layoutCards[index % layoutCards.length];
   if (index < archiveCards.length && layoutCard) {
     const sourceCard = archiveCards[index];
@@ -304,7 +325,7 @@ function getCardForIndex(index, archiveCards, extras, layoutCards) {
 
     if (sourceImage && targetImage) {
       const source = sourceImage.getAttribute('src');
-      if (source) targetImage.setAttribute('src', source);
+      if (source) targetImage.setAttribute('src', wideCardImage(source, imageMap));
       targetImage.alt = sourceImage.alt;
       targetImage.hidden = false;
     }
@@ -351,7 +372,10 @@ async function mountNewsTab({
     .slice(0, 9);
   if (layoutCards.length === 0) return false;
 
-  const archiveCards = await loadArchiveCards(config, fetchImpl, Parser);
+  const [archiveCards, imageMap] = await Promise.all([
+    loadArchiveCards(config, fetchImpl, Parser),
+    loadCardImageMap(fetchImpl),
+  ]);
   const extras = tab === 'activity' ? NEWS_UNARCHIVED_ACTIVITY_ITEMS : [];
   const totalItems = archiveCards.length + extras.length;
   const pageCount = getNewsPageCount(tab);
@@ -362,7 +386,7 @@ async function mountNewsTab({
     if (indices.length === 0) return false;
 
     const cards = indices
-      .map(index => getCardForIndex(index, archiveCards, extras, layoutCards))
+      .map(index => getCardForIndex(index, archiveCards, extras, layoutCards, imageMap))
       .filter(Boolean);
     cards.forEach((card, index) => applyLayout(card, layoutCards[index % layoutCards.length], index));
     gallery.replaceChildren(...cards);

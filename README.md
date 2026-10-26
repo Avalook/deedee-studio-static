@@ -50,6 +50,7 @@ npm ci
 npm test
 npm run repair:backgrounds
 npm run restore:images
+npm run restore:news-images   # 16:9 card images for the News tabs (needs network; --dry-run to preview)
 ```
 
 Các lệnh sửa chạy lại không thay đổi kết quả khi tài nguyên đã được phục hồi.

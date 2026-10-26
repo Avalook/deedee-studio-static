@@ -151,7 +151,7 @@ export function replaceAssetReferences(html, replacements) {
 }
 
 /** Read an image stream with an enforced bound even when Content-Length is absent. */
-async function imageBytes(response) {
+export async function imageBytes(response) {
   if (!response.ok) throw new Error(`Original image returned HTTP ${response.status}`);
   if (!/^image\//i.test(response.headers.get('content-type') || '')) throw new Error('Original source is not an image');
   if (Number(response.headers.get('content-length')) > IMAGE_LIMIT) throw new Error('Original image exceeds size limit');
