@@ -10,6 +10,9 @@ const CATEGORY_ARCHIVES = [
   'blog/categories/hoạt-động/index.html',
   'blog/categories/talk-interview/index.html',
   'blog/categories/knowledge/index.html',
+  'en/blog/categories/hoạt-động-1/index.html',
+  'en/blog/categories/talk-interview-2/index.html',
+  'en/blog/categories/knowledge-1/index.html',
 ];
 const MAPPING_FILE = 'news/card-images.json';
 const TARGET_WIDTH = 804;
@@ -125,7 +128,11 @@ async function downloadAll(items, fetchImpl) {
 export async function restoreNewsCardImages({ root = DEFAULT_ROOT, fetchImpl = fetch, dryRun = false } = {}) {
   const manifestPath = path.join(root, 'manifest.json');
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  const archiveHtml = await Promise.all(CATEGORY_ARCHIVES.map(file => readFile(path.join(root, file), 'utf8')));
+  // English archives are optional: a mirror without them still gets its Vietnamese cards.
+  const archiveHtml = (await Promise.all(CATEGORY_ARCHIVES.map(file => readFile(path.join(root, file), 'utf8').catch(error => {
+    if (error.code === 'ENOENT' && file.startsWith('en/')) return null;
+    throw error;
+  })))).filter(html => html !== null);
   const plan = planNewsCardImages(archiveHtml, manifest.assets);
   const missing = plan.downloads.filter(item => !manifest.assets[item.url]);
   const summary = {

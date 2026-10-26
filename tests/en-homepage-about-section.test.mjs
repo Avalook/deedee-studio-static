@@ -7,14 +7,14 @@ const aboutSection = html.match(/<section id="comp-m7st7as9"[\s\S]*?<\/section>/
 
 const parityCss = await readFile(new URL('../assets/en-homepage-parity.css', import.meta.url), 'utf8');
 
-test('English homepage preserves the Wix-sized About Us section without the broken 1px gallery fixer', () => {
-  assert.doesNotMatch(html, /id="layout-fixer-style-comp-m8e63qxx"/);
+test('English homepage preserves the Wix-sized About Us section and uses the repaired news gallery fixer', () => {
+  // The same repaired stylesheet as the Vietnamese homepage (the old 1px fixer is gone).
+  assert.match(html, /7abd70d1cb9f053ad3e8f7c7\.css\?v=6/);
   assert.match(aboutSection, /id="comp-m8e63qxx"/);
   assert.match(html, /href="\/deedee-studio-static\/assets\/en-homepage-parity\.css"/);
   assert.match(parityCss, /@media screen and \(min-width:\s*1101px\)/);
-  assert.match(parityCss, /#comp-m6xtk73u #pro-gallery-comp-m8h9etbq \[data-hook="item-container"\]/);
-  assert.match(parityCss, /display:\s*none\s*!important/);
-  assert.match(parityCss, /height:\s*267px\s*!important/);
+  // The three news cards are visible on live, so nothing hides or shrinks that gallery.
+  assert.doesNotMatch(parityCss, /m8h9etbq/);
   assert.match(parityCss, /gap:\s*10px 12px\s*!important/);
   assert.match(parityCss, /flex-wrap:\s*wrap\s*!important/);
   assert.match(parityCss, /flex:\s*0 0 100%\s*!important/);

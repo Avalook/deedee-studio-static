@@ -78,7 +78,7 @@ test('responsive news gallery applies card geometry to all card media descendant
 
   assert.equal(gallery.style.width, '358px');
   assert.equal(cards[0].item.style.width, '358px');
-  assert.equal(cards[0].item.style.height, '281.375px');
+  assert.equal(cards[0].item.style.height, '291.375px');
   assert.equal(cards[3].item.style.inset, '934.125px auto auto 0px');
   assert.equal(cards[8].item.style.inset, '2491px auto auto 0px');
   assert.equal(cards[0].imageWrapper.style.height, '201.375px');
@@ -91,19 +91,19 @@ test('news gallery layout follows the Wix three-column responsive measurements',
     width: 358,
     columns: 1,
     cardWidth: 358,
-    cardHeight: 281.375,
+    cardHeight: 291.375,
     columnGap: 0,
-    rowGap: 30,
-    height: 2772.375,
+    rowGap: 20,
+    height: 2782.375,
   });
   assert.deepEqual(getResponsiveNewsGalleryLayout(320, 288, 9), {
     width: 288,
     columns: 1,
     cardWidth: 288,
-    cardHeight: 242,
+    cardHeight: 252,
     columnGap: 0,
-    rowGap: 30,
-    height: 2418,
+    rowGap: 20,
+    height: 2428,
   });
   assert.deepEqual(getResponsiveNewsGalleryLayout(1024, 864, 9), {
     width: 864,

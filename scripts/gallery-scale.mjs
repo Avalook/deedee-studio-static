@@ -21,6 +21,8 @@ export function scaleBakedGalleries(root = document) {
     if (!baked || !container) continue;
     host.style.zoom = '';
     host.style.removeProperty('--gallery-text-zoom');
+    // A script that lays the gallery out itself (news tabs) already sizes it to the container.
+    if (margin.getAttribute?.('data-deedee-responsive-gallery') === 'true') continue;
     // If CSS already re-flows the gallery (grid layouts, tablet and phone rules) its width no longer equals
     // the frozen inline width; leave those alone.
     if (Math.abs(margin.getBoundingClientRect().width - baked) > 1) continue;

@@ -60,7 +60,29 @@ export function alignTexts(base, live) {
     else if (table[i + 1][j] >= table[i][j + 1]) i += 1;
     else j += 1;
   }
-  return pairs;
+  return pairs.concat(pairByAnchor(base, live, pairs)).sort((a, b) => a[0] - b[0]);
+}
+
+// Hydration can move text from a styled <span> up into its <h2>/<p>, so the tag no longer agrees. For a component whose
+// leftover text nodes are equally many on both sides, pair them in order and trust the component id alone.
+function pairByAnchor(base, live, pairs) {
+  const usedBase = new Set(pairs.map(pair => pair[0]));
+  const usedLive = new Set(pairs.map(pair => pair[1]));
+  const group = (nodes, used) => {
+    const map = new Map();
+    nodes.forEach((node, index) => {
+      if (used.has(index) || !node.anchor) return;
+      map.set(node.anchor, [...(map.get(node.anchor) ?? []), index]);
+    });
+    return map;
+  };
+  const liveGroups = group(live, usedLive);
+  const extra = [];
+  for (const [anchor, baseIndexes] of group(base, usedBase)) {
+    const liveIndexes = liveGroups.get(anchor);
+    if (liveIndexes?.length === baseIndexes.length) baseIndexes.forEach((index, order) => extra.push([index, liveIndexes[order]]));
+  }
+  return extra;
 }
 
 const escapeText = value => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

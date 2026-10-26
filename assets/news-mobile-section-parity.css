@@ -3,3 +3,25 @@
     padding-bottom: 9.4px !important;
   }
 }
+
+/* Phone cards: live gives the caption 90px (not 95) and sets the title at 16px, "Xem Nội Dung" 60px from the top. */
+@media screen and (max-width: 600px) {
+  [data-hook="item-container"] .gallery-item-common-info-outer,
+  [data-hook="item-container"] .gallery-item-common-info,
+  [data-hook="item-container"] .gallery-item-common-info .RiOfiW,
+  [data-hook="item-container"] .gallery-item-common-info .iSTCpN {
+    height: 90px !important;
+    min-height: 0 !important;
+  }
+
+  [data-hook="item-container"] .gallery-item-common-info .FbwBsX,
+  [data-hook="item-container"] .gallery-item-common-info .T5UMT5,
+  [data-hook="item-container"] .gallery-item-common-info .T5UMT5 * {
+    font-size: 16px !important;
+    line-height: normal !important;
+  }
+
+  [data-hook="item-container"] .gallery-item-common-info .O16KGI::before {
+    top: 60px !important;
+  }
+}

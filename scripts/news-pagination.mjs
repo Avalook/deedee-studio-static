@@ -207,11 +207,12 @@ export function getResponsiveNewsGalleryLayout(viewportWidth, galleryWidth, item
   const isMobile = viewportWidth <= 600;
   const columns = isMobile ? 1 : 3;
   const columnGap = isMobile ? 0 : 30;
-  const rowGap = 30;
+  // Live measures a phone card as 16:9 image + 90px caption, 20px apart; tablet and wider keep 95px and 30px.
+  const rowGap = isMobile ? 20 : 30;
   const cardWidth = isMobile
     ? galleryWidth
     : Math.round((galleryWidth - columnGap * (columns - 1)) / columns);
-  const cardHeight = cardWidth * (9 / 16) + (isMobile ? 80 : 95);
+  const cardHeight = cardWidth * (9 / 16) + (isMobile ? 90 : 95);
   const rows = Math.ceil(itemCount / columns);
 
   return {
@@ -232,6 +233,13 @@ export function applyResponsiveNewsGalleryLayout(gallery, cards, viewportWidth) 
   if (!layout) return;
 
   gallery.style.width = `${layout.width}px`;
+  gallery.setAttribute?.('data-deedee-responsive-gallery', 'true');
+  // gallery-scale.mjs may have zoomed this gallery before the layout above existed.
+  const host = gallery.closest?.('[id^="gallery-wrapper-comp-"]') ?? gallery.closest?.('.pro-gallery-parent-container');
+  if (host?.style) {
+    host.style.zoom = '';
+    host.style.removeProperty?.('--gallery-text-zoom');
+  }
   cards.forEach((card, index) => {
     const item = card.querySelector('[data-hook="item-container"]');
     if (!item) return;
@@ -524,6 +532,20 @@ async function mountNewsTab({
 
   document.defaultView?.addEventListener('resize', () => render(currentPage), { passive: true });
   render(1);
+
+  // This can run before the page's stylesheets have laid the gallery's parent out, so the first measurement may be
+  // the captured 1265px width. Lay out again once the page has loaded and whenever the parent changes width.
+  document.defaultView?.addEventListener('load', () => render(currentPage), { once: true });
+  const parent = gallery.parentElement;
+  const ResizeObserverImpl = document.defaultView?.ResizeObserver;
+  if (parent && typeof ResizeObserverImpl === 'function') {
+    let lastWidth = parent.clientWidth;
+    new ResizeObserverImpl(() => {
+      if (parent.clientWidth === lastWidth) return;
+      lastWidth = parent.clientWidth;
+      render(currentPage);
+    }).observe(parent);
+  }
   return true;
 }
 
@@ -536,7 +558,10 @@ export async function mountNewsPagination({
   const language = newsLanguageFor(document.location?.pathname);
   const results = await Promise.all(Object.entries(NEWS_LANGUAGES[language].tabs).map(([tab, config]) => (
     mountNewsTab({ tab, config, document, fetchImpl, Parser, language })
-      .catch(() => false)
+      .catch(error => {
+        console.warn('news pagination could not mount the ' + tab + ' tab', error);
+        return false;
+      })
   )));
   return results.some(Boolean);
 }

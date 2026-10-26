@@ -6,6 +6,7 @@ import { PHONE_COUNTRIES, searchPhoneCountries, phoneCountrySelection } from './
 import { installPhoneCountrySelector } from './phone-country-selector.mjs';
 import { installProjectDetailBack } from './project-detail-navigation.mjs';
 import { installGalleryScaling } from './gallery-scale.mjs';
+import { installPostRootSize } from './post-root-size.mjs';
 import { installLanguageSwitch } from './language-switch.mjs';
 import './project-video-player.mjs';
 import { installCmsOverrides } from './cms-overrides.mjs';
@@ -387,6 +388,7 @@ export function isLoadMoreLabel(label) {
 export function installSiteControls(root = document, pathname = location.pathname) {
   syncScrollbarWidth(root);
   installGalleryScaling(root);
+  installPostRootSize(root);
   installLanguageSwitch(root);
   installCmsOverrides(root, globalThis.window);
   installViewerFeedbackStyles(root, globalThis.window);

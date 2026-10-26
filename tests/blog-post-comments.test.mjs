@@ -10,7 +10,7 @@ const SCRIPT = new URL('../scripts/local-comment-composer.mjs', import.meta.url)
 test('adult-animation article restores a source-shaped local comments section before the footer', async () => {
   const html = await readFile(ROUTE, 'utf8');
   const relatedPosts = html.indexOf('data-hook="recent-posts"');
-  const comments = html.indexOf('<section class="deedee-local-comments"');
+  const comments = html.indexOf('data-hook="wc-root');
   const footer = html.indexOf('id="comp-m8whddmb"');
 
   assert.ok(relatedPosts >= 0 && relatedPosts < comments && comments < footer, 'comments follow related posts and precede the site footer');
@@ -22,15 +22,14 @@ test('adult-animation article restores a source-shaped local comments section be
   assert.match(html, /local-comment-composer\.mjs/);
   assert.match(html, /class="L5x0Fp xZVb1s is-desktop app-desktop" data-deedee-mobile-app-parity="adult-animation"/);
   assert.equal([...html.matchAll(/data-deedee-mobile-app-parity="adult-animation"/g)].length, 1);
-  assert.doesNotMatch(html, /article-comment-parity\.css/);
   assert.match(css, /margin:\s*30px auto 0/);
   assert.match(css, /padding:\s*32px 18px/);
   assert.match(css, /min-height:\s*143px/);
   const commentsMarkup = html.slice(comments, footer);
-  assert.match(commentsMarkup, /to publish as a member/);
+  assert.match(commentsMarkup, /to post a comment/);
   assert.match(commentsMarkup, /data-comment-login[^>]*disabled/);
   assert.match(commentsMarkup, /data-comment-publish[^>]*disabled/);
-  for (const tool of ['Add an emoji', 'Add an image', 'Add a GIF', 'Add a video']) {
+  for (const tool of ['Add emoji', 'Add image', 'Add GIF', 'Add video']) {
     assert.ok(commentsMarkup.includes(`aria-label="${tool}"`), `keeps Wix's ${tool} control visible in the composer`);
   }
   assert.doesNotMatch(commentsMarkup, /Save draft|This static site cannot publish comments/i);
@@ -134,13 +133,14 @@ test('Vietnamese post family restores measured source mobile geometry without un
     const html = await readFile(route, 'utf8');
     assert.match(html, /data-deedee-post-mobile-parity/);
     assert.match(html, /assets\/article-comment-parity\.css/);
-    assert.doesNotMatch(html, /data-deedee-local-comments|blog-comments-local\.css|local-comment-composer\.mjs/);
+    // Every article now carries live's comments section (scripts/add-post-comments.mjs).
+    assert.match(html, /data-deedee-local-comments/);
   }
 
-  assert.match(parityCss, /^\.L5x0Fp \[data-hook\^="wc-root"\]\.wc-comments-root \{\s*display:\s*none\s*!important;\s*\}/m, 'stale Wix comment roots are hidden only inside blog article content');
+  assert.match(parityCss, /^\.L5x0Fp \[data-hook\^="wc-root"\]\.wc-comments-root:not\(\[data-deedee-local-comments\]\) \{\s*display:\s*none\s*!important;\s*\}/m, 'stale Wix comment roots are hidden only inside blog article content, never the restored section');
   assert.doesNotMatch(parityCss, /^\[data-hook\^="wc-root"\]\.wc-comments-root/m, 'the suppression must not leak to comment roots outside articles');
   assert.match(parityCss, /@media\s*\(max-width:\s*600px\)[\s\S]*?\.L5x0Fp\[data-deedee-post-mobile-parity\]\s+section\.prZ8Wc:has\(\.wc-comments-root\)\s*\{\s*display:\s*block\s*!important;/s, 'measured mobile-parity posts keep their comments shell visible on phone widths');
-  assert.match(parityCss, /\.L5x0Fp\[data-deedee-post-mobile-parity\] section\.prZ8Wc \.wc-comments-root > \.uh2d5F/);
+  assert.match(parityCss, /\.L5x0Fp\[data-deedee-post-mobile-parity\] section\.prZ8Wc \.wc-comments-root:not\(\[data-deedee-local-comments\]\) > \.uh2d5F/);
   assert.match(parityCss, /\.L5x0Fp\[data-deedee-post-mobile-parity\]\s*\{[^}]*padding:\s*0 0 0/s);
   assert.match(parityCss, /\.ZL4A4N[^}]*padding-top:\s*0\s*!important/s);
   assert.match(parityCss, /article\.tgMH9T h1\.H3vOVf[^}]*font-size:\s*26px\s*!important/s);
@@ -173,7 +173,7 @@ test('unhydrated Wix comments shells do not leave blank space before article foo
     assert.match(html, /wc-comments-root/);
     assert.match(html, /article-comment-parity\.css/);
   }
-  assert.match(parityCss, /\.L5x0Fp\s+section\.prZ8Wc:has\(\.wc-comments-root\)\s*\{\s*display:\s*none\s*!important;/s);
+  assert.match(parityCss, /\.L5x0Fp\s+section\.prZ8Wc:has\(\.wc-comments-root:not\(\[data-deedee-local-comments\]\)\)\s*\{\s*display:\s*none\s*!important;/s);
 
   const sunnyArticle = await readFile(
     new URL('../post/sunny-side-down-series-youtube-chất-lượng-cao/index.html', import.meta.url),

@@ -39,3 +39,17 @@ test('alignment pairs by anchor and tag', () => {
   const b = [{ anchor: 'z', tag: 'p' }, { anchor: 'y', tag: 'p' }];
   assert.deepEqual(alignTexts(a, b), [[1, 1]]);
 });
+
+test('text that hydration moved from a <span> into its <h2>/<p> is still paired by component id', () => {
+  const base = '<body><div id="comp-a"><h2><span>VỀ CHÚNG TÔI</span></h2></div><div id="comp-b"><span>Một</span><span>Hai</span></div></body>';
+  const live = '<body><div id="comp-a"><h2>ABOUT US</h2></div><div id="comp-b"><p>One</p><p>Two</p></div></body>';
+  const { html, stats } = transplantText(base, collectTextNodes(live));
+  assert.equal(html, '<body><div id="comp-a"><h2><span>ABOUT US</span></h2></div><div id="comp-b"><span>One</span><span>Two</span></div></body>');
+  assert.equal(stats.unmatchedBase, 0);
+});
+
+test('a component whose text counts differ is left alone rather than guessed', () => {
+  const base = '<body><div id="comp-b"><span>Một</span><span>Hai</span></div></body>';
+  const live = '<body><div id="comp-b"><p>One</p></div></body>';
+  assert.equal(transplantText(base, collectTextNodes(live)).html, base);
+});

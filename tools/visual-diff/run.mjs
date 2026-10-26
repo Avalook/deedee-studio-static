@@ -101,6 +101,21 @@ async function capture(browser, url, width, file) {
       window.scrollTo(0, document.documentElement.scrollHeight);
       await pause(300);
     }, Math.round(VIEWPORT_HEIGHT * 0.8));
+    // Infinite-scroll feeds (blog categories) add a batch only after the previous one has rendered; keep going until the height settles.
+    let stable = 0;
+    let lastHeight = 0;
+    for (let i = 0; i < 24 && stable < 3; i += 1) {
+      // Nudge up first: a feed only loads on a scroll event, and sitting at the bottom fires none.
+      const height = await page.evaluate(async () => {
+        window.scrollTo(0, Math.max(0, document.documentElement.scrollHeight - window.innerHeight - 400));
+        await new Promise(resolve => setTimeout(resolve, 150));
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        return document.documentElement.scrollHeight;
+      });
+      stable = height === lastHeight ? stable + 1 : 0;
+      lastHeight = height;
+      await page.waitForTimeout(1500);
+    }
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
     await page.evaluate(() => window.scrollTo(0, 0));
     // Background videos loop; compare every site at frame 0 or the hero never matches.

@@ -26,7 +26,8 @@ export const FEED_CONFIGS = Object.freeze({
     desktopInitial: 6,
     mobileInitial: 5,
     sourceTotal: 50,
-    desktopTotal: 40,
+    // Live adds 20, 20, then the last 10 as the reader reaches the bottom, on every width.
+    desktopTotal: 50,
     mobileTotal: 50,
     responsiveCategoryMobile: true,
     mobileRowGap: 12,
@@ -34,7 +35,7 @@ export const FEED_CONFIGS = Object.freeze({
     batchSize: 20,
     desktopFirstRevealAt: 300,
     mobileFirstRevealAt: 500,
-    desktopHeights: [[20, 2992], [40, 6016], [50, 7312]],
+    // No fixed desktop heights: the grid is fluid (blog-category-grid.css), so its own rows set the height.
   },
   talk: {
     gallerySelector: '#pro-gallery-margin-container-pro-blog',
@@ -189,6 +190,14 @@ export function installMobileBlogCategoryNavigation(documentRef) {
   options.id = 'deedee-mobile-blog-category-options';
   options.setAttribute('data-deedee-mobile-blog-category-options', '');
   options.hidden = true;
+  // On a phone live shows one dropdown labelled with the current category, so the list holds every other category.
+  button.setAttribute('data-deedee-current-label', currentLink.textContent.trim());
+  if (currentItem !== allPostsItem) {
+    const allPostsOption = allPostsItem.cloneNode(true);
+    allPostsOption.removeAttribute('id');
+    allPostsOption.setAttribute('data-deedee-mobile-blog-category-all', '');
+    options.append(allPostsOption);
+  }
   overflowItems.forEach((item) => {
     item.setAttribute('data-deedee-mobile-blog-category-overflow', '');
     const option = item.cloneNode(true);

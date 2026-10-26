@@ -72,3 +72,17 @@ test('does not touch nodes that cannot report their gallery host', () => {
   const stub = { style: { width: '1421px' }, getBoundingClientRect: () => ({ width: 1421 }) };
   assert.equal(scaleBakedGalleries({ querySelectorAll: () => [stub] }), 0);
 });
+
+test('a gallery that a page script lays out itself is not zoomed', () => {
+  const host = { style: { zoom: '', removeProperty() {}, setProperty() {} }, parentElement: { getBoundingClientRect: () => ({ width: 877 }) } };
+  const margin = {
+    style: { width: '856px' },
+    getBoundingClientRect: () => ({ width: 856 }),
+    getAttribute: name => (name === 'data-deedee-responsive-gallery' ? 'true' : null),
+    closest: () => host,
+  };
+  const root = { querySelectorAll: () => [margin] };
+
+  assert.equal(scaleBakedGalleries(root), 0);
+  assert.equal(host.style.zoom, '');
+});

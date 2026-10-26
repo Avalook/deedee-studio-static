@@ -60,3 +60,27 @@ test('mobile hero keeps Wix captured scrollbar scale token', async () => {
 
   assert.ok(html.includes('<body class="responsive use-media-queries" style="--scrollbar-width: 15px;">'));
 });
+
+test('category grid follows the live breakpoints: 1, 2, 3 and 4 columns with a 32px gap', async () => {
+  const css = await readFile(new URL('../assets/blog-category-grid.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(min-width: 1296px\)[\s\S]*?repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(min-width: 1800px\)[\s\S]*?repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(min-width: 700px\) and \(max-width: 1295px\)[\s\S]*?repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 699px\)[\s\S]*?grid-template-columns: minmax\(0, 1fr\) !important/);
+  assert.doesNotMatch(css, /minmax\(0, 400px\)/);
+  // The card is floored to a whole pixel like live, so 14 rows do not drift.
+  assert.ok(css.includes('round(down, calc((100cqw - 64px) / 3), 1px)'));
+});
+
+test('every one of the 50 archived cards carries its title, meta and stats', async () => {
+  const html = await readFile(new URL('../blog/categories/hoạt-động/index.html', import.meta.url), 'utf8');
+  const cards = html.split('data-hook="item-link-wrapper"').slice(1);
+
+  assert.equal(cards.length, 50);
+  for (const [index, card] of cards.entries()) {
+    assert.ok(card.includes('data-hook="post-title"'), 'card ' + index + ' has a title');
+    assert.ok(card.includes('data-hook="view-count-compact"'), 'card ' + index + ' has a view count');
+    assert.ok(card.includes('data-hook="comment-count-compact"'), 'card ' + index + ' has a comment count');
+  }
+});

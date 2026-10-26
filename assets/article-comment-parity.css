@@ -1,7 +1,7 @@
 /* Blog article comment parity: remove stale Wix SSR comments and their empty shell. */
 /* Route-specific mobile geometry adjustments follow below. */
-.L5x0Fp [data-hook^="wc-root"].wc-comments-root { display: none !important; }
-.L5x0Fp section.prZ8Wc:has(.wc-comments-root) { display: none !important; }
+.L5x0Fp [data-hook^="wc-root"].wc-comments-root:not([data-deedee-local-comments]) { display: none !important; }
+.L5x0Fp section.prZ8Wc:has(.wc-comments-root:not([data-deedee-local-comments])) { display: none !important; }
 
 @media (min-width: 1024px) and (max-width: 1024px) {
   .L5x0Fp[data-deedee-comments-desktop="sunny-series"] section.prZ8Wc:has(.wc-comments-root) {
@@ -30,7 +30,7 @@
   overflow: visible !important;
 }
 
-.L5x0Fp[data-deedee-post-mobile-parity] section.prZ8Wc .wc-comments-root > .uh2d5F {
+.L5x0Fp[data-deedee-post-mobile-parity] section.prZ8Wc .wc-comments-root:not([data-deedee-local-comments]) > .uh2d5F {
   display: none !important;
 }
 

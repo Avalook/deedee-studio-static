@@ -43,14 +43,14 @@ test('progressive feeds cap archive items to the responsive Wix item count', () 
   assert.equal(getResponsiveFeedTotal({ total: 3, desktopTotal: 6 }, false), 3);
 });
 
-test('activity-category mobile feed matches Wix’s 50 cards while desktop remains capped at 40', () => {
+test('activity-category feed ends at Wix’s 50 cards on desktop and mobile', () => {
   const category = FEED_CONFIGS.activityCategory;
   assert.equal(category.mobileInitial, 5);
   assert.equal(category.mobileTotal, 50);
-  assert.equal(category.desktopTotal, 40);
+  assert.equal(category.desktopTotal, 50);
   assert.equal(category.responsiveCategoryMobile, true);
   assert.equal(getResponsiveFeedTotal({ ...category, total: 50 }, true), 50);
-  assert.equal(getResponsiveFeedTotal({ ...category, total: 50 }, false), 40);
+  assert.equal(getResponsiveFeedTotal({ ...category, total: 50 }, false), 50);
   assert.equal(selectInitialFeedLimit({ ...category, total: 50 }, true, 390), 5);
 
   for (const width of [390, 1440]) {

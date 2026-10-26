@@ -4,7 +4,7 @@
   top: 0 !important;
 }
 
-@media (min-width: 1365px) {
+@media (min-width: 1296px) {
   [data-hook="feed-page-root"].Mu0bmS {
     --root-width: 100% !important;
     inline-size: 100% !important;
@@ -31,8 +31,7 @@
 
   #pro-gallery-margin-container-pro-blog {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 400px)) !important;
-    justify-content: space-between !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 32px !important;
     padding-inline: 0 !important;
     width: 100% !important;
@@ -72,7 +71,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 700px) and (max-width: 1295px) {
   [data-hook="feed-page-root"].Mu0bmS {
     --root-width: 100% !important;
     inline-size: 100% !important;
@@ -88,7 +87,7 @@
   #pro-gallery-margin-container-pro-blog {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 18px !important;
+    gap: 32px !important;
     width: 100% !important;
     height: auto !important;
   }
@@ -228,4 +227,210 @@
     width: 100% !important;
     margin-inline: 0 !important;
   }
+}
+/* Live widens the grid to four columns from 1800px. */
+@media (min-width: 1800px) {
+  #pro-gallery-margin-container-pro-blog {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Below 700px live shows one full-width column; 32px apart on a narrow window, 12px on a phone. */
+@media (max-width: 699px) {
+  #pro-gallery-container-pro-blog {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 32px !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog > [data-hook="item-link-wrapper"] {
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog [data-hook="item-container"] {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1;
+  }
+
+  #pro-gallery-margin-container-pro-blog [data-hook="item-container"] > div:not([data-hook="item-action"]) {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog [data-hook="item-wrapper"],
+  #pro-gallery-margin-container-pro-blog [data-hook="image-item"] {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+@media (max-width: 599px) {
+  #pro-gallery-margin-container-pro-blog {
+    gap: 12px !important;
+  }
+
+  [data-hook="feed-page-root"] [data-hook="post-list-pro-gallery-container"] {
+    margin: 0 !important;
+  }
+}
+
+/* The captured <img> carries a baked 400px size; fill the fluid card like live does. */
+#pro-gallery-margin-container-pro-blog [data-hook="image-item"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* Live floors the square card to a whole pixel, so 14 rows drift 4px less than a fluid aspect-ratio would. */
+#pro-gallery-container-pro-blog {
+  container-type: inline-size;
+}
+
+@media (min-width: 1296px) {
+  #pro-gallery-margin-container-pro-blog {
+    grid-auto-rows: round(down, calc((100cqw - 64px) / 3), 1px);
+  }
+}
+
+@media (min-width: 1800px) {
+  #pro-gallery-margin-container-pro-blog {
+    grid-auto-rows: round(down, calc((100cqw - 96px) / 4), 1px);
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1295px) {
+  #pro-gallery-margin-container-pro-blog {
+    grid-auto-rows: round(down, calc((100cqw - 32px) / 2), 1px);
+  }
+}
+
+@media (min-width: 700px) {
+  #pro-gallery-margin-container-pro-blog > [data-hook="item-link-wrapper"],
+  #pro-gallery-margin-container-pro-blog [data-hook="item-container"] {
+    height: 100% !important;
+  }
+}
+
+/* Same for the hover/caption layers, whose captured size is 401x400 whatever the card width is. */
+#pro-gallery-margin-container-pro-blog .gallery-item-hover,
+#pro-gallery-margin-container-pro-blog .item-hover-flex-container,
+#pro-gallery-margin-container-pro-blog .gallery-item-hover-inner {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Phone: live swaps the tab row for one dropdown named after the current category and drops the stats from the cards. */
+@media (max-width: 599px) {
+  [data-hook="feed-page-root"][data-deedee-mobile-blog-category-nav-ready] nav.blog-header__navigation > ul > li:not([data-deedee-mobile-blog-category-more]) {
+    display: none !important;
+  }
+
+  [data-hook="feed-page-root"][data-deedee-mobile-blog-category-nav-ready] nav.blog-header__navigation > ul > li[data-deedee-mobile-blog-category-more] {
+    flex: 1 1 100%;
+  }
+
+  [data-hook="feed-page-root"] .vAU8Qm[data-hook="blog-desktop-header-container"] {
+    height: 50px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  [data-hook="feed-page-root"] .vAU8Qm[data-hook="blog-desktop-header-container"] .kiyM2X,
+  [data-hook="feed-page-root"] .vAU8Qm[data-hook="blog-desktop-header-container"] nav.blog-header__navigation,
+  [data-hook="feed-page-root"] .vAU8Qm[data-hook="blog-desktop-header-container"] nav.blog-header__navigation > ul,
+  [data-hook="feed-page-root"] .vAU8Qm[data-hook="blog-desktop-header-container"] nav.blog-header__navigation > ul > li[data-deedee-mobile-blog-category-more] {
+    height: 50px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-more-menu,
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-more-button {
+    width: 100%;
+  }
+
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-more-button {
+    font-size: 0;
+    justify-content: flex-start;
+    min-height: 50px;
+    padding-inline: 18px 0;
+  }
+
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-more-button::before {
+    content: attr(data-deedee-current-label);
+    font-size: 15px;
+  }
+
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-more-button::after {
+    margin-inline: auto 14px;
+  }
+
+  [data-hook="feed-page-root"] .deedee-mobile-blog-category-options:not([hidden]) {
+    inset-inline: 0;
+    width: 100% !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog .iSTCpN {
+    padding: 0 18px 24px !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog .NPsER6,
+  #pro-gallery-margin-container-pro-blog .CS4xCt,
+  #pro-gallery-margin-container-pro-blog .Z0hXe1 {
+    display: none !important;
+  }
+
+  /* The column runs in reverse (title first in the DOM, meta last), so space-between pins meta to the top and title to the bottom. */
+  #pro-gallery-margin-container-pro-blog .uYL9xS {
+    justify-content: space-between !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog .JMCi2v,
+  #pro-gallery-margin-container-pro-blog .JMCi2v .O16KGI,
+  #pro-gallery-margin-container-pro-blog .JMCi2v .FbwBsX {
+    height: auto !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  #pro-gallery-margin-container-pro-blog [data-hook="post-title"],
+  #pro-gallery-margin-container-pro-blog [data-hook="post-title"] * {
+    font-size: 18px !important;
+    line-height: 22px !important;
+  }
+}
+
+/* Cards 41-50 were captured with the caption layer outside .gallery-item-wrapper, so Wix's wrapper rules never reached it. */
+#pro-gallery-margin-container-pro-blog .item-hover-flex-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+#pro-gallery-margin-container-pro-blog .gallery-item-hover {
+  position: relative;
+  z-index: 15;
+  overflow: hidden;
+}
+
+#pro-gallery-margin-container-pro-blog .gallery-item-hover {
+  background: transparent !important;
 }

@@ -27,3 +27,47 @@
     row-gap: calc((100vw - var(--scrollbar-width, 15px)) * 0.042667) !important;
   }
 }
+
+/* Phone: live lays the photo library out as two 16:9 columns, 12px apart, whatever the number of photos. */
+@media (max-width: 600px) {
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml .pro-gallery-parent-container,
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="gallery-wrapper-comp-"],
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-container-"],
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] {
+    box-sizing: border-box !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] {
+    display: grid !important;
+    gap: 12px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    margin: 0 !important;
+    position: relative !important;
+  }
+
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] > .item-link-wrapper {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    inset: auto !important;
+    margin: 0 !important;
+    position: relative !important;
+    width: auto !important;
+  }
+
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] .gallery-item-container,
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] .gallery-item-container > div,
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] .gallery-item-content,
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] [data-hook="gallery-item-image-img"] {
+    height: 100% !important;
+    inset: 0 !important;
+    width: 100% !important;
+  }
+
+  body[data-deedee-project-gallery="true"] #comp-m7q89cml [id^="pro-gallery-margin-container-"] .gallery-item-container {
+    position: relative !important;
+  }
+}

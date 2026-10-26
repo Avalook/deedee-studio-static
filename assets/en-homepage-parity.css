@@ -102,22 +102,8 @@
   }
 }
 
-/* Match the live Wix EN homepage's desktop-only render. The observed Wix
-   state hides its news cards, while preserving a 267px gallery area. */
+/* Live shows its three news cards at this width once they scroll into view, so the gallery is left to lay itself out. */
 @media screen and (min-width: 1101px) {
-  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq,
-  #comp-m6xtk73u #pro-gallery-container-comp-m8h9etbq,
-  #comp-m6xtk73u #pro-gallery-margin-container-comp-m8h9etbq,
-  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq .pro-gallery-prerender {
-    height: 267px !important;
-    min-height: 267px !important;
-    max-height: 267px !important;
-  }
-
-  #comp-m6xtk73u #pro-gallery-comp-m8h9etbq [data-hook="item-container"] {
-    display: none !important;
-  }
-
   /* Wix wraps Career onto its own row at this width. */
   #comp-m78h36cf_r_comp-m78h3686 #comp-m78h36cf_r_comp-m8np3cca ul {
     gap: 10px 12px !important;
