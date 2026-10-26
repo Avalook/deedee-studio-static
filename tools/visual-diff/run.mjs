@@ -10,6 +10,7 @@ import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
+import { contextOptions } from './env.mjs';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 
@@ -64,12 +65,7 @@ async function tileShot(page, width, totalHeight, file) {
 }
 
 async function capture(browser, url, width, file) {
-  const context = await browser.newContext({
-    viewport: { width, height: VIEWPORT_HEIGHT },
-    deviceScaleFactor: 1,
-    reducedMotion: 'reduce',
-    locale: 'vi-VN',
-  });
+  const context = await browser.newContext(contextOptions(width, VIEWPORT_HEIGHT));
   const page = await context.newPage();
   try {
     await page.addInitScript(css => {

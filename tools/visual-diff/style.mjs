@@ -2,12 +2,13 @@
 // Diff computed styles of one element (and its first few descendants) between live and local.
 //   node style.mjs /privacy-policy 1440 '[id$="_r_comp-m8np3cca-menu-content"]' [--depth=3]
 import { chromium } from 'playwright-core';
+import { contextOptions } from './env.mjs';
 const [route, widthArg, selector, ...rest] = process.argv.slice(2);
 const depth = Number((rest.find(a => a.startsWith('--depth=')) ?? '--depth=2').split('=')[1]);
 const BASES = { live: 'https://www.deedeestudio.net', local: 'http://127.0.0.1:4173/deedee-studio-static' };
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 async function dump(base) {
-  const page = await (await browser.newContext({ viewport: { width: Number(widthArg), height: 900 }, reducedMotion: 'reduce', locale: 'vi-VN' })).newPage();
+  const page = await (await browser.newContext(contextOptions(Number(widthArg)))).newPage();
   await page.goto(base + route.split('/').map(encodeURIComponent).join('/'), { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(async () => { for (let y = 0; y < document.documentElement.scrollHeight; y += 720) { scrollTo(0, y); await new Promise(r => setTimeout(r, 100)); } });
   await page.waitForTimeout(1200);

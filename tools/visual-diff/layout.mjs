@@ -8,6 +8,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
+import { contextOptions } from './env.mjs';
 
 const [route = '/', widthArg = '1440', ...rest] = process.argv.slice(2);
 const width = Number(widthArg);
@@ -18,7 +19,7 @@ const limit = Number((rest.find(a => a.startsWith('--limit=')) ?? '--limit=25').
 void path.dirname(fileURLToPath(import.meta.url));
 
 async function collect(browser, base) {
-  const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce', locale: 'vi-VN' });
+  const context = await browser.newContext(contextOptions(width));
   const page = await context.newPage();
   await page.goto(base + route.split('/').map(encodeURIComponent).join('/'), { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(async () => {
