@@ -38,3 +38,5 @@ Email báo khi có form hoặc bình luận mới: xem `docs/SUPABASE-NOTIFY.md`
 
 ## Đã kiểm tra thật (27/10/2026)
 Tạo Codespace mới từ `main`: CMS tự chạy, cổng 4174 mở được trang đăng nhập (không hiện mật khẩu demo), đăng nhập bằng mật khẩu sinh ra thành công, mật khẩu demo bị từ chối, Git trong codespace dùng được. **Chưa thử bấm Xuất bản thật** (sẽ commit lên `main`).
+
+**Kiểm tra thật lần 2 (27/10/2026, tối):** tạo Codespace mới, repo media tự clone; tải ảnh PNG và video MP4 qua API CMS, thêm vào trang `/privacy-policy`, xuất bản: media được commit vào `Avalook/deedee-studio-media` trước, rồi `site-overrides.json` vào repo web (không chứa media). Trên trang thật, ảnh và thẻ `<video controls>` trỏ tới `https://avalook.github.io/deedee-studio-media/media/…`, file trả 200 đúng loại. Hai bản khởi động chạy cùng lúc chỉ sinh một bộ mật khẩu (có khóa). Sau đó đã hoàn lại cả hai repo. Video thử chỉ là file mẫu 2 KB (không phát được), chưa thử file 50 MB thật.
