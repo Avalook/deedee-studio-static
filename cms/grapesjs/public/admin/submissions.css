@@ -1,0 +1,23 @@
+.inbox-page { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; margin: 16px 0; }
+.tabs { display: inline-flex; border: 1px solid #cfd3dc; border-radius: 8px; overflow: hidden; }
+.tabs button { border: 0; background: #fff; padding: 8px 14px; cursor: pointer; font: inherit; }
+.tabs button[aria-selected="true"] { background: #6d28b7; color: #fff; }
+.button-link { padding: 8px 12px; border: 1px solid #cfd3dc; border-radius: 8px; text-decoration: none; color: inherit; background: #fff; }
+.count { margin-left: auto; opacity: .7; font-size: 14px; }
+.inbox-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.inbox-item { border: 1px solid #dfe2ea; border-radius: 10px; padding: 12px 14px; background: #fff; }
+.inbox-item[data-done="true"] { opacity: .72; }
+.inbox-head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.inbox-head strong { font-size: 15px; }
+.inbox-meta { font-size: 13px; opacity: .7; }
+.inbox-fields { margin: 8px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; font-size: 14px; }
+.inbox-fields dt { opacity: .65; }
+.inbox-fields dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.inbox-body { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.inbox-actions { display: flex; gap: 8px; margin-top: 10px; }
+.inbox-actions button { padding: 6px 10px; border: 1px solid #cfd3dc; border-radius: 8px; background: #fff; cursor: pointer; font: inherit; font-size: 13px; }
+.inbox-actions .danger { color: #b3202f; border-color: #e1a9b0; }
+.pager { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 18px; }
+.pager button { padding: 6px 12px; border: 1px solid #cfd3dc; border-radius: 8px; background: #fff; cursor: pointer; }
+.pager button:disabled { opacity: .4; cursor: default; }

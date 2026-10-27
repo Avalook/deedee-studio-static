@@ -11,6 +11,7 @@
   <header class="bar">
     <a class="brand" href="/admin" aria-label="DeeDee CMS">DeeDee <span>CMS</span></a>
     <a href="/admin/content" style="font-size:12px;white-space:nowrap;color:#6d28b7">Bài viết &amp; dự án</a>
+    <a href="/admin/submissions" style="font-size:12px;white-space:nowrap;color:#6d28b7">Form &amp; bình luận</a>
     <a href="/admin/users" style="font-size:12px;white-space:nowrap;color:#6d28b7">Tài khoản</a>
     <a href="https://supabase.com/dashboard/project/eyecmmwnvlhubzvijktf/editor" target="_blank" rel="noopener noreferrer" style="font-size:12px;white-space:nowrap;color:#6d28b7">Biểu mẫu đã nhận ↗</a>
     <div class="page-info"><label for="route-picker">Trang</label><select id="route-picker" aria-label="Chọn trang để chỉnh sửa"></select><label for="scope">Phạm vi</label><select id="scope" aria-label="Phạm vi chỉnh sửa"><option value="page">Chỉ trang này</option><option value="site">Mọi trang (menu, chân trang…)</option></select><span id="status">Đang tải…</span></div>
@@ -33,6 +34,8 @@
       <button type="button" data-add="button">＋ Thêm nút liên kết</button>
       <button type="button" id="add-image">＋ Thêm ảnh</button>
       <input id="upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+      <button type="button" id="add-video">＋ Thêm video (MP4/WebM, ≤ 50 MB)</button>
+      <input id="upload-video" type="file" accept="video/mp4,video/webm" hidden>
       <hr>
       <label class="switch"><input id="free-move" type="checkbox" checked> Kéo tự do</label>
       <p class="note">Kéo trực tiếp trên trang. Vị trí, kích thước, cỡ chữ và màu lưu riêng theo từng cỡ xem.</p>

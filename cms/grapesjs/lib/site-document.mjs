@@ -7,6 +7,7 @@ const SHARED_COMPONENT = '\\[id\\$="_r_comp-[A-Za-z0-9_-]{1,100}"\\]';
 const SELECTOR_PATH = new RegExp(`^(?:${SHARED_COMPONENT}|#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?(?: > (?:#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?){0,40}$`);
 const LOCAL_IMAGE = /^\/deedee-studio-static\/assets\/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$/;
 const UPLOADED_IMAGE = /^\/media\/[a-f0-9-]{36}\.(?:png|jpe?g|webp|gif)$/i;
+const UPLOADED_VIDEO = /^\/media\/[a-f0-9-]{36}\.(?:mp4|webm)$/i;
 const DEVICE_NAMES = ['desktop', 'laptop', 'tablet', 'mobile'];
 
 const STYLE_FIELDS = new Set(['width', 'height', 'fontSize', 'color', 'backgroundColor']);
@@ -93,17 +94,19 @@ export function validateSiteDocument(value) {
   const insertionIds = new Set();
   const insertions = insertionsInput.map((insertion, index) => {
     assertRecord(insertion, `insertion ${index}`);
-    assertKeys(insertion, new Set(['id', 'type', 'text', 'image', 'href']), `insertion ${index}`);
+    assertKeys(insertion, new Set(['id', 'type', 'text', 'image', 'video', 'href']), `insertion ${index}`);
     if (typeof insertion.id !== 'string' || !/^add_[a-f0-9-]{36}$/.test(insertion.id)) throw new SiteDocumentValidationError('Inserted component id is invalid');
     if (insertionIds.has(insertion.id)) throw new SiteDocumentValidationError('Duplicate inserted component id');
     insertionIds.add(insertion.id);
-    if (!['text', 'button', 'image'].includes(insertion.type)) throw new SiteDocumentValidationError('Inserted component type is not allowed');
+    if (!['text', 'button', 'image', 'video'].includes(insertion.type)) throw new SiteDocumentValidationError('Inserted component type is not allowed');
     const text = validateText(insertion.text);
     const image = validateImage(insertion.image);
+    const video = validateVideo(insertion.video);
     const href = validateHref(insertion.href);
     if (insertion.type === 'image' && !image) throw new SiteDocumentValidationError('Inserted image requires a local image');
-    if (insertion.type !== 'image' && text === undefined) throw new SiteDocumentValidationError('Inserted text and button components require text');
-    return Object.fromEntries([['id', insertion.id], ['type', insertion.type], ['text', text], ['image', image], ['href', href]].filter(([, field]) => field !== undefined));
+    if (insertion.type === 'video' && !video) throw new SiteDocumentValidationError('Inserted video requires an uploaded video');
+    if (!['image', 'video'].includes(insertion.type) && text === undefined) throw new SiteDocumentValidationError('Inserted text and button components require text');
+    return Object.fromEntries([['id', insertion.id], ['type', insertion.type], ['text', text], ['image', image], ['video', video], ['href', href]].filter(([, field]) => field !== undefined));
   });
   const seo = validateSeo(value.seo);
   return { schemaVersion: 1, pageId, operations, insertions, ...(seo ? { seo } : {}) };
@@ -173,6 +176,14 @@ function validateImage(value) {
   return value;
 }
 
+
+function validateVideo(value) {
+  if (value === undefined) return undefined;
+  if (typeof value !== 'string' || !UPLOADED_VIDEO.test(value)) {
+    throw new SiteDocumentValidationError('Video must be an uploaded MP4 or WebM file');
+  }
+  return value;
+}
 
 function validateHref(value) {
   if (value === undefined) return undefined;

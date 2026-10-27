@@ -110,3 +110,9 @@ The Node test suite covers authentication and CSRF, validation/sanitization, imm
 ## Chạy trong GitHub Codespaces
 
 Cách miễn phí cho khách dùng CMS mà không cần server riêng: xem `docs/CMS-CODESPACES.md`. Cấu hình ở `.devcontainer/devcontainer.json` và `cms/grapesjs/start-codespace.sh`.
+
+## Ảnh, video, form và bình luận
+
+- Tải lên ảnh ≤ 5 MB và video MP4/WebM ≤ 50 MB; tùy chọn repo media riêng: `docs/CMS-MEDIA.md`.
+- `/admin/submissions`: xem form đã gửi, duyệt bình luận, tải CSV (cần `SUPABASE_SERVICE_ROLE_KEY`): `docs/CMS-CODESPACES.md`.
+- Email báo khi có form/bình luận mới: `docs/SUPABASE-NOTIFY.md`.

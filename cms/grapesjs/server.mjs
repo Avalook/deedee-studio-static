@@ -11,7 +11,6 @@ import {
   HOST,
   LIMITS,
   MAX_JSON_BYTES,
-  MAX_UPLOAD_BYTES,
   PORT,
   EXPORT_DIR,
   EXPORT_ENABLED,
@@ -35,6 +34,8 @@ import {
   signPreviewToken,
   verifyPreviewToken, hashSessionToken } from './lib/auth.mjs';
 import { createStore, StoreConflictError, UserError } from './lib/store.mjs';
+import { adminSettings, createSupabaseAdmin } from './lib/supabase-admin.mjs';
+import { createInboxRoutes } from './lib/inbox-routes.mjs';
 import { createArchiveProxy } from './lib/archive-proxy.mjs';
 import { ContentPolicyError, sanitizeCss, sanitizeHtml } from './lib/sanitize.mjs';
 import { validateSiteDocument } from './lib/site-document.mjs';
@@ -58,6 +59,7 @@ import {
   sendText,
 } from './lib/http.mjs';
 import { renderErrorPage, renderPreviewPage, renderPublicPage } from './lib/render.mjs';
+import { detectMedia, limitFor, mediaSettings, MAX_VIDEO_BYTES, MEDIA_FILE } from './lib/media.mjs';
 
 const PUBLIC_CSP =
   "default-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'none'; connect-src 'none'; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'";
@@ -76,10 +78,13 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.gif': 'image/gif',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
   '.json': 'application/json; charset=utf-8',
 };
 
 validateHostedEnvironment();
+const MEDIA_REPO = mediaSettings();
 await fs.mkdir(DATA_DIR, { recursive: true, mode: 0o700 });
 
 async function loadSecret() {
@@ -109,7 +114,12 @@ const contentStore = await createContentStore({ dataDir: DATA_DIR, staticSiteDir
 const contentRoutes = createContentRoutes({ contentStore, requireSession, requireCsrf, requirePublisher,
   enqueuePublish, outDir: EXPORT_DIR, uploadsDir: path.join(DATA_DIR, 'uploads'),
   sourceDir: STATIC_SITE_DIR, publicDir: PUBLIC_DIR, reservedRoutes: reservedContentRoutes,
-  pushEnabled: GIT_PUSH_ENABLED, hosted: HOSTED, exportEnabled: EXPORT_ENABLED });
+  pushEnabled: GIT_PUSH_ENABLED, hosted: HOSTED, exportEnabled: EXPORT_ENABLED, mediaRepo: MEDIA_REPO });
+let supabaseConfigUrl = '';
+try { supabaseConfigUrl = JSON.parse(await fs.readFile(path.join(STATIC_SITE_DIR, 'supabase-config.json'), 'utf8')).url || ''; } catch { /* optional */ }
+const supabaseSettings = adminSettings({ configUrl: supabaseConfigUrl });
+const inboxRoutes = createInboxRoutes({ requireSession, requireCsrf, requirePublisher, publicDir: PUBLIC_DIR,
+  admin: supabaseSettings ? createSupabaseAdmin(supabaseSettings) : null });
 const archiveProxy = createArchiveProxy({
   staticSiteOrigin: STATIC_SITE_ORIGIN,
   host: HOST,
@@ -243,30 +253,6 @@ function showDemoAccounts() {
 
 function originFor() {
   return process.env.POC_ORIGIN || `http://${HOST}:${PORT}`;
-}
-
-function detectImage(buffer) {
-  if (
-    buffer.length >= 8 &&
-    buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
-  ) {
-    return { ext: 'png', mime: 'image/png' };
-  }
-  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
-    return { ext: 'jpg', mime: 'image/jpeg' };
-  }
-  if (
-    buffer.length >= 12 &&
-    buffer.toString('ascii', 0, 4) === 'RIFF' &&
-    buffer.toString('ascii', 8, 12) === 'WEBP'
-  ) {
-    return { ext: 'webp', mime: 'image/webp' };
-  }
-  const gifHead = buffer.length >= 6 ? buffer.toString('ascii', 0, 6) : '';
-  if (gifHead === 'GIF87a' || gifHead === 'GIF89a') {
-    return { ext: 'gif', mime: 'image/gif' };
-  }
-  return null;
 }
 
 async function serveFile(res, filePath, { contentType, csp, cache = 'no-cache' } = {}) {
@@ -490,15 +476,21 @@ async function exportRelease(release, actor) {
   if (!EXPORT_ENABLED) return { enabled: false };
   try {
     if (GIT_PUSH_ENABLED) await syncRepository(EXPORT_DIR);
+    if (GIT_PUSH_ENABLED && MEDIA_REPO) await syncRepository(MEDIA_REPO.dir);
     const exported = await exportStaticSite({
       release,
       outDir: EXPORT_DIR,
       uploadsDir: path.join(DATA_DIR, 'uploads'),
       runtimeFile: path.join(PUBLIC_DIR, 'cms-runtime.js'),
+      mediaRepo: MEDIA_REPO,
     });
     const result = { enabled: true, dir: EXPORT_DIR, ...exported };
     if (GIT_PUSH_ENABLED) {
       try {
+        // Media first: the page must never reference a file that is not online yet.
+        if (MEDIA_REPO && exported.mediaFiles.length) {
+          result.mediaGit = await commitAndPush({ repoDir: MEDIA_REPO.dir, files: exported.mediaFiles, message: `cms: media for ${release.revisionId} by ${actor}` });
+        }
         result.git = await commitAndPush({ repoDir: EXPORT_DIR, files: exported.files, message: `cms: publish ${release.revisionId} by ${actor}` });
       } catch (error) {
         console.error('CMS Git publish failed; check repository access or conflicts.');
@@ -535,7 +527,7 @@ async function handleUpload(req, res, session) {
   if (!type.toLowerCase().startsWith('multipart/form-data')) {
     throw new HttpError(415, 'Expected multipart/form-data', 'UNSUPPORTED_MEDIA_TYPE');
   }
-  const body = await readBody(req, MAX_UPLOAD_BYTES + 128 * 1024);
+  const body = await readBody(req, MAX_VIDEO_BYTES + 128 * 1024);
   let form;
   try {
     form = await new Response(body, { headers: { 'content-type': type } }).formData();
@@ -547,13 +539,16 @@ async function handleUpload(req, res, session) {
     throw new HttpError(400, 'No file field found', 'INVALID_UPLOAD');
   }
   if (!file.size) throw new HttpError(400, 'File is empty', 'INVALID_UPLOAD');
-  if (file.size > MAX_UPLOAD_BYTES) {
-    throw new HttpError(413, 'Image exceeds the 2 MB upload limit', 'PAYLOAD_TOO_LARGE');
+  if (file.size > MAX_VIDEO_BYTES) {
+    throw new HttpError(413, 'File exceeds the 50 MB upload limit', 'PAYLOAD_TOO_LARGE');
   }
   const buffer = Buffer.from(await file.arrayBuffer());
-  const detected = detectImage(buffer);
+  const detected = detectMedia(buffer);
   if (!detected) {
-    throw new HttpError(415, 'Only PNG, JPEG, WebP or GIF images are allowed', 'UNSUPPORTED_MEDIA_TYPE');
+    throw new HttpError(415, 'Only PNG, JPEG, WebP, GIF images or MP4, WebM videos are allowed', 'UNSUPPORTED_MEDIA_TYPE');
+  }
+  if (buffer.length > limitFor(detected.kind)) {
+    throw new HttpError(413, 'Image exceeds the 5 MB upload limit', 'PAYLOAD_TOO_LARGE');
   }
   const asset = await store.addAsset({
     buffer,
@@ -566,7 +561,7 @@ async function handleUpload(req, res, session) {
 }
 
 async function serveMedia(req, res, filename) {
-  if (!/^[a-f0-9-]{36}\.(?:png|jpg|jpeg|webp|gif)$/.test(filename)) {
+  if (!MEDIA_FILE.test(filename)) {
     throw new HttpError(404, 'Media not found', 'NOT_FOUND');
   }
   const info = await store.getAssetFile(filename);
@@ -630,6 +625,7 @@ async function route(req, res) {
   }
 
   if (await contentRoutes(req, res, url)) return;
+  if (await inboxRoutes(req, res, url)) return;
 
   if (pathname === '/healthz' && req.method === 'GET') {
     sendJson(res, 200, { ok: true });

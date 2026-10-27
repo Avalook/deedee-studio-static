@@ -32,6 +32,23 @@ if [ -f "$data/FIRST-RUN-PASSWORDS.txt" ]; then
   export POC_EDITOR_PASSWORD="$(awk '$1=="editor"{print $2}' "$data/FIRST-RUN-PASSWORDS.txt")"
 fi
 
+# Optional separate media repository (set CMS_MEDIA_REPO=owner/name): uploaded images and videos are published there
+# so this repository stays small. If it cannot be cloned, uploads fall back to this repository.
+if [ -n "${CMS_MEDIA_REPO:-}" ]; then
+  media_dir="${CMS_MEDIA_REPO_DIR:-$(dirname "$repo")/${CMS_MEDIA_REPO##*/}}"
+  if [ ! -d "$media_dir/.git" ]; then
+    git clone --quiet "https://github.com/$CMS_MEDIA_REPO.git" "$media_dir" \
+      || echo "WARNING: could not clone $CMS_MEDIA_REPO; media stays in this repository."
+  fi
+  if [ -d "$media_dir/.git" ]; then
+    owner="${CMS_MEDIA_REPO%%/*}"
+    export CMS_MEDIA_REPO_DIR="$media_dir"
+    export CMS_MEDIA_BASE_URL="${CMS_MEDIA_BASE_URL:-https://$(printf '%s' "$owner" | tr '[:upper:]' '[:lower:]').github.io/${CMS_MEDIA_REPO##*/}}"
+  else
+    unset CMS_MEDIA_REPO_DIR CMS_MEDIA_BASE_URL
+  fi
+fi
+
 export CMS_EXPORT=1 CMS_GIT_PUSH="${CMS_GIT_PUSH:-1}"
 export CMS_SITE_ORIGIN="${CMS_SITE_ORIGIN:-https://avalook.github.io/deedee-studio-static}"
 exec node cms/grapesjs/server.mjs

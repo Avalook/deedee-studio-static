@@ -12,7 +12,7 @@ const ID = 'content_[a-f0-9-]{36}';
 /** Structured content endpoints reuse the existing session, CSRF and publish queue. */
 export function createContentRoutes({ contentStore, requireSession, requireCsrf, requirePublisher,
   enqueuePublish, outDir, uploadsDir, sourceDir, publicDir, reservedRoutes,
-  pushEnabled, hosted, exportEnabled }) {
+  pushEnabled, hosted, exportEnabled, mediaRepo = null }) {
   // The site's article pages are read once and used as the layout of CMS articles.
   let templates;
   const articleTemplates = async () => { templates ??= await loadArticleTemplates(sourceDir).catch(() => ({})); return templates; };
@@ -29,10 +29,15 @@ export function createContentRoutes({ contentStore, requireSession, requireCsrf,
       let exported;
       try {
         if (pushEnabled) await syncRepository(outDir);
+        if (pushEnabled && mediaRepo) await syncRepository(mediaRepo.dir);
         const pageTemplates = await articleTemplates();
         const renderer = (item, options) => renderContentPage(item, { ...options, templates: pageTemplates });
         exported = await exportContent({ items, previousItems, outDir, uploadsDir, sourceDir,
-          renderPage: renderer, reservedRoutes });
+          renderPage: renderer, reservedRoutes, mediaRepo });
+        if (pushEnabled && mediaRepo && exported.mediaFiles?.length) {
+          exported.mediaGit = await commitAndPush({ repoDir: mediaRepo.dir, files: exported.mediaFiles,
+            message: `cms: media for content ${id} by ${actor}` });
+        }
         if (pushEnabled) exported.git = await commitAndPush({ repoDir: outDir, files: exported.files,
           message: `cms: ${remove ? 'unpublish' : 'publish'} content ${id} by ${actor}` });
       } catch (error) {

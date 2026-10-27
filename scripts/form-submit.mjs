@@ -43,7 +43,7 @@ export function isConfigured(config) {
 }
 
 /** Return a browser-safe publishable key or legacy anonymous JWT. */
-function publicFormKey(config) {
+export function publicFormKey(config) {
   const key = config?.publishableKey || config?.anonKey;
   if (typeof key !== 'string') return '';
   if (/^sb_publishable_[A-Za-z0-9_-]{20,}$/.test(key)) return key;

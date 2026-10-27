@@ -18,6 +18,19 @@ CMS là một server Node nên GitHub Pages không chạy được. Codespaces c
 
 Lần sau: vào github.com/codespaces, mở lại codespace cũ (nó tự chạy CMS). Nếu CMS không lên, chạy `bash cms/grapesjs/start-codespace.sh` (log ở `/tmp/deedee-cms.log`).
 
+## Ảnh và video
+- Ảnh PNG/JPEG/WebP/GIF tối đa **5 MB**, video MP4/WebM tối đa **50 MB** (nút "＋ Thêm video" ở trình sửa trang). Loại file được nhận diện từ nội dung, không theo tên file.
+- Nếu đặt `CMS_MEDIA_REPO=owner/tên-repo` (xem `docs/CMS-MEDIA.md`), ảnh và video được đưa vào **repo media riêng** để repo web nhẹ; không đặt thì chúng nằm trong `assets/cms/` của repo web.
+- Video dài nên đưa lên YouTube/Vimeo rồi dán liên kết, đừng lưu trên GitHub (khuyến cáo repo dưới 1 GB).
+
+## Form liên hệ và bình luận
+Mục **Form & bình luận** trong CMS (`/admin/submissions`, chỉ publisher/admin) hiện các form khách đã gửi và bình luận chờ duyệt: đánh dấu đã xử lý, duyệt hoặc xóa bình luận, tải CSV.
+1. Tạo bảng bình luận một lần: dán `docs/supabase-comments-schema.sql` vào Supabase → SQL Editor → Run. (Bảng form đã có từ `docs/supabase-form-schema.sql`.)
+2. Cho CMS đọc được dữ liệu: vào github.com/settings/codespaces → **New secret** → tên `SUPABASE_SERVICE_ROLE_KEY`, giá trị là khóa **service_role** (Supabase → Project Settings → API Keys), chọn repo `Avalook/deedee-studio-static`. Khóa này chỉ nằm trong Codespace của bạn, không đưa vào repo, không gửi cho ai. Sau đó dừng và mở lại Codespace.
+3. Bình luận của khách chỉ hiện trên bài **sau khi bạn duyệt**; mỗi người gửi cách nhau tối thiểu 30 giây, mỗi phút toàn site tối đa 20 bình luận.
+
+Email báo khi có form hoặc bình luận mới: xem `docs/SUPABASE-NOTIFY.md` (cần tài khoản dịch vụ gửi mail).
+
 ## Giới hạn cần biết
 - **Nháp và tài khoản chỉ nằm trong codespace của bạn.** Mỗi người có codespace riêng, dữ liệu không chia sẻ. Nên dùng một codespace chung do một người quản.
 - Codespace không dùng 30 ngày sẽ bị GitHub xóa (cài đặt được). Nội dung **đã xuất bản** an toàn trong Git; nháp và tài khoản chưa xuất bản thì mất.

@@ -186,12 +186,18 @@ function isTextEditable(element) {
   function insertComponents(insertions) {
     const root = document.querySelector('#SITE_CONTAINER') || document.body;
     for (const item of insertions || []) {
-      const element = document.createElement(item.type === 'image' ? 'img' : item.type === 'button' ? 'a' : 'p');
+      const element = document.createElement(item.type === 'image' ? 'img' : item.type === 'video' ? 'video' : item.type === 'button' ? 'a' : 'p');
       element.setAttribute('data-cms-added', item.id);
       element.className = 'deedee-cms-added';
       if (item.type === 'image') {
         element.src = item.image;
         element.alt = item.text || 'Image';
+      } else if (item.type === 'video') {
+        element.src = item.video;
+        element.controls = true;
+        element.preload = 'metadata';
+        element.setAttribute('playsinline', '');
+        element.style.maxWidth = '100%';
       } else {
         element.textContent = item.text;
         if (item.type === 'button') {

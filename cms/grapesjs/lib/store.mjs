@@ -6,7 +6,7 @@ import { createEmptySiteDocument } from './site-document.mjs';
 
 const REVISION_ID = /^rev_[a-f0-9-]{36}$/;
 const RELEASE_ID = /^rel_[a-f0-9-]{36}$/;
-const ASSET_FILE = /^[a-f0-9-]{36}\.(?:png|jpg|jpeg|webp|gif)$/;
+const ASSET_FILE = /^[a-f0-9-]{36}\.(?:png|jpg|jpeg|webp|gif|mp4|webm)$/;
 
 const DUMMY_HASH = hashPassword(randomBytes(16).toString('hex'));
 

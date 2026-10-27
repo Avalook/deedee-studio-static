@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Form &amp; bình luận — DeeDee CMS</title>
+  <link rel="stylesheet" href="/admin/content-editor.css">
+  <link rel="stylesheet" href="/admin/submissions.css">
+  <script type="module" src="/admin/submissions.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/admin">DeeDee <span>CMS</span></a>
+    <nav aria-label="Quản trị"><a href="/admin">Sửa giao diện</a><a href="/admin/content">Bài viết &amp; dự án</a><a href="/admin/submissions" aria-current="page">Form &amp; bình luận</a><a href="/admin/users">Tài khoản</a></nav>
+    <div class="account"><span id="account">Đang kết nối…</span><button id="logout" type="button">Thoát</button></div>
+  </header>
+  <main class="inbox-page">
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="section-head"><div><span class="eyebrow">NGƯỜI DÙNG GỬI</span><h1>Form liên hệ &amp; bình luận</h1></div></div>
+    <div id="setup" class="card" hidden>
+      <h2>Chưa kết nối Supabase</h2>
+      <p>Đặt biến môi trường <code>SUPABASE_SERVICE_ROLE_KEY</code> (khóa <em>service_role</em> của project Supabase) rồi chạy lại CMS. Khóa này chỉ nằm trên máy chạy CMS, không bao giờ đưa vào repo hay trình duyệt. Hướng dẫn: <code>docs/CMS-CODESPACES.md</code>, mục “Form &amp; bình luận”.</p>
+    </div>
+    <section id="inbox" hidden>
+      <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="Loại dữ liệu">
+          <button type="button" role="tab" data-kind="forms" aria-selected="true">Form liên hệ</button>
+          <button type="button" role="tab" data-kind="comments" aria-selected="false">Bình luận</button>
+        </div>
+        <label>Hiển thị
+          <select id="status">
+            <option value="pending">Chưa xử lý</option>
+            <option value="done">Đã xử lý</option>
+            <option value="all">Tất cả</option>
+          </select>
+        </label>
+        <a id="csv" class="button-link" href="#" download>Tải CSV</a>
+        <span id="count" class="count"></span>
+      </div>
+      <p id="empty" class="hint" hidden>Chưa có mục nào.</p>
+      <ul id="list" class="inbox-list"></ul>
+      <div class="pager"><button id="prev" type="button">← Trước</button><span id="page"></span><button id="next" type="button">Sau →</button></div>
+    </section>
+  </main>
+</body>
+</html>

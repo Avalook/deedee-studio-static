@@ -1,3 +1,5 @@
+import { installCommentSubmit } from './comment-submit.mjs';
+
 export function installLocalCommentComposer(root) {
   if (!root) return () => {};
 
@@ -30,5 +32,8 @@ export function installLocalCommentComposer(root) {
 }
 
 if (typeof document !== 'undefined') {
-  installLocalCommentComposer(document.querySelector('[data-deedee-local-comments]'));
+  const root = document.querySelector('[data-deedee-local-comments]');
+  installLocalCommentComposer(root);
+  // Real comments (stored in Supabase, shown after approval) once supabase-config.json is filled in.
+  installCommentSubmit(root).catch(() => {});
 }

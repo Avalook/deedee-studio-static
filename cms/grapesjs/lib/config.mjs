@@ -19,7 +19,7 @@ export const STATIC_SITE_DIR = path.resolve(process.env.POC_STATIC_SITE_DIR || p
 export const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 export const PREVIEW_TTL_MS = 15 * 60 * 1000;
 export const MAX_JSON_BYTES = 8 * 1024 * 1024;
-export const MAX_UPLOAD_BYTES = 2 * 1024 * 1024;
+// Upload limits live in lib/media.mjs (images and short videos have different ceilings).
 
 export const DEMO_USERS = [
   {

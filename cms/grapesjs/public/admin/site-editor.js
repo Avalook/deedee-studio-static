@@ -202,11 +202,11 @@ import { mergeDocuments, portableSelector } from './document-scope.mjs';
     byId('offset-y').value = offsets.y;
   }
 
-  function pushInsertion(type, image = '') {
+  function pushInsertion(type, media = '') {
     const item = {
       id: `add_${crypto.randomUUID()}`,
       type,
-      ...(type === 'image' ? { image } : { text: type === 'button' ? 'Liên hệ DeeDee' : 'Thêm nội dung tại đây' }),
+      ...(type === 'image' ? { image: media } : type === 'video' ? { video: media } : { text: type === 'button' ? 'Liên hệ DeeDee' : 'Thêm nội dung tại đây' }),
       ...(type === 'button' ? { href: '/contact-us' } : {}),
     };
     state.undo.push(state.document);
@@ -393,6 +393,17 @@ import { mergeDocuments, portableSelector } from './document-scope.mjs';
         toast('Ảnh đã được tải lên thư viện.');
       } catch (error) { toast(error.message, 'error'); }
       byId('upload').value = '';
+    });
+    byId('add-video').addEventListener('click', () => byId('upload-video').click());
+    byId('upload-video').addEventListener('change', async () => {
+      const [file] = byId('upload-video').files || [];
+      if (!file) return;
+      try {
+        toast('Đang tải video lên…');
+        pushInsertion('video', await uploadImage(file));
+        toast('Video đã được tải lên và thêm vào cuối trang.');
+      } catch (error) { toast(error.message, 'error'); }
+      byId('upload-video').value = '';
     });
     byId('replace-image').addEventListener('click', () => byId('upload').click());
 
