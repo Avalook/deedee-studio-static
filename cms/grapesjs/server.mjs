@@ -6,6 +6,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto';
 import {
   DATA_DIR,
   DEMO_USERS,
+  HOSTED,
   GRAPES_DIST,
   HOST,
   LIMITS,
@@ -41,6 +42,9 @@ import { validateSiteDocument } from './lib/site-document.mjs';
 import { manifestRoutes, normalizePageIdFromUrl, siteDocumentFor, withPageDocument } from './lib/site-pages.mjs';
 import { exportStaticSite } from './lib/export.mjs';
 import { commitAndPush } from './lib/git-publish.mjs';
+import { validateHostedEnvironment, assertHostedUsers } from './lib/hosted-config.mjs';
+import { syncRepository } from './lib/hosted-repository.mjs';
+import { createPublishQueue } from './lib/publish-queue.mjs';
 import {
   escapeHtml,
   getClientIp,
@@ -74,6 +78,7 @@ const MIME = {
   '.json': 'application/json; charset=utf-8',
 };
 
+validateHostedEnvironment();
 await fs.mkdir(DATA_DIR, { recursive: true, mode: 0o700 });
 
 async function loadSecret() {
@@ -94,13 +99,15 @@ async function loadSecret() {
 
 const secret = await loadSecret();
 const store = await createStore({ dataDir: DATA_DIR, seedDir: SEED_DIR, demoUsers: DEMO_USERS });
+if (HOSTED) assertHostedUsers(JSON.parse(await fs.readFile(path.join(DATA_DIR, 'users.json'), 'utf8')).users);
+const enqueuePublish = createPublishQueue();
 const archiveProxy = createArchiveProxy({
   staticSiteOrigin: STATIC_SITE_ORIGIN,
   host: HOST,
   port: PORT,
   verifyPreviewToken,
   secret,
-  serializePreviewCookie,
+  serializePreviewCookie: (token, maxAge) => serializePreviewCookie(token, maxAge, HOSTED),
   HttpError,
 });
 const sessions = createSessionStore({ ttlMs: SESSION_TTL_MS });
@@ -250,7 +257,7 @@ async function handleLogin(req, res) {
     res,
     200,
     { user: { username: user.username, role: user.role }, csrf: created.csrf },
-    { 'Set-Cookie': serializeSessionCookie(created.token, SESSION_TTL_MS / 1000) },
+    { 'Set-Cookie': serializeSessionCookie(created.token, SESSION_TTL_MS / 1000, HOSTED) },
   );
 }
 
@@ -411,10 +418,11 @@ async function handleRestore(req, res, session, revisionId) {
   sendJson(res, 200, { revision: revisionSummary(restored) });
 }
 
-/** Write the published overrides where the static site can read them; never fails the publish itself. */
+/** Export content and report deployment errors without logging credential-bearing Git output. */
 async function exportRelease(release, actor) {
   if (!EXPORT_ENABLED) return { enabled: false };
   try {
+    if (HOSTED && GIT_PUSH_ENABLED) await syncRepository(EXPORT_DIR);
     const exported = await exportStaticSite({
       release,
       outDir: EXPORT_DIR,
@@ -426,13 +434,13 @@ async function exportRelease(release, actor) {
       try {
         result.git = await commitAndPush({ repoDir: EXPORT_DIR, files: exported.files, message: `cms: publish ${release.revisionId} by ${actor}` });
       } catch (error) {
-        console.error('CMS git publish failed:', error.message);
+        console.error('CMS Git publish failed; check repository access or conflicts.');
         result.gitError = 'Git commit or push failed; the files were written but not published.';
       }
     }
     return result;
   } catch (error) {
-    console.error('CMS static export failed:', error.message);
+    console.error('CMS export failed; check storage and repository state.');
     return { enabled: true, error: 'The release was saved but writing the static site files failed.' };
   }
 }
@@ -442,9 +450,16 @@ async function handlePublish(req, res, session, revisionId) {
   requirePublisher(session);
   const revision = await store.getRevision(revisionId);
   if (!revision) throw new HttpError(404, 'Revision not found', 'NOT_FOUND');
-  const release = await store.publishRevision(revisionId, session.user.username);
-  const exported = await exportRelease(release, session.user.username);
-  sendJson(res, 200, { release: releaseSummary(release), revision: revisionSummary(revision), export: exported });
+  await enqueuePublish(async () => {
+    const candidate = { revisionId, publishedAt: new Date().toISOString(),
+      publishedBy: session.user.username, siteDocument: revision.projectData };
+    const exported = await exportRelease(candidate, session.user.username);
+    if (exported.error || exported.gitError) {
+      throw new HttpError(502, exported.error || exported.gitError, 'PUBLISH_FAILED');
+    }
+    const release = await store.publishRevision(revisionId, session.user.username);
+    sendJson(res, 200, { release: releaseSummary(release), revision: revisionSummary(revision), export: exported });
+  });
 }
 
 async function handleUpload(req, res, session) {
@@ -539,6 +554,9 @@ async function route(req, res) {
   const pathname = url.pathname;
 
   setBaselineHeaders(res);
+  if (HOSTED && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method) && req.headers.origin !== originFor()) {
+    throw new HttpError(403, 'Request origin is not allowed', 'ORIGIN_REJECTED');
+  }
 
   if (pathname.startsWith('/api/')) {
     res.setHeader('Cache-Control', 'no-store');
@@ -559,7 +577,7 @@ async function route(req, res) {
     requireCsrf(req, session);
     sessions.destroy(session.token);
     await store.appendAudit({ actor: session.user.username, action: 'logout', target: session.user.id });
-    sendJson(res, 200, { ok: true }, { 'Set-Cookie': clearSessionCookie() });
+    sendJson(res, 200, { ok: true }, { 'Set-Cookie': `${clearSessionCookie()}${HOSTED ? '; Secure' : ''}` });
     return;
   }
 

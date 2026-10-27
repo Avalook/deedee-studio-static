@@ -63,15 +63,14 @@ test('export writes the overrides, the runtime and referenced uploads, atomicall
   assert.deepEqual((await fs.readdir(out)).filter(name => name.endsWith('.tmp')), []);
 });
 
-test('a missing upload is skipped instead of failing the publish', async () => {
+test('a missing upload fails rather than publishing a broken image URL', async () => {
   const out = await tmp('cms-out-');
   const runtime = path.join(await tmp('cms-rt-'), 'cms-runtime.js');
   await fs.writeFile(runtime, 'x');
-  const result = await exportStaticSite({
+  await assert.rejects(exportStaticSite({
     release: release({ schemaVersion: 1, pages: { '/x': page('/x', [{ selector: '#img', image: `/media/${FILE}` }]) } }),
     outDir: out, uploadsDir: await tmp('cms-up-'), runtimeFile: runtime,
-  });
-  assert.deepEqual(result.media, []);
+  }), /Referenced upload is missing/);
 });
 
 test('publishing an older revision replaces the overrides, including with none', async () => {

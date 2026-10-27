@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+export const HOSTED = process.env.POC_HOSTED === '1';
 
 export const ROOT = path.resolve(here, '..');
 export const DATA_DIR = path.resolve(process.env.POC_DATA_DIR || path.join(ROOT, 'data'));
@@ -11,7 +12,7 @@ export const SHARED_DIR = path.resolve(ROOT, '..', 'shared');
 export const GRAPES_DIST = path.join(ROOT, 'node_modules', 'grapesjs', 'dist');
 
 export const HOST = process.env.POC_HOST || '127.0.0.1';
-export const PORT = Number(process.env.POC_PORT || 4174);
+export const PORT = Number(process.env.POC_PORT || process.env.PORT || 4174);
 export const STATIC_SITE_ORIGIN = process.env.POC_STATIC_SITE_ORIGIN || 'http://127.0.0.1:4173';
 
 export const STATIC_SITE_DIR = path.resolve(process.env.POC_STATIC_SITE_DIR || path.join(ROOT, '..', '..'));

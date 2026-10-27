@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: deedee-cms
+    runtime: node
+    region: singapore
+    plan: starter
+    repo: https://github.com/Avalook/deedee-studio-static
+    branch: codex/cms-online-20261027
+    autoDeployTrigger: off
+    buildCommand: npm --prefix cms/grapesjs ci --ignore-scripts
+    startCommand: node cms/grapesjs/start-hosted.mjs
+    healthCheckPath: /healthz
+    disk:
+      name: deedee-cms-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: POC_EDITOR_PASSWORD
+        sync: false
+      - key: POC_PUBLISHER_PASSWORD
+        sync: false
+      - key: CMS_GITHUB_TOKEN
+        sync: false

@@ -48,10 +48,16 @@ async function writeAtomic(file, contents) {
 export async function exportStaticSite({ release, outDir, uploadsDir, runtimeFile, basePath = STATIC_BASE_PATH }) {
   const collected = collectPageDocuments(release?.siteDocument);
   const { pages, files } = rewriteUploadedMedia(collected, basePath);
+  // Validate every dependency before changing the checkout; missing media must not leave a partial export.
+  const media = await Promise.all(files.map(async (file) => {
+    const buffer = await fs.readFile(path.join(uploadsDir, file)).catch(() =>
+      fs.readFile(path.join(outDir, 'assets', 'cms', file)).catch(() => null));
+    if (!buffer) throw new Error('Referenced upload is missing; restore it before publishing');
+    return { file, buffer };
+  }));
+  const runtime = await fs.readFile(runtimeFile);
   const copied = [];
-  for (const file of files) {
-    const buffer = await fs.readFile(path.join(uploadsDir, file)).catch(() => null);
-    if (!buffer) continue;
+  for (const { file, buffer } of media) {
     await writeAtomic(path.join(outDir, 'assets', 'cms', file), buffer);
     copied.push(file);
   }
@@ -63,7 +69,7 @@ export async function exportStaticSite({ release, outDir, uploadsDir, runtimeFil
     pages,
   };
   await writeAtomic(path.join(outDir, 'site-overrides.json'), `${JSON.stringify(payload, null, 2)}\n`);
-  await writeAtomic(path.join(outDir, 'scripts', 'cms-runtime.js'), await fs.readFile(runtimeFile));
+  await writeAtomic(path.join(outDir, 'scripts', 'cms-runtime.js'), runtime);
   return {
     pages: Object.keys(pages).length,
     operations: Object.values(pages).reduce((total, page) => total + page.operations.length, 0),

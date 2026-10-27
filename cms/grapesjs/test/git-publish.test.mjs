@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { commitAndPush } from '../lib/git-publish.mjs';
+import { prepareRepository, syncRepository } from '../lib/hosted-repository.mjs';
+
+test('persistent sparse checkout publishes and retries a previously unpushed commit', async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'deedee-git-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const remote = path.join(root, 'remote.git');
+  const seed = path.join(root, 'seed');
+  const checkout = path.join(root, 'publish');
+  const git = (args, cwd = root) => execFileSync('git', args, { cwd, stdio: 'pipe' }).toString();
+  git(['init', '--bare', '--initial-branch=main', remote]);
+  await mkdir(seed);
+  git(['init', '--initial-branch=main'], seed);
+  git(['config', 'user.name', 'Test'], seed);
+  git(['config', 'user.email', 'test@example.com'], seed);
+  await writeFile(path.join(seed, 'site-overrides.json'), '{}');
+  await writeFile(path.join(seed, 'private-source.txt'), 'not in sparse checkout');
+  git(['add', '.'], seed); git(['commit', '-m', 'seed'], seed);
+  git(['remote', 'add', 'origin', remote], seed); git(['push', 'origin', 'main'], seed);
+  await prepareRepository({ repoDir: checkout, repositoryUrl: remote });
+  await assert.rejects(readFile(path.join(checkout, 'private-source.txt')));
+  await writeFile(path.join(checkout, 'site-overrides.json'), '{"updated":true}');
+  await commitAndPush({ repoDir: checkout, files: ['site-overrides.json'], message: 'update', push: false });
+  const result = await commitAndPush({ repoDir: checkout, files: ['site-overrides.json'], message: 'retry' });
+  assert.equal(result.pushed, true);
+  assert.equal(git(['rev-parse', 'HEAD'], checkout), git(['rev-parse', 'main'], remote));
+  await syncRepository(checkout);
+  await writeFile(path.join(checkout, 'site-overrides.json'), 'dirty');
+  await assert.rejects(syncRepository(checkout), /uncommitted/i);
+});
