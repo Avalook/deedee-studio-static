@@ -3,6 +3,11 @@
  * These deliberately differ from the live Wix site, so they live in one place and are easy to revert.
  */
 export const FOOTER_FEEDBACK_CSS = `
+/* Contact's replacement phone footer was captured without its desktop hide rule.
+   The archived desktop footer already hides itself at 750px and below. */
+@media (min-width: 751px) {
+  #comp-mq7qhpf3 { display: none !important; }
+}
 @media (min-width: 1001px) {
   /* Footer menu: keep "Tuyển dụng" on the same row instead of wrapping it under the other labels. */
   footer nav ul { flex-wrap: nowrap !important; column-gap: 0 !important; }

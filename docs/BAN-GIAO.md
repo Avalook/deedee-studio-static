@@ -2,6 +2,13 @@
 
 Cập nhật 26/10/2026 · commit `f6682c68`
 
+## Sửa footer và xoá thành phần CMS (27/10/2026)
+
+- Sửa footer Liên hệ VI/EN: bản footer điện thoại chỉ hiện đến 750px, tránh lặp footer và khoảng trống lớn trên desktop.
+- CMS sửa giao diện có nút **Xoá thành phần**; chọn phần tử rồi bấm nút hoặc Delete/Backspace khi không gõ trong ô nhập. **Hoàn tác** khôi phục trước khi lưu. Xoá trang gốc được lưu trong override; HTML gốc không bị ghi đè. Khối chèn mới bị gỡ khỏi danh sách chèn.
+- Lưu nháp/xem trước/xuất bản dùng cùng trạng thái xoá; các vùng cấu trúc trang và điều hướng được bảo vệ.
+- Bộ kiểm tra footer toàn bộ route: `node tools/visual-diff/footer-audit.mjs` (cần Chrome và server local4173). Kiểm tra desktop1440 và điện thoại390 sau khi CSS tải xong.
+
 ## Cập nhật 27/10/2026: CMS nội dung mới và nhận form
 
 - Mở `Start-CMS.command` (Mac) hoặc `Start-CMS.cmd` (Windows), vào `/admin/content`. Cần Node.js >=22.12; lần đầu cần Internet để cài dependency.

@@ -51,6 +51,8 @@
     <aside class="side inspector">
       <h2>Thuộc tính</h2>
       <p id="selection-label" class="selection-label">Chưa chọn thành phần</p>
+      <button id="delete-component" type="button" disabled>Xoá thành phần</button>
+      <p class="note">Phím Delete/Backspace xoá thành phần đang chọn. Hoàn tác khôi phục trước khi lưu hoặc xuất bản.</p>
       <label>Nội dung
         <textarea id="text" rows="4" placeholder="Chọn một dòng chữ để sửa"></textarea>
       </label>
@@ -84,6 +86,6 @@
     <header><h2>Lịch sử phiên bản</h2><button id="versions-close" type="button">Đóng</button></header>
     <div id="version-list"></div>
   </dialog>
-  <script src="/admin/site-editor.js" defer></script>
+  <script type="module" src="/admin/site-editor.js"></script>
 </body>
 </html>
