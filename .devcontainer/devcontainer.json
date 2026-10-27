@@ -1,6 +1,6 @@
 {
   "name": "DeeDee CMS",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-bookworm",
   "postCreateCommand": "npm ci --prefix cms/grapesjs",
   "postStartCommand": "nohup bash cms/grapesjs/start-codespace.sh > /tmp/deedee-cms.log 2>&1 &",
   "forwardPorts": [4174],
