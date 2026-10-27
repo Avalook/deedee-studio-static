@@ -45,10 +45,16 @@ Cập nhật 26/10/2026 · commit `f6682c68`
 Video YouTube của 3 trang dự án báo "Video unavailable" vì YouTube chặn nhúng bài VEVO ngoài tên miền gốc.
 Chưa thử trên điện thoại thật.
 
+## Cập nhật 27/10/2026 (tối): media, form, bình luận
+
+- Ảnh ≤ 5 MB và video MP4/WebM ≤ 50 MB tải lên trong trình sửa trang; có tùy chọn repo media riêng (`docs/CMS-MEDIA.md`).
+- `/admin/submissions`: xem form đã gửi, duyệt hoặc xóa bình luận, tải CSV; cần biến `SUPABASE_SERVICE_ROLE_KEY` (`docs/CMS-CODESPACES.md`).
+- Email báo khi có form/bình luận mới: code Edge Function đã viết, **chưa triển khai** (`docs/SUPABASE-NOTIFY.md`).
+
 ## 3. Phần "backend": form liên hệ → Supabase
 
 Form liên hệ (VI/EN) kiểm tra dữ liệu rồi gửi vào Supabase (`supabase-config.json` đã có project). Có ô ẩn chống bot và giãn cách 15 giây; nếu bị spam thì thêm Turnstile/hCaptcha. Xem dữ liệu trong Supabase → Table editor → `form_submissions` (liên kết có sẵn trong thanh CMS). Muốn nhận email khi có form mới thì thêm Database Webhook.
-Mục **Bình luận** dưới bài viết chỉ để hiển thị giống bản gốc, **không đăng được bình luận**.
+Mục **Bình luận** dưới bài viết (cập nhật 27/10): khách để lại tên và nội dung, bình luận lưu vào bảng `comments` ở Supabase ở trạng thái chờ duyệt và chỉ hiện sau khi publisher duyệt ở `/admin/submissions` (khóa public chỉ thêm được bình luận chờ duyệt, không đọc được bình luận chưa duyệt). Bảng đã tạo bằng `docs/supabase-comments-schema.sql`.
 
 ## 4. CMS: tự sửa nội dung bản clone
 
@@ -80,6 +86,6 @@ cd cms/grapesjs && npm ci && npm start    # cửa sổ 2 (cổng 4174), mở htt
 
 ## 5. Kiểm tra và bảo trì
 
-- `npm test` (348 test) và `cd cms/grapesjs && npm test` (86 test). Ngưỡng coverage 80% hiện chưa đạt (khoảng 76%), lệnh vẫn báo lỗi dù mọi test đạt.
+- `npm test` (356 test) và `cd cms/grapesjs && npm test` (95 test). Ngưỡng coverage 80% hiện chưa đạt (khoảng 76%), lệnh vẫn báo lỗi dù mọi test đạt.
 - `node tools/visual-diff/run.mjs --routes /,/news --widths 1440,419` so ảnh với trang gốc; `node tools/visual-diff/functional.mjs --pages` kiểm chức năng trên trang công khai (26 kiểm tra).
 - Ảnh và nội dung sao chép từ trang Wix gốc; nếu Wix gốc đổi nội dung thì bản clone **không tự cập nhật**.
