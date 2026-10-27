@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "revisionId": null,
-  "publishedAt": null,
-  "publishedBy": null,
-  "pages": {}
+  "revisionId": "rev_d3b69648-09fa-479b-aa25-82be814413c6",
+  "publishedAt": "2026-10-27T08:40:56.884Z",
+  "publishedBy": "publisher",
+  "pages": {
+    "/privacy-policy": {
+      "schemaVersion": 1,
+      "pageId": "/privacy-policy",
+      "operations": [
+        {
+          "selector": "#comp-mehxlcwe",
+          "text": "Privacy Policy (CMS test)"
+        }
+      ],
+      "insertions": []
+    }
+  }
 }
