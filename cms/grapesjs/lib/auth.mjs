@@ -28,7 +28,7 @@ export function verifyPassword(password, stored) {
   }
 }
 
-function hashSessionToken(token) {
+export function hashSessionToken(token) {
   return createHash('sha256').update(token).digest('hex');
 }
 
@@ -64,6 +64,12 @@ export function createSessionStore({ ttlMs }) {
     },
     destroy(token) {
       if (typeof token === 'string') sessions.delete(hashSessionToken(token));
+    },
+    /** End every session of one account, e.g. after its role or password changed or it was deleted. */
+    destroyUser(userId, { except } = {}) {
+      for (const [key, session] of sessions) {
+        if (session.user.id === userId && key !== except) sessions.delete(key);
+      }
     },
     count() {
       prune();

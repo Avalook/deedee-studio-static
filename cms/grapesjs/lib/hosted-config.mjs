@@ -13,6 +13,12 @@ export function validateHostedEnvironment(env = process.env) {
   if (env.POC_EDITOR_PASSWORD === env.POC_PUBLISHER_PASSWORD) {
     throw new Error('Editor and publisher passwords must differ');
   }
+  // Optional dedicated admin account; without it the publisher account is promoted to admin on first start.
+  if (env.POC_ADMIN_PASSWORD !== undefined && env.POC_ADMIN_PASSWORD !== '') {
+    const admin = env.POC_ADMIN_PASSWORD;
+    if (admin.length < 20 || /-demo$/.test(admin)) throw new Error('POC_ADMIN_PASSWORD must be a unique password of at least 20 characters');
+    if ([env.POC_EDITOR_PASSWORD, env.POC_PUBLISHER_PASSWORD].includes(admin)) throw new Error('Admin, editor and publisher passwords must differ');
+  }
   const origin = new URL(env.POC_ORIGIN || 'http://invalid');
   if (origin.protocol !== 'https:' || origin.origin !== env.POC_ORIGIN) {
     throw new Error('POC_ORIGIN must be an HTTPS origin without a path or trailing slash');

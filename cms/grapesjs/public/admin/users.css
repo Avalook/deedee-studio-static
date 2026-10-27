@@ -1,0 +1,11 @@
+.users-page{max-width:980px;margin:0 auto;padding:28px 20px 60px}
+.users-page .section-head{margin-bottom:8px}
+.users-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:16px 0 28px}
+.users-table th,.users-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.users-table th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#faf8fc}
+.users-table td .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.users-table .me{color:var(--muted);font-weight:400}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;margin:0 0 24px}
+.card h2{margin:0 0 12px;font-size:17px}
+.grid.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+@media(max-width:720px){.grid.three{grid-template-columns:1fr}.users-table th:nth-child(3),.users-table td:nth-child(3){display:none}}

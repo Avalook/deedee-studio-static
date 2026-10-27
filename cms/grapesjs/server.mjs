@@ -33,9 +33,8 @@ import {
   serializePreviewCookie,
   serializeSessionCookie,
   signPreviewToken,
-  verifyPreviewToken,
-} from './lib/auth.mjs';
-import { createStore, StoreConflictError } from './lib/store.mjs';
+  verifyPreviewToken, hashSessionToken } from './lib/auth.mjs';
+import { createStore, StoreConflictError, UserError } from './lib/store.mjs';
 import { createArchiveProxy } from './lib/archive-proxy.mjs';
 import { ContentPolicyError, sanitizeCss, sanitizeHtml } from './lib/sanitize.mjs';
 import { validateSiteDocument } from './lib/site-document.mjs';
@@ -158,9 +157,62 @@ function requireCsrf(req, session) {
 }
 
 function requirePublisher(session) {
-  if (session.user.role !== 'publisher') {
+  // Admins can do everything a publisher can.
+  if (!['publisher', 'admin'].includes(session.user.role)) {
     throw new HttpError(403, 'Publisher role required', 'FORBIDDEN');
   }
+}
+
+function requireAdmin(session) {
+  if (session.user.role !== 'admin') {
+    throw new HttpError(403, 'Admin role required', 'FORBIDDEN');
+  }
+}
+
+/** Account endpoints: /api/users (admin) and /api/account/password (any signed-in user). */
+async function handleUsers(req, res, pathname) {
+  const session = requireSession(req);
+  if (pathname === '/api/account/password') {
+    if (req.method !== 'POST') throw new HttpError(405, 'Method not allowed', 'METHOD_NOT_ALLOWED');
+    requireCsrf(req, session);
+    const body = await readJson(req, 16 * 1024);
+    await store.changeOwnPassword(session.user.id, body.currentPassword, body.newPassword);
+    sessions.destroyUser(session.user.id, { except: hashSessionToken(session.token) });
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+  requireAdmin(session);
+  const match = pathname.match(/^\/api\/users(?:\/(user_[A-Za-z0-9-]+))?$/);
+  const id = match?.[1];
+  if (req.method === 'GET' && !id) {
+    sendJson(res, 200, { users: store.listUsers(), roles: ['editor', 'publisher', 'admin'] });
+    return;
+  }
+  requireCsrf(req, session);
+  const actor = session.user.username;
+  if (req.method === 'POST' && !id) {
+    const body = await readJson(req, 16 * 1024);
+    sendJson(res, 201, { user: await store.createUser({ username: body.username, password: body.password, role: body.role, actor }) });
+    return;
+  }
+  if (req.method === 'PATCH' && id) {
+    const body = await readJson(req, 16 * 1024);
+    if (id === session.user.id && body.role !== undefined && body.role !== session.user.role) {
+      throw new HttpError(409, 'Không thể tự đổi vai trò của chính mình', 'SELF_ROLE_CHANGE');
+    }
+    const user = await store.updateUser(id, { role: body.role, password: body.password, actor });
+    sessions.destroyUser(id);
+    sendJson(res, 200, { user });
+    return;
+  }
+  if (req.method === 'DELETE' && id) {
+    if (id === session.user.id) throw new HttpError(409, 'Không thể tự xóa tài khoản của chính mình', 'SELF_DELETE');
+    const user = await store.deleteUser(id, actor);
+    sessions.destroyUser(id);
+    sendJson(res, 200, { user });
+    return;
+  }
+  throw new HttpError(405, 'Method not allowed', 'METHOD_NOT_ALLOWED');
 }
 
 function revisionSummary(revision) {
@@ -593,6 +645,11 @@ async function route(req, res) {
     return;
   }
 
+  if (pathname === '/api/account/password' || /^\/api\/users(?:\/|$)/.test(pathname)) {
+    await handleUsers(req, res, pathname);
+    return;
+  }
+
   if (pathname === '/api/session' && req.method === 'GET') {
     const session = requireSession(req);
     const state = store.getState();
@@ -746,6 +803,20 @@ async function route(req, res) {
     return;
   }
 
+  if (pathname === '/admin/users' || pathname === '/admin/users/') {
+    if (!getSession(req)) {
+      redirect(res, '/admin/login', 302);
+      return;
+    }
+    setCsp(res, ADMIN_CSP);
+    await serveFile(res, path.join(PUBLIC_DIR, 'admin', 'users.html'), {
+      contentType: MIME['.html'],
+      csp: ADMIN_CSP,
+      cache: 'no-store',
+    });
+    return;
+  }
+
   if (pathname === '/admin/login' || pathname === '/admin/login/' || pathname === '/admin/login.html') {
     if (getSession(req)) {
       redirect(res, '/admin', 302);
@@ -815,6 +886,11 @@ const server = http.createServer((req, res) => {
       return;
     }
 
+    if (error instanceof UserError) {
+      sendJson(res, error.status, { error: { code: error.code, message: error.message } });
+      return;
+    }
+
     if (error instanceof ContentPolicyError) {
       if (isApi) {
         sendJson(res, 400, { error: { code: error.code, message: error.message } });
@@ -849,7 +925,8 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`DeeDee Studio CMS: http://${HOST}:${PORT}`);
   console.log(`Admin: http://${HOST}:${PORT}/admin`);
-  console.log('Local accounts: editor / editor-demo, publisher / publisher-demo');
+  if (HOSTED) console.log('Accounts: managed in /admin/users by an admin.');
+  else console.log('Demo accounts (change them in /admin/users): admin / admin-demo, publisher / publisher-demo, editor / editor-demo');
 });
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

@@ -1,4 +1,5 @@
 import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs';
+import { mergeDocuments, portableSelector } from './document-scope.mjs';
 
 (() => {
   'use strict';
@@ -9,7 +10,12 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
     revisionId: '',
     pageId: '/',
     routes: [],
+    // Edits go to `document`: the page's own edits, or the site-wide ones (pageId '*') when scope is 'site'.
+    // `other` holds the document of the inactive scope; both are shown merged in the preview.
+    scope: 'page',
     document: { schemaVersion: 1, pageId: '/', operations: [], insertions: [] },
+    other: { schemaVersion: 1, pageId: '*', operations: [], insertions: [] },
+    dirtyScopes: new Set(),
     selection: null,
     dirty: false,
     undo: [],
@@ -52,7 +58,28 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
     return payload;
   }
 
-  function stateEndpoint() { return `/api/site-state?pageId=${encodeURIComponent(state.pageId)}`; }
+  const SITE_WIDE = '*';
+  function stateEndpoint(pageId = state.pageId) { return `/api/site-state?pageId=${encodeURIComponent(pageId)}`; }
+  function scopeDocuments() {
+    return state.scope === 'page' ? { page: state.document, site: state.other } : { page: state.other, site: state.document };
+  }
+  // Site-wide edits must match the same component on every page.
+  const scoped = (selector) => (state.scope === 'site' ? portableSelector(selector) : selector);
+  function markDirty() {
+    state.dirty = true;
+    state.dirtyScopes.add(state.scope);
+  }
+  async function loadDocuments() {
+    const [page, site] = await Promise.all([api(stateEndpoint(state.pageId)), api(stateEndpoint(SITE_WIDE))]);
+    state.revisionId = page.revisionId;
+    state.document = state.scope === 'page' ? page.document : site.document;
+    state.other = state.scope === 'page' ? site.document : page.document;
+    state.dirty = false;
+    state.dirtyScopes.clear();
+    state.undo = [];
+    state.redo = [];
+    showSeo();
+  }
   function routeFrameUrl(pageId) { return `${pageId === '/' ? '/' : `${pageId}/`}?cms-editor=1`; }
 
   function setStatus() {
@@ -62,33 +89,56 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
   }
 
   function sendDocument() {
-    frame.contentWindow?.postMessage({ source: 'deedee-cms-admin', type: 'set-document', document: state.document }, location.origin);
+    const { page, site } = scopeDocuments();
+    frame.contentWindow?.postMessage({ source: 'deedee-cms-admin', type: 'set-document', document: mergeDocuments(site, page, state.pageId) }, location.origin);
   }
 
   function updateOperation(selector, patch) {
+    const key = scoped(selector);
     const previous = state.document;
     state.undo.push(previous);
     state.redo = [];
-    const existing = previous.operations.find((operation) => operation.selector === selector) || { selector };
+    const existing = previous.operations.find((operation) => operation.selector === key) || { selector: key };
     const merged = { ...existing, ...patch };
-    for (const [key, value] of Object.entries(merged)) {
-      if (value === undefined) delete merged[key];
+    for (const [field, value] of Object.entries(merged)) {
+      if (value === undefined) delete merged[field];
     }
-    const operations = previous.operations.filter((operation) => operation.selector !== selector);
+    const operations = previous.operations.filter((operation) => operation.selector !== key);
     if (Object.keys(merged).length > 1) operations.push(merged);
     state.document = { ...previous, operations };
-    state.dirty = true;
+    markDirty();
     setStatus();
     sendDocument();
   }
 
+  function updateSeo(patch) {
+    const previous = state.document;
+    const seo = { ...(previous.seo || {}), ...patch };
+    for (const [key, value] of Object.entries(seo)) if (value === undefined || value === '' || value === false) delete seo[key];
+    state.undo.push(previous);
+    state.redo = [];
+    const { seo: _old, ...rest } = previous;
+    state.document = Object.keys(seo).length ? { ...rest, seo } : rest;
+    markDirty();
+    setStatus();
+    sendDocument();
+  }
+
+  function showSeo() {
+    const seo = state.document.seo || {};
+    byId('seo-title').value = seo.title || '';
+    byId('seo-description').value = seo.description || '';
+    byId('seo-image').value = seo.image || '';
+    byId('seo-noindex').checked = Boolean(seo.noindex);
+  }
+
   function deleteSelection() {
-    const next = deleteComponent(state.document, state.selection);
+    const next = deleteComponent(state.document, { ...state.selection, selector: scoped(state.selection.selector) });
     if (next === state.document) return;
     state.undo.push(state.document);
     state.redo = [];
     state.document = next;
-    state.dirty = true;
+    markDirty();
     setSelection(null);
     setStatus();
     sendDocument();
@@ -96,14 +146,14 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
   }
 
   function updateOffset(selector, device, x, y) {
-    const current = state.document.operations.find((item) => item.selector === selector);
+    const current = state.document.operations.find((item) => item.selector === scoped(selector));
     const offsets = { ...(current?.offsets || {}), [device]: { x, y } };
     updateOperation(selector, { offsets });
     if (state.selection?.selector === selector) state.selection = { ...state.selection, offsets };
   }
 
   function updateResponsiveStyle(selector, key, value) {
-    const current = state.document.operations.find((item) => item.selector === selector);
+    const current = state.document.operations.find((item) => item.selector === scoped(selector));
     const responsive = { ...(current?.responsive || {}) };
     const style = { ...(responsive[state.device] || {}) };
     if (value === undefined) delete style[key];
@@ -122,8 +172,9 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       state.undo.push(state.document);
       state.document = state.redo.pop();
     }
-    state.dirty = true;
+    markDirty();
     setSelection(null);
+    showSeo();
     setStatus();
     sendDocument();
   }
@@ -161,7 +212,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
     state.undo.push(state.document);
     state.redo = [];
     state.document = { ...state.document, insertions: [...state.document.insertions, item] };
-    state.dirty = true;
+    markDirty();
     setStatus();
     sendDocument();
     toast('Đã thêm thành phần vào cuối trang; bạn có thể kéo và chỉnh ở khung xem.');
@@ -181,16 +232,25 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
     return payload.data?.[0]?.src;
   }
 
+  async function saveScope(scope) {
+    const active = scope === state.scope;
+    const document = active ? state.document : state.other;
+    const result = await api(stateEndpoint(scope === 'site' ? SITE_WIDE : state.pageId), {
+      method: 'PUT',
+      csrf: true,
+      body: { baseRevisionId: state.revisionId, document },
+    });
+    state.revisionId = result.revisionId;
+    if (active) state.document = result.document;
+    else state.other = result.document;
+  }
+
   async function saveDraft() {
     try {
-      const result = await api(stateEndpoint(), {
-        method: 'PUT',
-        csrf: true,
-        body: { baseRevisionId: state.revisionId, document: state.document },
-      });
-      state.revisionId = result.revisionId;
-      state.document = result.document;
+      // Each document is its own revision; save the ones that changed one after the other.
+      for (const scope of [...state.dirtyScopes]) await saveScope(scope);
       state.dirty = false;
+      state.dirtyScopes.clear();
       setStatus();
       toast('Đã lưu bản nháp.');
       return true;
@@ -198,6 +258,20 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       toast(error.message, 'error');
       return false;
     }
+  }
+
+  function switchScope(scope) {
+    if (scope === state.scope) return;
+    [state.document, state.other] = [state.other, state.document];
+    state.scope = scope;
+    state.undo = [];
+    state.redo = [];
+    setSelection(null);
+    showSeo();
+    byId('scope-note').textContent = scope === 'site'
+      ? 'Đang sửa cho MỌI trang có cùng thành phần (menu, chân trang…). Trang dùng kiểu menu khác thì chọn trang đó và sửa tiếp ở phạm vi này.'
+      : 'Đang sửa riêng trang này.';
+    sendDocument();
   }
 
   async function previewDraft() {
@@ -213,7 +287,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
   }
 
   async function publishDraft() {
-    if (state.user?.role !== 'publisher') return toast('Tài khoản publisher mới được xuất bản.', 'error');
+    if (!['publisher', 'admin'].includes(state.user?.role)) return toast('Cần tài khoản publisher hoặc admin để xuất bản.', 'error');
     if (state.dirty && !(await saveDraft())) return;
     if (!window.confirm('Xuất bản các thay đổi này? Trang clone sẽ hiển thị chúng sau khi các file xuất ra được đưa lên GitHub.')) return;
     try {
@@ -249,12 +323,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       restore.addEventListener('click', async () => {
         try {
           await api(`/api/versions/${version.id}/restore`, { method: 'POST', csrf: true });
-          const current = await api(stateEndpoint());
-          state.revisionId = current.revisionId;
-          state.document = current.document;
-          state.dirty = false;
-          state.undo = [];
-          state.redo = [];
+          await loadDocuments();
           setStatus();
           sendDocument();
           byId('versions-dialog').close();
@@ -276,6 +345,11 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
   }
 
   function bindControls() {
+    byId('scope').addEventListener('change', (event) => switchScope(event.target.value));
+    byId('seo-title').addEventListener('change', () => updateSeo({ title: byId('seo-title').value.trim() }));
+    byId('seo-description').addEventListener('change', () => updateSeo({ description: byId('seo-description').value.trim() }));
+    byId('seo-image').addEventListener('change', () => updateSeo({ image: byId('seo-image').value.trim() }));
+    byId('seo-noindex').addEventListener('change', () => updateSeo({ noindex: byId('seo-noindex').checked }));
     byId('save').addEventListener('click', saveDraft);
     byId('preview').addEventListener('click', previewDraft);
     byId('publish').addEventListener('click', publishDraft);
@@ -298,6 +372,15 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       state.device = width <= 750 ? 'mobile' : width <= 900 ? 'tablet' : width <= 1200 ? 'laptop' : 'desktop';
       if (state.selection) setSelection(state.selection);
     }));
+    byId('interact-mode').addEventListener('click', () => {
+      const button = byId('interact-mode');
+      const active = !button.classList.contains('active');
+      button.classList.toggle('active', active);
+      button.textContent = active ? '✏️ Chỉnh sửa' : '👆 Tương tác';
+      frame.contentWindow?.postMessage({ source: 'deedee-cms-admin', type: 'set-interact-mode', interact: active }, location.origin);
+      if (active) toast('Chế độ Tương tác: bấm link, mở menu, cuộn trang. Bấm lại để quay về chỉnh sửa.');
+      else toast('Chế độ Chỉnh sửa: chọn và kéo thành phần.');
+    });
     document.querySelectorAll('[data-add]').forEach((button) => button.addEventListener('click', () => pushInsertion(button.dataset.add)));
     byId('add-image').addEventListener('click', () => byId('upload').click());
     byId('upload').addEventListener('change', async () => {
@@ -362,10 +445,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       state.selection = null;
       setSelection(null);
       try {
-        const current = await api(stateEndpoint());
-        state.revisionId = current.revisionId;
-        state.document = current.document;
-        state.dirty = false;
+        await loadDocuments();
         setStatus();
         frame.src = routeFrameUrl(state.pageId);
       } catch (error) { toast(error.message, 'error'); }
@@ -380,7 +460,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
       state.csrf = session.csrf;
       state.user = session.user;
       byId('user').textContent = `${session.user.username} · ${session.user.role}`;
-      byId('publish').disabled = session.user.role !== 'publisher';
+      byId('publish').disabled = !['publisher', 'admin'].includes(session.user.role);
       const routeData = await api('/api/routes');
       state.routes = routeData.routes || [];
       const picker = byId('route-picker');
@@ -391,9 +471,7 @@ import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs'
         picker.appendChild(option);
       }
       picker.value = state.pageId;
-      const current = await api(stateEndpoint());
-      state.revisionId = current.revisionId;
-      state.document = current.document;
+      await loadDocuments();
       setStatus();
       // The iframe may report ready before these API requests finish.
       sendDocument();

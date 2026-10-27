@@ -11,8 +11,9 @@
   <header class="bar">
     <a class="brand" href="/admin" aria-label="DeeDee CMS">DeeDee <span>CMS</span></a>
     <a href="/admin/content" style="font-size:12px;white-space:nowrap;color:#6d28b7">Bài viết &amp; dự án</a>
+    <a href="/admin/users" style="font-size:12px;white-space:nowrap;color:#6d28b7">Tài khoản</a>
     <a href="https://supabase.com/dashboard/project/eyecmmwnvlhubzvijktf/editor" target="_blank" rel="noopener noreferrer" style="font-size:12px;white-space:nowrap;color:#6d28b7">Biểu mẫu đã nhận ↗</a>
-    <div class="page-info"><label for="route-picker">Trang</label><select id="route-picker" aria-label="Chọn trang để chỉnh sửa"></select><span id="status">Đang tải…</span></div>
+    <div class="page-info"><label for="route-picker">Trang</label><select id="route-picker" aria-label="Chọn trang để chỉnh sửa"></select><label for="scope">Phạm vi</label><select id="scope" aria-label="Phạm vi chỉnh sửa"><option value="page">Chỉ trang này</option><option value="site">Mọi trang (menu, chân trang…)</option></select><span id="status">Đang tải…</span></div>
     <div class="actions">
       <button id="undo" type="button">Hoàn tác</button>
       <button id="save" type="button" class="primary">Lưu nháp</button>
@@ -35,6 +36,7 @@
       <hr>
       <label class="switch"><input id="free-move" type="checkbox" checked> Kéo tự do</label>
       <p class="note">Kéo trực tiếp trên trang. Vị trí, kích thước, cỡ chữ và màu lưu riêng theo từng cỡ xem.</p>
+      <p id="scope-note" class="note">Đang sửa riêng trang này.</p>
       <a class="open-site" href="/" target="_blank" rel="noreferrer">Mở trang công khai</a>
     </aside>
 
@@ -44,6 +46,8 @@
         <button type="button" data-width="1024">Laptop</button>
         <button type="button" data-width="768">Tablet</button>
         <button type="button" data-width="390">Điện thoại</button>
+        <span class="devices-sep"></span>
+        <button type="button" id="interact-mode" class="interact-toggle" title="Chế độ Tương tác: bấm link, mở menu, xem hoạt ảnh (tắt kéo/sửa)">👆 Tương tác</button>
       </nav>
       <div class="frame-scroll"><iframe id="site-frame" title="Bản xem DeeDee Studio có thể chỉnh sửa"></iframe></div>
     </section>
@@ -77,7 +81,15 @@
           <label>Dịch dọc<input id="offset-y" type="number" step="1"></label>
         </div>
       </div>
-      <p class="note">HTML gốc không bị sửa: chỉnh sửa được lưu thành file JSON và áp dụng khi trang tải. Nháp chỉ hiện trong xem trước; chỉ publisher mới xuất bản.</p>
+      <details class="seo" id="seo-panel">
+        <summary>SEO &amp; chia sẻ của trang</summary>
+        <label>Tiêu đề trang (thẻ title)<input id="seo-title" type="text" maxlength="180" placeholder="Để trống = giữ tiêu đề gốc"></label>
+        <label>Mô tả (meta description)<textarea id="seo-description" rows="3" maxlength="500" placeholder="Để trống = giữ mô tả gốc"></textarea></label>
+        <label>Ảnh chia sẻ (đường dẫn ảnh tải lên hoặc https)<input id="seo-image" type="text" placeholder="/media/… hoặc https://…"></label>
+        <label class="switch"><input id="seo-noindex" type="checkbox"> Không cho công cụ tìm kiếm lập chỉ mục trang này</label>
+        <p class="note">Ghi vào đầu trang khi xuất bản, để Google và bản xem trước khi chia sẻ (Facebook, Zalo) đọc được. Ở phạm vi “Mọi trang”, đây là giá trị mặc định cho mọi trang.</p>
+      </details>
+      <p class="note">HTML gốc không bị sửa, trừ tiêu đề/mô tả SEO được ghi vào đầu trang khi xuất bản (bản gốc được lưu lại để hoàn nguyên). Nháp chỉ hiện trong xem trước; chỉ publisher hoặc admin mới xuất bản.</p>
     </aside>
   </main>
 

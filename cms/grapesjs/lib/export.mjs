@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { validateSiteDocument } from './site-document.mjs';
+import { syncSeo } from './seo-bake.mjs';
 
 /**
  * Publish a CMS release to the static archive.
@@ -22,7 +23,7 @@ export function collectPageDocuments(siteDocument) {
   for (const candidate of source) {
     let document;
     try { document = validateSiteDocument(candidate); } catch { continue; }
-    if (!document.operations.length && !document.insertions.length) continue;
+    if (!document.operations.length && !document.insertions.length && !document.seo) continue;
     pages[document.pageId] = document;
   }
   return pages;
@@ -45,7 +46,7 @@ async function writeAtomic(file, contents) {
   await fs.rename(temp, file);
 }
 
-export async function exportStaticSite({ release, outDir, uploadsDir, runtimeFile, basePath = STATIC_BASE_PATH }) {
+export async function exportStaticSite({ release, outDir, uploadsDir, runtimeFile, basePath = STATIC_BASE_PATH, siteOrigin = process.env.CMS_SITE_ORIGIN || '' }) {
   const collected = collectPageDocuments(release?.siteDocument);
   const { pages, files } = rewriteUploadedMedia(collected, basePath);
   // Validate every dependency before changing the checkout; missing media must not leave a partial export.
@@ -70,10 +71,13 @@ export async function exportStaticSite({ release, outDir, uploadsDir, runtimeFil
   };
   await writeAtomic(path.join(outDir, 'site-overrides.json'), `${JSON.stringify(payload, null, 2)}\n`);
   await writeAtomic(path.join(outDir, 'scripts', 'cms-runtime.js'), runtime);
+  // Title and description edits are also written into the pages' own <head> for search engines and link previews.
+  const seoFiles = await syncSeo({ outDir, pages, siteOrigin, basePath });
   return {
+    seo: Object.values(pages).filter((page) => page.seo).length,
     pages: Object.keys(pages).length,
     operations: Object.values(pages).reduce((total, page) => total + page.operations.length, 0),
     media: copied,
-    files: ['site-overrides.json', 'scripts/cms-runtime.js', ...copied.map((file) => `assets/cms/${file}`)],
+    files: ['site-overrides.json', 'scripts/cms-runtime.js', ...copied.map((file) => `assets/cms/${file}`), ...seoFiles.map((file) => file.split(path.sep).join('/'))],
   };
 }

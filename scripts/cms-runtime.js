@@ -25,6 +25,7 @@
   let drag = null;
   let chosenDevice = 'desktop';
   let selectionStyle;
+  let interactMode = false;
 
   function send(type, payload = {}) {
     if (!editorMode || window.parent === window) return;
@@ -39,8 +40,12 @@
   }
 
   function findTarget(node) {
+    if (interactMode) return null;
     const element = node instanceof Element ? node : node && node.parentElement;
     if (!element) return null;
+    // Let mobile-navigation.mjs handle hamburger menu interactions in editor mode.
+    if (element.closest('button[aria-label="Menu"][aria-haspopup="dialog"]')) return null;
+    if (element.closest('[data-hook="hamburger-overlay-root"]')) return null;
     const target = element.closest('[data-cms-added], [id^="comp-"], [id^="SITE_"], h1, h2, h3, h4, p, a, button, img, section, article');
     if (!target || target === document.body || target === document.documentElement) return null;
     if (target.closest('script,style,svg,head')) return null;
@@ -203,6 +208,7 @@ function isTextEditable(element) {
     restoreTouchedElements();
     documentModel = nextDocument;
     insertComponents(documentModel.insertions);
+    if (document.head) applySeo(documentModel.seo);
     const device = deviceForWidth(window.innerWidth);
     // Resolve the full batch before any removal to avoid nth-of-type drift.
     const targets = documentModel.operations.map((operation) => {
@@ -240,9 +246,16 @@ function isTextEditable(element) {
     if (selected && !selected.isConnected) { selected.removeAttribute('data-cms-selected'); selected = null; send('selected', { selection: null }); }
   }
 
+  // Same as portableSelector() in public/admin/document-scope.mjs.
+  function portableSelector(selector) {
+    return String(selector).replace(/^#comp-[A-Za-z0-9]+(_r_comp-[A-Za-z0-9_-]+)(?= |$|:)/, (_match, shared) => `[id$="${shared}"]`);
+  }
+
   function selectedInfo(element) {
     const rect = element.getBoundingClientRect();
-    const operation = documentModel.operations.find((item) => item.selector === selectorFor(element)) || {};
+    const own = selectorFor(element);
+    const operation = documentModel.operations.filter((item) => item.selector === own || item.selector === portableSelector(own))
+      .reduce((merged, item) => ({ ...merged, ...item }), {});
     return {
       selector: selectorFor(element),
       deletable: canDelete(element),
@@ -344,6 +357,12 @@ function isTextEditable(element) {
     window.addEventListener('message', (event) => {
       if (event.source !== window.parent || event.origin !== location.origin || !event.data || event.data.source !== 'deedee-cms-admin') return;
       if (event.data.type === 'set-document') applyDocument(event.data.document);
+      if (event.data.type === 'set-interact-mode') {
+        interactMode = Boolean(event.data.interact);
+        if (selectionStyle) selectionStyle.disabled = interactMode;
+        if (interactMode && selected) { selected.removeAttribute('data-cms-selected'); selected = null; send('selected', { selection: null }); }
+        document.documentElement.style.setProperty('--deedee-cms-edit-mode', interactMode ? '0' : '1');
+      }
       if (event.data.type === 'select' && typeof event.data.selector === 'string') {
         let element;
         try { element = document.querySelector(event.data.selector); } catch { element = null; }
@@ -359,13 +378,60 @@ function isTextEditable(element) {
     send('ready');
   }
 
+  // Edits saved for "every page" live under the page id '*'; the page's own edits win field by field.
+  // Keep in step with public/admin/document-scope.mjs, which the editor preview uses.
+  function mergeDocuments(site, page) {
+    const bySelector = new Map(((site && site.operations) || []).map((operation) => [operation.selector, operation]));
+    for (const operation of (page && page.operations) || []) {
+      bySelector.set(operation.selector, { ...(bySelector.get(operation.selector) || {}), ...operation });
+    }
+    const seo = { ...((site && site.seo) || {}), ...((page && page.seo) || {}) };
+    return {
+      schemaVersion: 1,
+      pageId,
+      operations: [...bySelector.values()],
+      insertions: [...((site && site.insertions) || []), ...((page && page.insertions) || [])],
+      ...(Object.keys(seo).length ? { seo } : {}),
+    };
+  }
+
+  // Title, description, share image and noindex. Published pages also carry these in their own <head>
+  // (written at publish time); this keeps the live preview and API-backed mode in step.
+  const seoOriginals = new Map();
+  function setMeta(attr, name, content) {
+    let tag = document.head.querySelector(`meta[${attr}="${name}"]`);
+    if (!seoOriginals.has(`${attr}:${name}`)) seoOriginals.set(`${attr}:${name}`, tag ? tag.getAttribute('content') : null);
+    if (content === undefined) {
+      const original = seoOriginals.get(`${attr}:${name}`);
+      if (tag && original === null) tag.remove();
+      else if (tag) tag.setAttribute('content', original);
+      return;
+    }
+    if (!tag) { tag = document.createElement('meta'); tag.setAttribute(attr, name); document.head.appendChild(tag); }
+    tag.setAttribute('content', content);
+  }
+  function applySeo(seo = {}) {
+    if (!seoOriginals.has('title')) seoOriginals.set('title', document.title);
+    document.title = seo.title !== undefined ? seo.title : seoOriginals.get('title');
+    setMeta('name', 'description', seo.description);
+    setMeta('property', 'og:title', seo.title);
+    setMeta('property', 'og:description', seo.description);
+    setMeta('name', 'twitter:title', seo.title);
+    setMeta('name', 'twitter:description', seo.description);
+    setMeta('property', 'og:image', seo.image);
+    setMeta('name', 'twitter:image', seo.image);
+    setMeta('name', 'robots', seo.noindex ? 'noindex,nofollow' : undefined);
+  }
+
   function pageFromOverrides(payload) {
     const pages = payload && payload.pages;
     if (!pages || typeof pages !== 'object') return null;
     // Non-ASCII routes are stored decoded by the editor but location.pathname is percent-encoded.
     let decoded = pageId;
     try { decoded = decodeURI(pageId); } catch { /* keep the raw route */ }
-    return pages[decoded] || pages[pageId] || null;
+    const own = pages[decoded] || pages[pageId] || null;
+    const shared = pages['*'] || null;
+    return own || shared ? mergeDocuments(shared, own) : null;
   }
 
   async function bootStatic() {
@@ -384,10 +450,15 @@ function isTextEditable(element) {
       const endpoint = previewToken
         ? `/api/site-state/preview?token=${encodeURIComponent(previewToken)}&pageId=${encodeURIComponent(pageId)}`
         : `/api/site-state/public?pageId=${encodeURIComponent(pageId)}`;
-      const response = await fetch(endpoint, { credentials: 'same-origin' });
+      const siteEndpoint = endpoint.replace(/pageId=[^&]*/, 'pageId=%2A');
+      const [response, siteResponse] = await Promise.all([
+        fetch(endpoint, { credentials: 'same-origin' }),
+        fetch(siteEndpoint, { credentials: 'same-origin' }).catch(() => null),
+      ]);
       if (!response.ok) return;
       const payload = await response.json();
-      if (payload && payload.document) applyDocument(payload.document);
+      const sitePayload = siteResponse && siteResponse.ok ? await siteResponse.json().catch(() => null) : null;
+      if (payload && payload.document) applyDocument(mergeDocuments(sitePayload && sitePayload.document, payload.document));
     } catch {
       // The static archive remains usable if the optional local CMS is offline.
     }

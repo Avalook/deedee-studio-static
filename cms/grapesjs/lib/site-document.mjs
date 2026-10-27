@@ -1,7 +1,10 @@
 const MAX_OPERATIONS = 1000;
 const MAX_TEXT_LENGTH = 10_000;
 const SELECTOR_ID = /^#[A-Za-z][A-Za-z0-9_-]{0,127}$/;
-const SELECTOR_PATH = /^(?:#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\([1-9]\d{0,3}\))?(?: > (?:#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\([1-9]\d{0,3}\))?){0,40}$/;
+// A component of the shared header/footer has a different id on every page (comp-<page>_r_comp-<shared>); site-wide
+// edits address it by the part that is the same everywhere: [id$="_r_comp-<shared>"].
+const SHARED_COMPONENT = '\\[id\\$="_r_comp-[A-Za-z0-9_-]{1,100}"\\]';
+const SELECTOR_PATH = new RegExp(`^(?:${SHARED_COMPONENT}|#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?(?: > (?:#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?){0,40}$`);
 const LOCAL_IMAGE = /^\/deedee-studio-static\/assets\/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$/;
 const UPLOADED_IMAGE = /^\/media\/[a-f0-9-]{36}\.(?:png|jpe?g|webp|gif)$/i;
 const DEVICE_NAMES = ['desktop', 'laptop', 'tablet', 'mobile'];
@@ -21,8 +24,12 @@ export class SiteDocumentValidationError extends Error {
 }
 
 /** Create a new empty page model for the managed DeeDee home route. */
+/** Page id of the document whose edits apply to every page (menu, footer and other shared components). */
+export const SITE_WIDE_PAGE_ID = '*';
+
 function normalizePageId(value) {
   if (value === 'home') return '/';
+  if (value === SITE_WIDE_PAGE_ID) return SITE_WIDE_PAGE_ID;
   if (typeof value !== 'string' || value.length > 500 || !value.startsWith('/') || value.startsWith('//') || /[?#\\\\]/.test(value)) {
     throw new SiteDocumentValidationError('Page route is invalid');
   }
@@ -52,7 +59,7 @@ export function createEmptySiteDocument(pageId = '/') {
 /** Validate and copy the allowlisted page override model. */
 export function validateSiteDocument(value) {
   assertRecord(value, 'document');
-  assertKeys(value, new Set(['schemaVersion', 'pageId', 'operations', 'insertions']), 'document');
+  assertKeys(value, new Set(['schemaVersion', 'pageId', 'operations', 'insertions', 'seo']), 'document');
   if (value.schemaVersion !== 1) throw new SiteDocumentValidationError('Only schema version 1 is supported');
   const pageId = normalizePageId(value.pageId);
   if (!Array.isArray(value.operations) || value.operations.length > MAX_OPERATIONS) {
@@ -98,7 +105,31 @@ export function validateSiteDocument(value) {
     if (insertion.type !== 'image' && text === undefined) throw new SiteDocumentValidationError('Inserted text and button components require text');
     return Object.fromEntries([['id', insertion.id], ['type', insertion.type], ['text', text], ['image', image], ['href', href]].filter(([, field]) => field !== undefined));
   });
-  return { schemaVersion: 1, pageId, operations, insertions };
+  const seo = validateSeo(value.seo);
+  return { schemaVersion: 1, pageId, operations, insertions, ...(seo ? { seo } : {}) };
+}
+
+/** Search/share metadata of a page: title, description, share image and whether search engines may index it. */
+function validateSeo(value) {
+  if (value === undefined) return undefined;
+  assertRecord(value, 'seo');
+  assertKeys(value, new Set(['title', 'description', 'image', 'noindex']), 'seo');
+  const text = (field, max) => {
+    const item = value[field];
+    if (item === undefined || item === '') return undefined;
+    if (typeof item !== 'string' || item.length > max || /[\u0000-\u001f\u007f]/.test(item)) {
+      throw new SiteDocumentValidationError(`SEO ${field} must be text up to ${max} characters without control characters`);
+    }
+    return item.trim() || undefined;
+  };
+  let image = value.image;
+  if (image === '' || image === undefined) image = undefined;
+  else if (typeof image === 'string' && /^https:\/\/[^\s"'<>\\]{1,1000}$/.test(image)) { /* an absolute https image */ }
+  else image = validateImage(image);
+  const noindex = validateBoolean(value.noindex);
+  const seo = Object.fromEntries([['title', text('title', 180)], ['description', text('description', 500)], ['image', image], ['noindex', noindex === true ? true : undefined]]
+    .filter(([, field]) => field !== undefined));
+  return Object.keys(seo).length ? seo : undefined;
 }
 
 function assertRecord(value, label) {

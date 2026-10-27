@@ -20,6 +20,15 @@ Open <http://127.0.0.1:4174/admin>. Local demo credentials:
 | --- | --- | --- |
 | `editor` | `editor-demo` | Edit, save drafts, preview, restore revisions |
 | `publisher` | `publisher-demo` | Editor capabilities plus publish |
+| `admin` | `admin-demo` | Publisher capabilities plus account management (`/admin/users`) |
+
+Sign in as `admin` and open **Tài khoản** to add or delete accounts, change roles, reset passwords (every session of that account is closed) and change your own password. Passwords need 12+ characters and may not be a demo password. The last admin cannot be deleted or demoted, and you cannot delete or demote yourself. In hosted mode set `POC_ADMIN_PASSWORD` (20+ characters, different from the others) for a dedicated `admin`; without it the publisher account is promoted to admin on first start.
+
+### Edit scope and SEO
+
+- **Phạm vi** (top bar): *Chỉ trang này* edits one page. *Mọi trang* edits are stored under the page id `*` and apply to every page that has the same component, which is how the menu and footer are changed once. The shared header has a different id on each page (`comp-<page>_r_comp-<shared>`), so site-wide edits address it as `[id$="_r_comp-<shared>"]`. The site has a few header variants (home, our-work and contact differ from the rest); a page that did not change gets the same edit by opening it and editing in site-wide scope again. On a page the page's own fields win over site-wide ones.
+- **SEO & chia sẻ của trang**: title, description, share image and noindex. They are applied by the runtime and, on **Xuất bản**, written into the static page's own `<head>` (title, description, `og:*`, `twitter:*`, robots) so search engines and link previews see them. The replaced tags are kept in `seo-originals.json`; removing the SEO edit restores the page exactly. Set `CMS_SITE_ORIGIN` (for example `https://www.example.com`) so local share images become absolute URLs.
+- Articles created in **Bài viết & dự án** are rendered from the site's own article page (same header, footer and layout) with their title, date, reading time, body, category and comments section; related posts are not shown. Projects still use the plain layout.
 
 These credentials are only for local evaluation. Change them before any shared or hosted use. The editor loads the 606 routes listed in `manifest.json`; choose a route from the page picker, then select and drag elements in the preview. Text, image, visibility, size, typography, colors, and per-device position overrides are stored per route. New text, buttons, and uploaded images can be added and moved.
 

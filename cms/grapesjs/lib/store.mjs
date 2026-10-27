@@ -19,6 +19,39 @@ class StoreConflictError extends Error {
   }
 }
 
+export const ROLES = ['editor', 'publisher', 'admin'];
+const DEMO_PASSWORDS = new Set(['editor-demo', 'publisher-demo', 'admin-demo']);
+
+export class UserError extends Error {
+  constructor(message, code = 'USER_INVALID', status = 400) {
+    super(message);
+    this.name = 'UserError';
+    this.code = code;
+    this.status = status;
+  }
+}
+
+function validateUsername(value) {
+  const name = typeof value === 'string' ? value.trim() : '';
+  if (!/^[A-Za-z0-9._-]{3,40}$/.test(name)) throw new UserError('Tên đăng nhập gồm 3–40 ký tự chữ, số, . _ -');
+  return name;
+}
+
+function validateRole(role) {
+  if (!ROLES.includes(role)) throw new UserError('Vai trò không hợp lệ (editor, publisher hoặc admin)');
+}
+
+function validatePassword(password, username = '') {
+  if (typeof password !== 'string' || password.length < 12 || password.length > 200) throw new UserError('Mật khẩu cần từ 12 ký tự');
+  if (DEMO_PASSWORDS.has(password) || password.toLowerCase().includes(String(username).toLowerCase()) && username.length >= 3) {
+    throw new UserError('Mật khẩu quá dễ đoán; không dùng mật khẩu mẫu hoặc tên đăng nhập');
+  }
+}
+
+function publicUser(user) {
+  return { id: user.id, username: user.username, role: user.role, createdAt: user.createdAt };
+}
+
 function isoNow() {
   return new Date().toISOString();
 }
@@ -69,6 +102,10 @@ export async function createStore({ dataDir, seedDir, demoUsers }) {
   let state = await readJson(stateFile, null);
   let assets = await readJson(assetsFile, []);
   let lock = Promise.resolve();
+
+  function adminCount() {
+    return users.users.filter((user) => user.role === 'admin').length;
+  }
 
   function withLock(fn) {
     const run = lock.then(fn, fn);
@@ -167,6 +204,20 @@ export async function createStore({ dataDir, seedDir, demoUsers }) {
     };
     await writeJsonAtomic(usersFile, users);
     await appendAudit({ action: 'seed-users', target: 'users', details: { usernames: users.users.map((u) => u.username) } });
+  }
+
+  // Accounts need an owner. Older data directories only have editor + publisher, so make sure an admin exists:
+  // a dedicated one when POC_ADMIN_PASSWORD is set (or in local demo mode), otherwise promote the publisher.
+  if (!users.users.some((user) => user.role === 'admin')) {
+    const password = process.env.POC_ADMIN_PASSWORD || (process.env.POC_HOSTED === '1' ? '' : 'admin-demo');
+    const publisher = users.users.find((user) => user.role === 'publisher');
+    if (password && !users.users.some((user) => user.username === 'admin')) {
+      users.users.push({ id: `user_${randomUUID()}`, username: 'admin', role: 'admin', passwordHash: hashPassword(password), createdAt: isoNow() });
+    } else if (publisher) {
+      publisher.role = 'admin';
+    }
+    await writeJsonAtomic(usersFile, users);
+    await appendAudit({ action: 'seed-admin', target: 'users' });
   }
 
   if (!Array.isArray(assets)) {
@@ -290,6 +341,69 @@ export async function createStore({ dataDir, seedDir, demoUsers }) {
           details: { sourceRevisionId: source.id },
         });
         return revision;
+      });
+    },
+
+    listUsers() {
+      return users.users.map(publicUser).sort((a, b) => a.username.localeCompare(b.username));
+    },
+
+    createUser({ username, password, role, actor = 'system' }) {
+      return withLock(async () => {
+        const name = validateUsername(username);
+        validateRole(role);
+        validatePassword(password, name);
+        if (users.users.some((user) => user.username.toLowerCase() === name.toLowerCase())) throw new UserError('Tên đăng nhập đã tồn tại', 'USER_EXISTS', 409);
+        const user = { id: `user_${randomUUID()}`, username: name, role, passwordHash: hashPassword(password), createdAt: isoNow() };
+        users = { users: [...users.users, user] };
+        await writeJsonAtomic(usersFile, users);
+        await appendAudit({ actor, action: 'user-create', target: user.id, details: { username: name, role } });
+        return publicUser(user);
+      });
+    },
+
+    updateUser(id, { role, password, actor = 'system' }) {
+      return withLock(async () => {
+        const user = users.users.find((entry) => entry.id === id);
+        if (!user) throw new UserError('Không tìm thấy tài khoản', 'USER_NOT_FOUND', 404);
+        const next = { ...user };
+        if (role !== undefined) {
+          validateRole(role);
+          if (user.role === 'admin' && role !== 'admin' && adminCount() <= 1) throw new UserError('Phải còn ít nhất một admin', 'LAST_ADMIN', 409);
+          next.role = role;
+        }
+        if (password !== undefined) {
+          validatePassword(password, user.username);
+          next.passwordHash = hashPassword(password);
+        }
+        users = { users: users.users.map((entry) => (entry.id === id ? next : entry)) };
+        await writeJsonAtomic(usersFile, users);
+        await appendAudit({ actor, action: 'user-update', target: id, details: { role: role ?? undefined, passwordChanged: password !== undefined } });
+        return publicUser(next);
+      });
+    },
+
+    deleteUser(id, actor = 'system') {
+      return withLock(async () => {
+        const user = users.users.find((entry) => entry.id === id);
+        if (!user) throw new UserError('Không tìm thấy tài khoản', 'USER_NOT_FOUND', 404);
+        if (user.role === 'admin' && adminCount() <= 1) throw new UserError('Phải còn ít nhất một admin', 'LAST_ADMIN', 409);
+        users = { users: users.users.filter((entry) => entry.id !== id) };
+        await writeJsonAtomic(usersFile, users);
+        await appendAudit({ actor, action: 'user-delete', target: id, details: { username: user.username } });
+        return publicUser(user);
+      });
+    },
+
+    changeOwnPassword(id, currentPassword, newPassword) {
+      return withLock(async () => {
+        const user = users.users.find((entry) => entry.id === id);
+        if (!user || !verifyPassword(currentPassword, user.passwordHash)) throw new UserError('Mật khẩu hiện tại không đúng', 'WRONG_PASSWORD', 403);
+        validatePassword(newPassword, user.username);
+        users = { users: users.users.map((entry) => (entry.id === id ? { ...entry, passwordHash: hashPassword(newPassword) } : entry)) };
+        await writeJsonAtomic(usersFile, users);
+        await appendAudit({ actor: user.username, action: 'password-change', target: id });
+        return publicUser(user);
       });
     },
 

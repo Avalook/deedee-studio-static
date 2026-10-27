@@ -47,13 +47,7 @@ Chưa thử trên điện thoại thật.
 
 ## 3. Phần "backend": form liên hệ → Supabase
 
-Form liên hệ (VI/EN) kiểm tra dữ liệu rồi gửi vào Supabase. **Chưa cấu hình nên hiện form báo "chưa được kết nối nơi nhận dữ liệu"** (không giả vờ đã gửi).
-Để bật:
-1. Tạo project Supabase (miễn phí), vào SQL Editor chạy `docs/supabase-form-schema.sql`.
-2. Điền `url` và `anonKey` (khóa public, **không** dùng `service_role`) vào `supabase-config.json`, commit và push.
-3. Xem dữ liệu ở Supabase → Table editor → `form_submissions`. Muốn nhận email thì thêm Database Webhook.
-Có ô ẩn chống bot và giãn cách 15 giây; nếu bị spam thì thêm Turnstile/hCaptcha.
-
+Form liên hệ (VI/EN) kiểm tra dữ liệu rồi gửi vào Supabase (`supabase-config.json` đã có project). Có ô ẩn chống bot và giãn cách 15 giây; nếu bị spam thì thêm Turnstile/hCaptcha. Xem dữ liệu trong Supabase → Table editor → `form_submissions` (liên kết có sẵn trong thanh CMS). Muốn nhận email khi có form mới thì thêm Database Webhook.
 Mục **Bình luận** dưới bài viết chỉ để hiển thị giống bản gốc, **không đăng được bình luận**.
 
 ## 4. CMS: tự sửa nội dung bản clone
@@ -65,16 +59,27 @@ python3 serve.py                 # cửa sổ 1, trong thư mục dự án (cổ
 cd cms/grapesjs && npm ci && npm start    # cửa sổ 2 (cổng 4174), mở http://127.0.0.1:4174/admin
 ```
 
-1. Đăng nhập `editor` / `editor-demo` để sửa và lưu nháp; `publisher` / `publisher-demo` để **Xuất bản**.
-   **Đổi mật khẩu trước khi dùng thật** (`POC_EDITOR_PASSWORD`, `POC_PUBLISHER_PASSWORD`, xem `cms/grapesjs/README.md`).
-2. Chọn trang, sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình, thêm khối chữ/nút/ảnh. Lưu nháp, xem trước.
-3. Nhấn **Xuất bản**: CMS ghi `site-overrides.json`, ảnh tải lên vào `assets/cms/` và `scripts/cms-runtime.js`.
-4. Nếu mở bằng `Start-CMS`, nút Xuất bản mặc định tự commit/push từ nhánh `main` sạch. Chạy server trực tiếp thì bật `CMS_GIT_PUSH=1` để tự đẩy, hoặc tự commit/push. Chờ Pages build xong rồi kiểm tra trang công khai.
+**Tài khoản và quyền** (mật khẩu mẫu: `admin-demo`, `publisher-demo`, `editor-demo` — đổi ngay ở mục *Tài khoản*)
+- `editor`: sửa, lưu nháp, xem trước, khôi phục phiên bản. `publisher`: thêm quyền xuất bản. `admin`: thêm quyền quản lý tài khoản.
+- Admin tạo/xóa tài khoản, đổi vai trò, đặt lại mật khẩu (đóng mọi phiên của tài khoản đó); ai cũng đổi được mật khẩu của mình. Luôn còn ít nhất một admin.
 
-Giới hạn: không sửa được HTML tự do, menu, SEO từng trang, hiệu ứng; không phải bản thay thế đầy đủ cho Wix Editor. Mỗi lần sửa phải kiểm tra lại ở khổ desktop, tablet, phone.
+**Sửa giao diện** (`/admin`)
+- Chọn trang (606 đường dẫn), sửa chữ, ảnh, liên kết, kích thước, cỡ chữ, màu, vị trí từng khổ màn hình; ẩn/xóa khối (có hoàn tác); thêm khối chữ, nút, ảnh; tải ảnh lên (tối đa 2 MB).
+- **Phạm vi "Mọi trang"**: sửa menu, chân trang một lần cho mọi trang cùng kiểu (site có vài kiểu menu; trang nào chưa đổi thì mở trang đó và sửa tiếp).
+- **SEO từng trang**: tiêu đề, mô tả, ảnh chia sẻ, noindex. Khi xuất bản được ghi vào đầu trang để Google/Facebook/Zalo đọc được; xóa SEO thì trang trở lại như bản gốc.
+- Lưu nháp có lịch sử phiên bản, khôi phục bản cũ, xem trước, nhật ký thao tác.
+
+**Bài viết và dự án mới** (`/admin/content`): tạo, đăng, gỡ bài viết/dự án tiếng Việt hoặc tiếng Anh (ảnh bìa, thư viện ảnh, video, nội dung có định dạng, mục nổi bật). Bài viết dùng đúng giao diện các bài hiện có (đầu/chân trang, bố cục, bình luận); dự án dùng bố cục đơn giản của CMS.
+
+**Xuất bản**: ghi `site-overrides.json`, ảnh vào `assets/cms/`, `scripts/cms-runtime.js`, các trang bài mới và (nếu có SEO) sửa phần đầu các trang tĩnh. Commit và push (hoặc chạy với `CMS_GIT_PUSH=1`) để GitHub Pages cập nhật sau khoảng 1 phút. Đặt `CMS_SITE_ORIGIN` = địa chỉ trang thật để ảnh chia sẻ có đường dẫn đầy đủ.
+
+**Giới hạn còn lại**
+- Bài viết và dự án **đã có sẵn** (khoảng 120 bài) sửa qua trình sửa từng trang (chữ, ảnh, liên kết), chưa đưa được vào trình quản lý nội dung.
+- Trang dự án mới chưa có giao diện giống các trang dự án cũ; chưa tạo được trang tự do mới ngoài bài viết/dự án.
+- Không chèn HTML/CSS tự do (cố ý), không sửa hiệu ứng, chưa có thư viện ảnh chung, chưa có xác thực 2 lớp, chưa có sao lưu tự động ra ngoài, chỉ một người đăng cùng lúc.
 
 ## 5. Kiểm tra và bảo trì
 
-- `npm test` (329 test) và `cd cms/grapesjs && npm test` (38 test). Ngưỡng coverage 80% hiện chưa đạt (khoảng 76%), lệnh vẫn báo lỗi dù mọi test đạt.
+- `npm test` (348 test) và `cd cms/grapesjs && npm test` (86 test). Ngưỡng coverage 80% hiện chưa đạt (khoảng 76%), lệnh vẫn báo lỗi dù mọi test đạt.
 - `node tools/visual-diff/run.mjs --routes /,/news --widths 1440,419` so ảnh với trang gốc; `node tools/visual-diff/functional.mjs --pages` kiểm chức năng trên trang công khai (26 kiểm tra).
 - Ảnh và nội dung sao chép từ trang Wix gốc; nếu Wix gốc đổi nội dung thì bản clone **không tự cập nhật**.

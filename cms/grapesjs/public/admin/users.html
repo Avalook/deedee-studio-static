@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tài khoản — DeeDee CMS</title>
+  <link rel="stylesheet" href="/admin/content-editor.css">
+  <link rel="stylesheet" href="/admin/users.css">
+  <script type="module" src="/admin/users.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/admin">DeeDee <span>CMS</span></a>
+    <nav aria-label="Quản trị"><a href="/admin">Sửa giao diện</a><a href="/admin/content">Bài viết &amp; dự án</a><a href="/admin/users" aria-current="page">Tài khoản</a></nav>
+    <div class="account"><span id="account">Đang kết nối…</span><button id="logout" type="button">Thoát</button></div>
+  </header>
+  <main class="users-page">
+    <div id="notice" class="notice" role="status" hidden></div>
+
+    <section id="admin-only" aria-labelledby="users-title" hidden>
+      <div class="section-head"><div><span class="eyebrow">QUẢN TRỊ</span><h1 id="users-title">Tài khoản CMS</h1></div></div>
+      <p class="hint"><strong>editor</strong>: sửa và lưu nháp · <strong>publisher</strong>: thêm quyền xuất bản · <strong>admin</strong>: thêm quyền quản lý tài khoản.</p>
+      <table class="users-table">
+        <thead><tr><th>Tên đăng nhập</th><th>Vai trò</th><th>Tạo lúc</th><th>Thao tác</th></tr></thead>
+        <tbody id="users-body"></tbody>
+      </table>
+
+      <form id="create-form" class="card" autocomplete="off">
+        <h2>Thêm tài khoản</h2>
+        <div class="grid three">
+          <label>Tên đăng nhập<input id="new-username" required minlength="3" maxlength="40" pattern="[A-Za-z0-9._-]+" autocomplete="off"></label>
+          <label>Mật khẩu (từ 12 ký tự)<input id="new-password" type="password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+          <label>Vai trò<select id="new-role"><option value="editor">editor</option><option value="publisher">publisher</option><option value="admin">admin</option></select></label>
+        </div>
+        <button class="primary" type="submit">Tạo tài khoản</button>
+      </form>
+    </section>
+
+    <section aria-labelledby="mine-title">
+      <form id="password-form" class="card" autocomplete="off">
+        <h2 id="mine-title">Đổi mật khẩu của tôi</h2>
+        <div class="grid three">
+          <label>Mật khẩu hiện tại<input id="current-password" type="password" required autocomplete="current-password"></label>
+          <label>Mật khẩu mới (từ 12 ký tự)<input id="next-password" type="password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+          <label>Nhập lại mật khẩu mới<input id="repeat-password" type="password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+        </div>
+        <button class="primary" type="submit">Đổi mật khẩu</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

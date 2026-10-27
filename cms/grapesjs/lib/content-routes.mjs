@@ -4,6 +4,8 @@ import { HttpError, readJson, sendJson, sendHtml, redirect, escapeHtml } from '.
 import { exportContent } from './content-export.mjs';
 import { commitAndPush } from './git-publish.mjs';
 import { syncRepository } from './hosted-repository.mjs';
+import { loadArticleTemplates } from './article-template.mjs';
+import { renderContentPage } from './content-render.mjs';
 
 const ID = 'content_[a-f0-9-]{36}';
 
@@ -11,7 +13,10 @@ const ID = 'content_[a-f0-9-]{36}';
 export function createContentRoutes({ contentStore, requireSession, requireCsrf, requirePublisher,
   enqueuePublish, outDir, uploadsDir, sourceDir, publicDir, reservedRoutes,
   pushEnabled, hosted, exportEnabled }) {
-  const render = async (item, options) => (await import('./content-render.mjs')).renderContentPage(item, options);
+  // The site's article pages are read once and used as the layout of CMS articles.
+  let templates;
+  const articleTemplates = async () => { templates ??= await loadArticleTemplates(sourceDir).catch(() => ({})); return templates; };
+  const render = async (item, options) => renderContentPage(item, { ...options, templates: await articleTemplates() });
 
   async function publish(id, remove, actor) {
     return enqueuePublish(async () => {
@@ -24,7 +29,8 @@ export function createContentRoutes({ contentStore, requireSession, requireCsrf,
       let exported;
       try {
         if (pushEnabled) await syncRepository(outDir);
-        const renderer = (await import('./content-render.mjs')).renderContentPage;
+        const pageTemplates = await articleTemplates();
+        const renderer = (item, options) => renderContentPage(item, { ...options, templates: pageTemplates });
         exported = await exportContent({ items, previousItems, outDir, uploadsDir, sourceDir,
           renderPage: renderer, reservedRoutes });
         if (pushEnabled) exported.git = await commitAndPush({ repoDir: outDir, files: exported.files,
