@@ -40,3 +40,11 @@ Email báo khi có form hoặc bình luận mới: xem `docs/SUPABASE-NOTIFY.md`
 Tạo Codespace mới từ `main`: CMS tự chạy, cổng 4174 mở được trang đăng nhập (không hiện mật khẩu demo), đăng nhập bằng mật khẩu sinh ra thành công, mật khẩu demo bị từ chối, Git trong codespace dùng được. **Chưa thử bấm Xuất bản thật** (sẽ commit lên `main`).
 
 **Kiểm tra thật lần 2 (27/10/2026, tối):** tạo Codespace mới, repo media tự clone; tải ảnh PNG và video MP4 qua API CMS, thêm vào trang `/privacy-policy`, xuất bản: media được commit vào `Avalook/deedee-studio-media` trước, rồi `site-overrides.json` vào repo web (không chứa media). Trên trang thật, ảnh và thẻ `<video controls>` trỏ tới `https://avalook.github.io/deedee-studio-media/media/…`, file trả 200 đúng loại. Hai bản khởi động chạy cùng lúc chỉ sinh một bộ mật khẩu (có khóa). Sau đó đã hoàn lại cả hai repo. Video thử chỉ là file mẫu 2 KB (không phát được), chưa thử file 50 MB thật.
+
+**Kiểm tra thật lần 3 (27/10/2026, tối):**
+- Video thật (H.264, 2 giây) tải lên và xuất bản từ Codespace mới qua repo media; trên trang công khai video phát được (độ dài 2 giây, đã chạy), file ở `avalook.github.io/deedee-studio-media/media/…`.
+- Giới hạn tải lên thử trên bản chạy máy: file đúng 50 MB được nhận, 50 MB + 1 byte bị từ chối (413).
+- Giao diện (localhost): chọn trang, "＋ Thêm video", Lưu nháp, bấm **Xuất bản** (hộp xác nhận) chạy đúng; repo web chỉ nhận `site-overrides.json` và runtime, video nằm ở thư mục repo media và giống hệt file gốc.
+- Hàm gửi mail (`supabase/functions/notify-submission`) chạy dưới Deno với `fetch` giả: sai secret 401, phương thức khác POST 405, sự kiện không phải INSERT bị bỏ qua, yêu cầu gửi Resend đúng địa chỉ, người nhận, tiêu đề.
+- **Chưa thử:** tải file 50 MB qua địa chỉ cổng chuyển tiếp của Codespace (có thể có giới hạn riêng của GitHub); trang xem form với dữ liệu thật (cần `SUPABASE_SERVICE_ROLE_KEY`); gửi mail thật (cần tài khoản Resend).
+- Lưu ý: thành phần mới (chữ, ảnh, video) được thêm vào **cuối trang, bên dưới chân trang**; dùng chế độ kéo trong trình sửa để đặt đúng chỗ.
