@@ -107,3 +107,6 @@ The Node test suite covers authentication and CSRF, validation/sanitization, imm
 - Add staff usability/accessibility review, full responsive visual checks, SEO controls, localized route/content support, media rights tracking, upload scanning, monitoring, and a formal security review.
 - The editor can move selected elements within the archived page and preview four preset widths; it is not an unrestricted Wix canvas and does not yet provide reusable CMS collections, animation editing, custom breakpoint rules, page SEO, menus, forms, app integrations, or collaborative editing.
 
+## Chạy trong GitHub Codespaces
+
+Cách miễn phí cho khách dùng CMS mà không cần server riêng: xem `docs/CMS-CODESPACES.md`. Cấu hình ở `.devcontainer/devcontainer.json` và `cms/grapesjs/start-codespace.sh`.

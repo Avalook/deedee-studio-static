@@ -37,6 +37,7 @@ test('account management: admin-only, last admin protected, sessions closed on c
     return { cookie: response.headers.get('set-cookie').split(';')[0], csrf: payload.csrf, user: payload.user };
   }
 
+  assert.deepEqual(await (await fetch(`${origin}/api/login-hint`)).json(), { demo: false }, 'demo hint is hidden once passwords come from the environment');
   const admin = await login('admin', ADMIN_PASSWORD);
   assert.equal(admin.user.role, 'admin');
   const editor = await login('editor', 'editor-account-test-password');

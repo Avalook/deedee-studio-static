@@ -1,0 +1,11 @@
+{
+  "name": "DeeDee CMS",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
+  "postCreateCommand": "npm ci --prefix cms/grapesjs",
+  "postStartCommand": "nohup bash cms/grapesjs/start-codespace.sh > /tmp/deedee-cms.log 2>&1 &",
+  "forwardPorts": [4174],
+  "portsAttributes": {
+    "4174": { "label": "DeeDee CMS", "onAutoForward": "openBrowserOnce", "visibility": "private" }
+  },
+  "customizations": { "vscode": { "settings": { "git.autofetch": false } } }
+}

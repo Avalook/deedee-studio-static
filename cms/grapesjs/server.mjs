@@ -236,6 +236,11 @@ function releaseSummary(release) {
   };
 }
 
+/** The demo-password hint is only true while no account password was supplied through the environment. */
+function showDemoAccounts() {
+  return !HOSTED && !['POC_ADMIN_PASSWORD', 'POC_EDITOR_PASSWORD', 'POC_PUBLISHER_PASSWORD'].some((name) => process.env[name]);
+}
+
 function originFor() {
   return process.env.POC_ORIGIN || `http://${HOST}:${PORT}`;
 }
@@ -650,6 +655,11 @@ async function route(req, res) {
     return;
   }
 
+  if (pathname === '/api/login-hint' && req.method === 'GET') {
+    sendJson(res, 200, { demo: showDemoAccounts() });
+    return;
+  }
+
   if (pathname === '/api/session' && req.method === 'GET') {
     const session = requireSession(req);
     const state = store.getState();
@@ -926,7 +936,8 @@ server.listen(PORT, HOST, () => {
   console.log(`DeeDee Studio CMS: http://${HOST}:${PORT}`);
   console.log(`Admin: http://${HOST}:${PORT}/admin`);
   if (HOSTED) console.log('Accounts: managed in /admin/users by an admin.');
-  else console.log('Demo accounts (change them in /admin/users): admin / admin-demo, publisher / publisher-demo, editor / editor-demo');
+  else if (showDemoAccounts()) console.log('Demo accounts (change them in /admin/users): admin / admin-demo, publisher / publisher-demo, editor / editor-demo');
+  else console.log('Accounts: passwords were set through the environment; manage them in /admin/users.');
 });
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

@@ -5,6 +5,11 @@
   const errorBox = document.getElementById('login-error');
   const submit = form.querySelector('button[type="submit"]');
 
+  // Hide the demo-password hint when real passwords were configured.
+  fetch('/api/login-hint').then((res) => res.json()).then((hint) => {
+    if (!hint.demo) document.querySelector('.login-hint').hidden = true;
+  }).catch(() => {});
+
   function showError(message) {
     errorBox.textContent = message;
     errorBox.hidden = false;
