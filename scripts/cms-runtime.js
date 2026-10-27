@@ -13,6 +13,7 @@
   const editorMode = query.get('cms-editor') === '1';
   const previewToken = query.get('cmsPreviewToken') || (location.pathname === '/preview' ? query.get('token') : '');
   const originals = new WeakMap();
+  const removedOriginals = new Map();
   const routeFromPath = (pathname) => {
     let route = pathname;
     if (basePath && (route === basePath || route.startsWith(`${basePath}/`))) route = route.slice(basePath.length);
@@ -46,6 +47,15 @@
     return target;
   }
 
+  function canDelete(element) {
+    if (!element || !element.isConnected || element === document.body || element === document.documentElement) return false;
+    if (/^(?:SITE_|PAGES_CONTAINER$|masterPage$)/.test(element.id || '')) return false;
+    if (element.closest('header,nav,footer,[role="navigation"],#SITE_HEADER,#SITE_FOOTER,[data-cms-protected]')) return false;
+    if (['main', 'header', 'nav', 'footer', 'script', 'style', 'head', 'html', 'body'].includes(element.localName)) return false;
+    if (element.querySelector('header,nav,main,footer,[role="navigation"],[data-cms-protected],[id^="SITE_"],#PAGES_CONTAINER,#masterPage')) return false;
+    return Boolean(element.closest('#SITE_CONTAINER,main,[data-cms-added]'));
+  }
+
   function selectorFor(element) {
     const hasUniqueId = (item) => Boolean(
       item.id &&
@@ -65,7 +75,10 @@
       }
       const tag = current.localName;
       const siblings = current.parentElement
-        ? Array.from(current.parentElement.children).filter((item) => item.localName === tag)
+        ? Array.from(current.parentElement.childNodes).map((item) => {
+          const removed = [...removedOriginals].find(([, anchor]) => anchor === item);
+          return removed ? removed[0] : item;
+        }).filter((item) => item.localName === tag)
         : [];
       const ordinal = siblings.indexOf(current) + 1;
       parts.unshift(ordinal > 0 ? `${tag}:nth-of-type(${ordinal})` : tag);
@@ -151,6 +164,12 @@ function isTextEditable(element) {
   }
 
   function restoreTouchedElements() {
+    // Restore in reverse removal order so nested nodes and nth-of-type selectors retain identity.
+    for (const [element, anchor] of [...removedOriginals].reverse()) {
+      if (anchor.parentNode) anchor.parentNode.replaceChild(element, anchor);
+      restoreOriginal(element);
+    }
+    removedOriginals.clear();
     for (const operation of documentModel.operations) {
       let element;
       try { element = document.querySelector(operation.selector); } catch { element = null; }
@@ -185,9 +204,13 @@ function isTextEditable(element) {
     documentModel = nextDocument;
     insertComponents(documentModel.insertions);
     const device = deviceForWidth(window.innerWidth);
-    for (const operation of documentModel.operations) {
+    // Resolve the full batch before any removal to avoid nth-of-type drift.
+    const targets = documentModel.operations.map((operation) => {
       let element;
       try { element = document.querySelector(operation.selector); } catch { element = null; }
+      return { operation, element, deletable: canDelete(element) };
+    });
+    for (const { operation, element } of targets) {
       if (!element) continue;
       rememberOriginal(element);
       if (operation.text !== undefined && isTextEditable(element)) setVisibleText(element, operation.text);
@@ -208,7 +231,13 @@ function isTextEditable(element) {
       const offset = operation.offsets && operation.offsets[device];
       if (offset) element.style.translate = `${offset.x}px ${offset.y}px`;
     }
-    if (selected && !selected.isConnected) selected = null;
+    for (const { operation, element, deletable } of targets) {
+      if (operation.deleted !== true || !deletable || !element.parentNode) continue;
+      const anchor = document.createComment('cms component removed');
+      element.parentNode.replaceChild(anchor, element);
+      removedOriginals.set(element, anchor);
+    }
+    if (selected && !selected.isConnected) { selected.removeAttribute('data-cms-selected'); selected = null; send('selected', { selection: null }); }
   }
 
   function selectedInfo(element) {
@@ -216,6 +245,8 @@ function isTextEditable(element) {
     const operation = documentModel.operations.find((item) => item.selector === selectorFor(element)) || {};
     return {
       selector: selectorFor(element),
+      deletable: canDelete(element),
+      insertionId: element.getAttribute('data-cms-added') || null,
       tag: element.localName,
       label: (element.innerText || element.alt || element.id || element.localName).trim().slice(0, 100),
       text: isTextEditable(element) ? element.innerText : null,
@@ -274,6 +305,9 @@ function isTextEditable(element) {
       event.preventDefault();
       event.stopPropagation();
       selectElement(target);
+      // pointerdown is prevented for dragging, so focus the canvas explicitly for Delete/Backspace.
+      if (!document.body.hasAttribute('tabindex')) document.body.setAttribute('tabindex', '-1');
+      document.body.focus({ preventScroll: true });
       const device = deviceForWidth(window.innerWidth);
       chosenDevice = device;
       const info = selectedInfo(target);
@@ -315,6 +349,12 @@ function isTextEditable(element) {
         try { element = document.querySelector(event.data.selector); } catch { element = null; }
         if (element) selectElement(element);
       }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (!selected || !canDelete(selected) || !['Delete', 'Backspace'].includes(event.key) || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+      if (event.target.closest('input,textarea,select,button,[contenteditable]:not([contenteditable="false"]),[role="textbox"],[role="dialog"],dialog')) return;
+      event.preventDefault();
+      send('delete-component', { selection: selectedInfo(selected) });
     });
     send('ready');
   }

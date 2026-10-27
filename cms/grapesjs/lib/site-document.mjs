@@ -8,7 +8,7 @@ const DEVICE_NAMES = ['desktop', 'laptop', 'tablet', 'mobile'];
 
 const STYLE_FIELDS = new Set(['width', 'height', 'fontSize', 'color', 'backgroundColor']);
 const OPERATION_FIELDS = new Set([
-  'selector', 'text', 'image', 'href', 'hidden', 'width', 'height', 'fontSize', 'color', 'backgroundColor', 'offsets', 'responsive',
+  'selector', 'text', 'image', 'href', 'hidden', 'deleted', 'width', 'height', 'fontSize', 'color', 'backgroundColor', 'offsets', 'responsive',
 ]);
 
 /** Error raised when a CMS page override does not match its supported schema. */
@@ -70,9 +70,12 @@ export function validateSiteDocument(value) {
     const selector = validateSelector(operation.selector);
     if (selectors.has(selector)) throw new SiteDocumentValidationError(`Duplicate operation selector: ${selector}`);
     selectors.add(selector);
+    if (operation.deleted === true && /^(?:html|body|main|nav|header|footer|#SITE_[A-Za-z0-9_-]+|#PAGES_CONTAINER|#masterPage)(?:$|:)/.test(selector)) {
+      throw new SiteDocumentValidationError('Deleting the page structure is not allowed');
+    }
     return Object.fromEntries([
       ['selector', selector], ['text', validateText(operation.text)], ['image', validateImage(operation.image)],
-      ['href', validateHref(operation.href)], ['hidden', validateBoolean(operation.hidden)],
+      ['href', validateHref(operation.href)], ['hidden', validateBoolean(operation.hidden)], ['deleted', validateBoolean(operation.deleted)],
       ['width', validateDimension(operation.width, 'width')], ['height', validateDimension(operation.height, 'height')],
       ['fontSize', validateFontSize(operation.fontSize)], ['color', validateColor(operation.color, 'color')],
       ['backgroundColor', validateColor(operation.backgroundColor, 'backgroundColor')],

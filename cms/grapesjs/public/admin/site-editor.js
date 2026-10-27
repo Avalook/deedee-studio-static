@@ -1,3 +1,5 @@
+import { deleteComponent, shouldDeleteComponent } from './component-actions.mjs';
+
 (() => {
   'use strict';
 
@@ -80,6 +82,19 @@
     sendDocument();
   }
 
+  function deleteSelection() {
+    const next = deleteComponent(state.document, state.selection);
+    if (next === state.document) return;
+    state.undo.push(state.document);
+    state.redo = [];
+    state.document = next;
+    state.dirty = true;
+    setSelection(null);
+    setStatus();
+    sendDocument();
+    toast('Đã xoá thành phần. Chọn Hoàn tác để khôi phục.');
+  }
+
   function updateOffset(selector, device, x, y) {
     const current = state.document.operations.find((item) => item.selector === selector);
     const offsets = { ...(current?.offsets || {}), [device]: { x, y } };
@@ -108,12 +123,14 @@
       state.document = state.redo.pop();
     }
     state.dirty = true;
+    setSelection(null);
     setStatus();
     sendDocument();
   }
 
   function setSelection(selection) {
     state.selection = selection;
+    byId('delete-component').disabled = !selection?.deletable;
     byId('selection-label').textContent = selection ? `${selection.tag} · ${selection.label || selection.selector}` : 'Chưa chọn thành phần';
     byId('text').value = selection?.text ?? '';
     byId('text').disabled = !selection?.editableText;
@@ -269,6 +286,11 @@
       location.replace('/admin/login');
     });
     byId('undo').addEventListener('click', () => { if (state.undo.length) applyUndo(null, true); });
+    byId('delete-component').addEventListener('click', deleteSelection);
+    document.addEventListener('keydown', (event) => {
+      if (!shouldDeleteComponent(event, state.selection)) return;
+      event.preventDefault(); deleteSelection();
+    });
     document.querySelectorAll('[data-width]').forEach((button) => button.addEventListener('click', () => {
       document.querySelectorAll('[data-width]').forEach((item) => item.classList.toggle('active', item === button));
       const width = Number(button.dataset.width);
@@ -323,6 +345,7 @@
       if (event.source !== frame.contentWindow || event.origin !== location.origin || event.data?.source !== 'deedee-cms') return;
       if (event.data.type === 'ready') sendDocument();
       if (event.data.type === 'selected') setSelection(event.data.selection);
+      if (event.data.type === 'delete-component' && event.data.selection?.selector === state.selection?.selector) deleteSelection();
       if (event.data.type === 'offset') updateOffset(event.data.selector, event.data.device, event.data.x, event.data.y);
     });
     window.addEventListener('beforeunload', (event) => {

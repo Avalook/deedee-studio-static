@@ -15,5 +15,8 @@
   "dependencies": {
     "grapesjs": "0.23.8",
     "sanitize-html": "2.18.1"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.14"
   }
 }
