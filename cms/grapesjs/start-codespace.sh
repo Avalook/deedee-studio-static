@@ -6,6 +6,9 @@ repo="$(cd "$(dirname "$0")/../.." && pwd)"
 data="${POC_DATA_DIR:-$repo/cms/grapesjs/data}"
 cd "$repo"
 
+# Already running (start and attach hooks may both call this script).
+if (exec 3<>/dev/tcp/127.0.0.1/${POC_PORT:-4174}) 2>/dev/null; then exit 0; fi
+
 # Static copy of the site that the editor frames (same server the local setup uses).
 if ! (exec 3<>/dev/tcp/127.0.0.1/4173) 2>/dev/null; then
   python3 serve.py > /tmp/deedee-static.log 2>&1 &
