@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "revisionId": null,
-  "publishedAt": null,
-  "publishedBy": null,
-  "pages": {}
+  "revisionId": "rev_434cd27d-13a5-433b-88e6-c1fde3084620",
+  "publishedAt": "2026-10-27T09:27:28.694Z",
+  "publishedBy": "publisher",
+  "pages": {
+    "/privacy-policy": {
+      "schemaVersion": 1,
+      "pageId": "/privacy-policy",
+      "operations": [],
+      "insertions": [
+        {
+          "id": "add_dcfde9ad-f889-4a2b-a35c-aa470c343bd6",
+          "type": "image",
+          "image": "https://avalook.github.io/deedee-studio-media/media/5463e973-ecc3-4cf3-a4e0-1e95dc73f513.png"
+        },
+        {
+          "id": "add_b3035e45-b755-4f54-8913-b2148502aae0",
+          "type": "video",
+          "video": "https://avalook.github.io/deedee-studio-media/media/f6c1a3a6-e69c-4511-98cc-c5cb5b4b6860.mp4"
+        }
+      ]
+    }
+  }
 }
