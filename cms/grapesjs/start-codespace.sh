@@ -6,12 +6,19 @@ repo="$(cd "$(dirname "$0")/../.." && pwd)"
 data="${POC_DATA_DIR:-$repo/cms/grapesjs/data}"
 cd "$repo"
 
+# Only one launcher may run: the start and attach hooks fire together on a fresh codespace, and two launchers
+# would each generate different first-run passwords. The lock is held by the server process until it exits.
+if command -v flock >/dev/null 2>&1; then
+  exec 9>/tmp/deedee-cms.lock
+  flock -n 9 || exit 0
+fi
+
 # Already running (start and attach hooks may both call this script).
 if (exec 3<>/dev/tcp/127.0.0.1/${POC_PORT:-4174}) 2>/dev/null; then exit 0; fi
 
 # Static copy of the site that the editor frames (same server the local setup uses).
 if ! (exec 3<>/dev/tcp/127.0.0.1/4173) 2>/dev/null; then
-  python3 serve.py > /tmp/deedee-static.log 2>&1 &
+  python3 serve.py 9>&- > /tmp/deedee-static.log 2>&1 &
 fi
 
 # First run only: generate strong random passwords and keep them in the (git-ignored) data dir.
