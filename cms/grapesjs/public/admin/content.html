@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Bài viết & dự án — DeeDee CMS</title>
+  <link rel="stylesheet" href="/admin/content-editor.css">
+  <script type="module" src="/admin/content-editor.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/admin">DeeDee <span>CMS</span></a>
+    <nav aria-label="Quản trị"><a href="/admin">Sửa giao diện</a><a href="/admin/content" aria-current="page">Bài viết &amp; dự án</a><a href="https://supabase.com/dashboard/project/eyecmmwnvlhubzvijktf/editor" target="_blank" rel="noopener noreferrer">Biểu mẫu đã nhận ↗</a></nav>
+    <div class="account"><span id="account">Đang kết nối…</span><button id="logout" type="button">Thoát</button></div>
+  </header>
+  <main class="workspace">
+    <aside class="library" aria-label="Danh sách nội dung">
+      <div class="library-heading"><div><span class="eyebrow">THƯ VIỆN NỘI DUNG</span><h1>Bài viết & dự án</h1></div><button id="new-content" class="primary" type="button">＋ Tạo mới</button></div>
+      <label class="search-label" for="search">Tìm nội dung</label><input id="search" type="search" placeholder="Tìm theo tiêu đề…">
+      <div class="filters"><label>Loại<select id="filter-type"><option value="">Tất cả</option><option value="article">Bài viết</option><option value="project">Dự án</option></select></label><label>Trạng thái<select id="filter-status"><option value="">Tất cả</option><option value="draft">Bản nháp</option><option value="published">Đã xuất bản</option><option value="changed">Chờ xuất bản lại</option></select></label></div>
+      <p id="list-count" class="hint"></p>
+      <div id="content-list" class="content-list" aria-live="polite"></div>
+      <p class="library-note">Nội dung tạo tại đây được quản lý riêng. Chọn “Sửa giao diện” để sửa các trang đã clone.</p>
+    </aside>
+    <section class="editor-panel" aria-labelledby="editor-title">
+      <div class="editor-heading"><div><span id="item-status" class="badge">Bản nháp mới</span><h2 id="editor-title">Tạo nội dung mới</h2><p id="save-status" class="hint" aria-live="polite">Điền tiêu đề và đường dẫn để bắt đầu.</p></div><div class="actions"><button id="preview" type="button">Xem trước</button><button id="save" type="submit" form="content-form">Lưu nháp</button><button id="publish" class="primary" type="button" disabled>Xuất bản</button></div></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <form id="content-form">
+        <div class="grid two"><label>Loại nội dung<select id="type" name="type"><option value="article">Bài viết</option><option value="project">Dự án</option></select></label><label>Ngôn ngữ<select id="language" name="language"><option value="vi">Tiếng Việt</option><option value="en">English</option></select></label></div>
+        <label>Tiêu đề <span aria-hidden="true">*</span><input id="title" name="title" required maxlength="180" placeholder="Nhập tiêu đề bài viết hoặc tên dự án"></label>
+        <label>Đường dẫn <span aria-hidden="true">*</span><div class="input-action"><input id="slug" name="slug" required maxlength="100" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="ten-bai-viet"><button id="make-slug" type="button">Tạo từ tiêu đề</button></div></label><p id="route-preview" class="route-preview"></p>
+        <p id="route-lock" class="hint" hidden>Đường dẫn đã xuất bản được giữ cố định để liên kết đang chia sẻ tiếp tục hoạt động.</p>
+        <label>Mô tả ngắn<textarea id="summary" name="summary" rows="3" maxlength="1000" placeholder="Tóm tắt xuất hiện bên dưới thẻ nội dung."></textarea></label>
+        <fieldset><legend>Ảnh bìa</legend><div class="cover-row"><img id="cover-preview" class="cover-preview" alt="Ảnh bìa đang chọn" hidden><div class="cover-fields"><label>Đường dẫn ảnh<input id="cover" name="cover" placeholder="Chọn ảnh từ máy hoặc dán đường dẫn HTTPS"></label><label class="upload-button">Tải ảnh bìa<input id="cover-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label><p class="hint">PNG, JPG, WebP hoặc GIF. Tối đa 2 MB mỗi ảnh.</p></div></div></fieldset>
+        <fieldset><legend>Nội dung</legend><div class="format-toolbar" role="toolbar" aria-label="Định dạng nội dung"><button type="button" data-format="p">Đoạn</button><button type="button" data-format="h2">Tiêu đề</button><button type="button" data-format="h3">Tiêu đề phụ</button><button type="button" data-format="strong"><strong>Đậm</strong></button><button type="button" data-format="em"><em>Nghiêng</em></button><button type="button" data-format="blockquote">Trích dẫn</button><button id="insert-list" type="button">Danh sách</button><label class="upload-button compact">Chèn ảnh<input id="body-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label></div><label class="sr-only" for="bodyHtml">Nội dung bài viết hoặc dự án</label><textarea id="bodyHtml" name="bodyHtml" rows="15" maxlength="100000" placeholder="Nhập nội dung, chọn đoạn chữ và bấm nút định dạng phía trên."></textarea><p class="hint">Các nút chèn thẻ định dạng vào nội dung. Bấm “Xem trước” để xem bố cục thực tế; mã không an toàn sẽ bị loại bỏ khi lưu.</p></fieldset>
+        <div class="grid two"><label>Chuyên mục<input id="category" name="category" maxlength="100" list="categories" placeholder="Ví dụ: Hoạt động"><datalist id="categories"><option value="Hoạt động"><option value="Góc chuyên gia"><option value="Tin tức"><option value="Originals"><option value="Long-form"><option value="Short-form"><option value="Games"></datalist></label><label>Ngày hiển thị<input id="publishedAt" name="publishedAt" type="date"></label></div>
+        <label class="checkbox-row"><input id="featured" name="featured" type="checkbox"><span>Hiển thị nổi bật trên trang chủ</span></label><p class="hint">Sau khi xuất bản, bài viết tự xuất hiện trong Tin tức; dự án tự xuất hiện trong Dự án. Bật nổi bật để thêm thẻ ở trang chủ.</p>
+        <div id="article-fields"><label>Tác giả<input id="author" name="author" maxlength="120" placeholder="DeeDee Animation Studio"></label></div>
+        <fieldset id="project-fields" hidden><legend>Thông tin dự án</legend><div class="grid two"><label>Khách hàng<input id="client" name="client" maxlength="180"></label><label>Năm<input id="year" name="year" maxlength="4" pattern="(19|20|21)[0-9]{2}" placeholder="2026"></label></div><label>Dịch vụ thực hiện<input id="services" name="services" maxlength="1000" placeholder="Storyboard, Animation, Compositing…"></label><label>Video YouTube / Vimeo<input id="videoUrl" name="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=…"></label><label>Thư viện ảnh — mỗi đường dẫn một dòng<textarea id="gallery" name="gallery" rows="4" placeholder="/media/anh-1.webp&#10;/media/anh-2.webp"></textarea></label><label class="upload-button">Thêm ảnh dự án<input id="gallery-upload" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif"></label></fieldset>
+        <div class="footer-actions"><span id="role-note" class="hint">Đang kiểm tra quyền xuất bản…</span><button id="unpublish" class="danger" type="button" hidden>Gỡ khỏi website</button></div>
+      </form>
+    </section>
+  </main>
+  <dialog id="leave-dialog"><h2>Bạn có thay đổi chưa lưu</h2><p>Lưu nháp trước khi chuyển sang nội dung khác?</p><div class="dialog-actions"><button id="leave-cancel" type="button">Ở lại</button><button id="leave-discard" type="button">Bỏ thay đổi</button><button id="leave-save" class="primary" type="button">Lưu nháp và tiếp tục</button></div></dialog>
+  <dialog id="unpublish-dialog"><h2>Gỡ nội dung khỏi website?</h2><p>Thẻ và trang nội dung này sẽ được gỡ sau lần xuất bản. Bản nháp vẫn được giữ để chỉnh sửa hoặc xuất bản lại.</p><div class="dialog-actions"><button id="unpublish-cancel" type="button">Hủy</button><button id="unpublish-confirm" class="danger" type="button">Gỡ khỏi website</button></div></dialog>
+</body>
+</html>

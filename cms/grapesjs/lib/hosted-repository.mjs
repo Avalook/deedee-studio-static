@@ -22,9 +22,6 @@ export async function prepareRepository({ repoDir, repositoryUrl }) {
   if (!exists) {
     await git(['clone', '--depth=1', '--filter=blob:none', '--no-checkout', '--single-branch', '--branch', 'main',
       '--', repositoryUrl, repoDir], path.dirname(repoDir));
-    await git(['sparse-checkout', 'set', '--no-cone', '/site-overrides.json', '/assets/cms/',
-      '/scripts/cms-runtime.js'], repoDir);
-    await git(['checkout', 'main'], repoDir);
   }
   const remote = await git(['remote', 'get-url', 'origin'], repoDir);
   if (remote.stdout.trim() !== repositoryUrl) throw new Error('Persistent checkout has an unexpected remote');
@@ -32,11 +29,18 @@ export async function prepareRepository({ repoDir, repositoryUrl }) {
   if (branch.stdout.trim() !== 'main') throw new Error('Publish checkout must use main');
   await git(['config', 'user.name', 'DeeDee CMS'], repoDir);
   await git(['config', 'user.email', 'deedee-cms@users.noreply.github.com'], repoDir);
+  // Reapply on every startup so earlier persistent deployments gain newly generated paths.
+  await git(['sparse-checkout', 'set', '--no-cone', '/site-overrides.json', '/assets/cms/',
+    '/scripts/cms-runtime.js', '/content.json', '/post/', '/all-project/', '/en/post/', '/en/all-project/',
+    '/scripts/content-cards.mjs', '/scripts/content-cards.css', '/scripts/site-controls.mjs'], repoDir);
+  if (!exists) await git(['checkout', 'main'], repoDir);
   await syncRepository(repoDir);
 }
 
 /** Refuse dirty/diverged checkouts rather than overwrite another publisher's work. */
 export async function syncRepository(repoDir) {
+  const branch = await git(['branch', '--show-current'], repoDir);
+  if (branch.stdout.trim() !== 'main') throw new Error('Publish checkout must use main');
   const status = await git(['status', '--porcelain'], repoDir);
   if (status.stdout.trim()) throw new Error('Publish checkout has uncommitted files; recover it before retrying');
   await git(['fetch', '--deepen=50', 'origin', 'main'], repoDir);

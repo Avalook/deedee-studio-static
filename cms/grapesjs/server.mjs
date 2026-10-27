@@ -45,6 +45,8 @@ import { commitAndPush } from './lib/git-publish.mjs';
 import { validateHostedEnvironment, assertHostedUsers } from './lib/hosted-config.mjs';
 import { syncRepository } from './lib/hosted-repository.mjs';
 import { createPublishQueue } from './lib/publish-queue.mjs';
+import { createContentStore } from './lib/content-store.mjs';
+import { createContentRoutes } from './lib/content-routes.mjs';
 import {
   escapeHtml,
   getClientIp,
@@ -101,6 +103,14 @@ const secret = await loadSecret();
 const store = await createStore({ dataDir: DATA_DIR, seedDir: SEED_DIR, demoUsers: DEMO_USERS });
 if (HOSTED) assertHostedUsers(JSON.parse(await fs.readFile(path.join(DATA_DIR, 'users.json'), 'utf8')).users);
 const enqueuePublish = createPublishQueue();
+const contentManifest = JSON.parse(await fs.readFile(path.join(STATIC_SITE_DIR, 'manifest.json'), 'utf8'));
+const reservedContentRoutes = (contentManifest.pages || []).map((page) => page.route);
+const contentStore = await createContentStore({ dataDir: DATA_DIR, staticSiteDir: STATIC_SITE_DIR,
+  reservedRoutes: reservedContentRoutes, publicCatalogFile: path.join(EXPORT_DIR, 'content.json') });
+const contentRoutes = createContentRoutes({ contentStore, requireSession, requireCsrf, requirePublisher,
+  enqueuePublish, outDir: EXPORT_DIR, uploadsDir: path.join(DATA_DIR, 'uploads'),
+  sourceDir: STATIC_SITE_DIR, publicDir: PUBLIC_DIR, reservedRoutes: reservedContentRoutes,
+  pushEnabled: GIT_PUSH_ENABLED, hosted: HOSTED, exportEnabled: EXPORT_ENABLED });
 const archiveProxy = createArchiveProxy({
   staticSiteOrigin: STATIC_SITE_ORIGIN,
   host: HOST,
@@ -422,7 +432,7 @@ async function handleRestore(req, res, session, revisionId) {
 async function exportRelease(release, actor) {
   if (!EXPORT_ENABLED) return { enabled: false };
   try {
-    if (HOSTED && GIT_PUSH_ENABLED) await syncRepository(EXPORT_DIR);
+    if (GIT_PUSH_ENABLED) await syncRepository(EXPORT_DIR);
     const exported = await exportStaticSite({
       release,
       outDir: EXPORT_DIR,
@@ -505,7 +515,7 @@ async function serveMedia(req, res, filename) {
   const info = await store.getAssetFile(filename);
   if (!info) throw new HttpError(404, 'Media not found', 'NOT_FOUND');
 
-  const published = await store.isAssetPublished(filename);
+  const published = await store.isAssetPublished(filename) || await contentStore.isAssetPublished(filename);
   const session = getSession(req);
   const cookies = parseCookies(req.headers.cookie || '');
   const preview = cookies.poc_preview ? verifyPreviewToken(cookies.poc_preview, secret) : null;
@@ -561,6 +571,8 @@ async function route(req, res) {
   if (pathname.startsWith('/api/')) {
     res.setHeader('Cache-Control', 'no-store');
   }
+
+  if (await contentRoutes(req, res, url)) return;
 
   if (pathname === '/healthz' && req.method === 'GET') {
     sendJson(res, 200, { ok: true });
@@ -697,8 +709,8 @@ async function route(req, res) {
     return;
   }
 
-  if (pathname.startsWith('/media/') && req.method === 'GET') {
-    const filename = decodeURIComponent(pathname.slice('/media/'.length));
+  if (/^\/(?:deedee-studio-static\/)?media\//.test(pathname) && req.method === 'GET') {
+    const filename = decodeURIComponent(pathname.replace(/^\/(?:deedee-studio-static\/)?media\//, ''));
     await serveMedia(req, res, filename);
     return;
   }

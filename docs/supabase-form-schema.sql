@@ -21,7 +21,9 @@ alter table public.form_submissions enable row level security;
 -- Visitors (the anon role) may insert and nothing else: no select, update or delete policy exists,
 -- so the public key cannot read anybody's submission back.
 revoke all on public.form_submissions from anon, authenticated;
-grant insert on public.form_submissions to anon;
+grant insert (form_label, language, page_path, name, email, phone, fields)
+  on public.form_submissions to anon;
+grant select, insert, update, delete on public.form_submissions to service_role;
 
 drop policy if exists "visitors can submit forms" on public.form_submissions;
 create policy "visitors can submit forms"
@@ -34,3 +36,45 @@ create policy "visitors can submit forms"
 -- Optional: get an email for each new row with a Database Webhook or an Edge Function on INSERT.
 -- Optional: add Cloudflare Turnstile or hCaptcha in front of the insert if spam appears; the page only
 -- applies a hidden-field honeypot and a 15 second cool-down per browser.
+
+
+-- Bound anonymous traffic at the database so direct REST callers cannot bypass
+-- the browser cooldown. This small shared bucket stores no visitor identifiers.
+create schema if not exists private;
+revoke all on schema private from public, anon, authenticated;
+create table if not exists private.form_rate_buckets (
+  minute timestamptz primary key,
+  hits integer not null
+);
+revoke all on private.form_rate_buckets from public, anon, authenticated;
+
+create or replace function private.guard_form_submission()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  bucket_minute timestamptz := date_trunc('minute', statement_timestamp());
+  bucket_hits integer;
+begin
+  if coalesce(nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'role',
+    current_setting('role', true)) = 'anon' then
+    insert into private.form_rate_buckets (minute, hits) values (bucket_minute, 1)
+      on conflict (minute) do update set hits = private.form_rate_buckets.hits + 1
+      returning hits into bucket_hits;
+    if bucket_hits > 30 then
+      raise exception 'Form rate limit reached; please try again later' using errcode = 'P0001';
+    end if;
+    delete from private.form_rate_buckets where minute < bucket_minute - interval '2 minutes';
+  end if;
+  new.created_at := statement_timestamp();
+  return new;
+end;
+$$;
+revoke all on function private.guard_form_submission() from public, anon, authenticated;
+drop trigger if exists guard_form_submission on public.form_submissions;
+create trigger guard_form_submission before insert on public.form_submissions
+  for each row execute function private.guard_form_submission();
+create index if not exists form_submissions_created_at_idx
+  on public.form_submissions (created_at desc);

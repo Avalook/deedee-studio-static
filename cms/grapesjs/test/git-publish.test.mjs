@@ -21,10 +21,16 @@ test('persistent sparse checkout publishes and retries a previously unpushed com
   git(['config', 'user.email', 'test@example.com'], seed);
   await writeFile(path.join(seed, 'site-overrides.json'), '{}');
   await writeFile(path.join(seed, 'private-source.txt'), 'not in sparse checkout');
+  await mkdir(path.join(seed, 'post', 'existing'), { recursive: true });
+  await writeFile(path.join(seed, 'post', 'existing', 'index.html'), 'generated route fixture');
   git(['add', '.'], seed); git(['commit', '-m', 'seed'], seed);
   git(['remote', 'add', 'origin', remote], seed); git(['push', 'origin', 'main'], seed);
   await prepareRepository({ repoDir: checkout, repositoryUrl: remote });
   await assert.rejects(readFile(path.join(checkout, 'private-source.txt')));
+  git(['sparse-checkout', 'set', '--no-cone', '/site-overrides.json'], checkout);
+  await assert.rejects(readFile(path.join(checkout, 'post', 'existing', 'index.html')));
+  await prepareRepository({ repoDir: checkout, repositoryUrl: remote });
+  assert.equal(await readFile(path.join(checkout, 'post', 'existing', 'index.html'), 'utf8'), 'generated route fixture');
   await writeFile(path.join(checkout, 'site-overrides.json'), '{"updated":true}');
   await commitAndPush({ repoDir: checkout, files: ['site-overrides.json'], message: 'update', push: false });
   const result = await commitAndPush({ repoDir: checkout, files: ['site-overrides.json'], message: 'retry' });
