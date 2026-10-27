@@ -18,7 +18,19 @@
       "settings": {
         "git.autofetch": false
       }
+    },
+    "codespaces": {
+      "repositories": {
+        "Avalook/deedee-studio-media": {
+          "permissions": {
+            "contents": "write"
+          }
+        }
+      }
     }
   },
-  "postAttachCommand": "setsid nohup bash cms/grapesjs/start-codespace.sh >> /tmp/deedee-cms.log 2>&1 < /dev/null &"
+  "postAttachCommand": "setsid nohup bash cms/grapesjs/start-codespace.sh >> /tmp/deedee-cms.log 2>&1 < /dev/null &",
+  "containerEnv": {
+    "CMS_MEDIA_REPO": "Avalook/deedee-studio-media"
+  }
 }

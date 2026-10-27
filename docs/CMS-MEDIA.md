@@ -2,6 +2,9 @@
 
 Mục đích: giữ repo web `deedee-studio-static` nhẹ. Ảnh/video khách tải lên qua CMS được commit vào một repo khác (`deedee-studio-media`), phục vụ bằng GitHub Pages của repo đó. Trang web chỉ chứa đường dẫn tuyệt đối tới file.
 
+## Trạng thái
+Repo `Avalook/deedee-studio-media` đã tạo (công khai, Pages bật) và đã nối vào `.devcontainer/devcontainer.json` bằng `containerEnv.CMS_MEDIA_REPO` và quyền ghi `customizations.codespaces.repositories`. Mục bên dưới là cách thiết lập lại từ đầu.
+
 ## Thiết lập (một lần)
 1. Tạo repo công khai `Avalook/deedee-studio-media` (GitHub Pages miễn phí cần repo công khai), có sẵn thư mục `media/`, file `.nojekyll`, và bật Pages (nhánh `main`, thư mục gốc).
 2. Trong `.devcontainer/devcontainer.json` cho phép Codespace ghi vào repo đó (GitHub sẽ hỏi chủ repo duyệt quyền khi tạo Codespace):
