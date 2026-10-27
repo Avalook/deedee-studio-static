@@ -30,3 +30,19 @@ export function sameSecret(a, b) {
   for (let i = 0; i < x.length; i += 1) diff |= x.charCodeAt(i) ^ y.charCodeAt(i);
   return diff === 0;
 }
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const TABLES = new Set(['form_submissions', 'comments']);
+
+/** Only an INSERT hint for a known table and a well-formed row id is acted on; everything else in the body is ignored. */
+export function parseWebhook(payload) {
+  if (payload?.type !== 'INSERT' || !TABLES.has(payload.table)) return null;
+  const id = payload.record?.id;
+  return typeof id === 'string' && UUID.test(id) ? { table: payload.table, id: id.toLowerCase() } : null;
+}
+
+/** A row looked up in the database counts only if it was created in the last few minutes. */
+export function isFreshRow(row, now = Date.now(), maxAgeMs = 5 * 60 * 1000) {
+  const created = Date.parse(row?.created_at);
+  return Number.isFinite(created) && now - created >= -60_000 && now - created <= maxAgeMs;
+}
