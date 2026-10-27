@@ -115,12 +115,12 @@ export function parseCookies(header = '') {
   return cookies;
 }
 
-export function serializeSessionCookie(token, maxAgeSeconds) {
-  return `poc_session=${encodeURIComponent(token)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAgeSeconds}`;
+export function serializeSessionCookie(token, maxAgeSeconds, secure = false) {
+  return `poc_session=${encodeURIComponent(token)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAgeSeconds}${secure ? '; Secure' : ''}`;
 }
 
-export function serializePreviewCookie(token, maxAgeSeconds) {
-  return `poc_preview=${encodeURIComponent(token)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}`;
+export function serializePreviewCookie(token, maxAgeSeconds, secure = false) {
+  return `poc_preview=${encodeURIComponent(token)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}${secure ? '; Secure' : ''}`;
 }
 
 export function clearSessionCookie() {

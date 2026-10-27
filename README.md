@@ -1,6 +1,14 @@
-# DeeDee Studio — bản lưu local
+# DeeDee Studio — website clone và CMS nội dung
 
 Nguồn: https://www.deedeestudio.net/
+
+## Tạo bài viết và dự án — CMS local
+
+Nhấp đúp `Start-CMS.command` trên Mac hoặc `Start-CMS.cmd` trên Windows (cần Node.js 22.12+, khuyến nghị 24 LTS). Mở http://127.0.0.1:4174/admin/content sau khi server sẵn sàng. CMS dùng website trên GitHub Pages làm nguồn xem trước, nên không cần chạy thêm server Python. Cần Internet.
+
+Tạo bài/dự án, chọn ảnh, lưu nháp, xem trước và xuất bản. Mặc định nút **Xuất bản** tự ghi file, commit và push lên GitHub để website cập nhật. Cần repo ở nhánh `main` sạch và tài khoản GitHub trên máy có quyền ghi repo. Mở launcher không tự xuất bản. Đặt `CMS_GIT_PUSH=0` nếu chỉ muốn xuất file local.
+
+[Hướng dẫn vận hành, dữ liệu form và giới hạn](docs/CONTENT-CMS.md). Đây là script mở CMS local, chưa phải bộ cài ứng dụng `.app`.
 
 ## Mở website
 
@@ -21,16 +29,14 @@ Hoặc chạy `python3 serve.py` trong thư mục này để ánh xạ tiền t�
 
 ## Phạm vi
 
-Đây là bản lưu giao diện tĩnh của website Wix, không phải mã nguồn Wix Editor,
-CMS hoặc backend. Các trang công khai đã liên kết tới (kể cả bài viết lưu trữ)
+Nền website là bản lưu giao diện tĩnh của Wix, kèm CMS Node riêng để sửa trang và tạo nội dung mới; không phải mã nguồn Wix Editor. Các trang công khai đã liên kết tới (kể cả bài viết lưu trữ)
 được chuyển sang local nếu lấy được từ nguồn. Các tab portfolio và các CTA
 liên hệ đã có điều hướng local. Phân trang tin tức mà Wix không xuất nội dung
 riêng được đánh dấu không khả dụng để tránh bấm rồi tải lại cùng trang.
-Form liên hệ/tuyển dụng và tìm kiếm cần backend Wix nên không gửi dữ liệu từ
-bản tĩnh. Một số slider và animation điều khiển bằng runtime Wix cũng có thể
+Form liên hệ dùng kết nối Supabase được cấu hình riêng; tìm kiếm và các tích hợp Wix chưa có backend thay thế đầy đủ. Một số slider và animation điều khiển bằng runtime Wix cũng có thể
 khác bản trực tiếp.
 Video nhúng từ dịch vụ ngoài và các liên kết mạng xã hội vẫn cần Internet.
-Không nhập dữ liệu để kỳ vọng form gửi thành công trên bản tĩnh.
+Chỉ thông báo gửi thành công sau khi dịch vụ nhận dữ liệu xác nhận lưu thành công.
 
 Bản desktop được chụp ở chiều rộng 1440px; đây không phải dự án frontend
 đã được viết lại để chỉnh sửa bằng React hay môi trường Wix gốc.
@@ -41,7 +47,7 @@ Bản desktop được chụp ở chiều rộng 1440px; đây không phải d�
 nên hở bên phải trên màn lớn. Nền đường cong nay dùng ảnh gốc, phủ khung chứa
 và tính lại vị trí cắt theo focal point khi khung thay đổi kích thước.
 Các ảnh xem trước mờ trên trang chủ VI/EN được thay bằng 25 ảnh gốc tương ứng.
-Đây là sửa bản mirror; chưa có trình kéo thả hay backend quản trị.
+Đây là ghi chú sửa bản mirror ngày 24/10; CMS quản trị được bổ sung sau đó như hướng dẫn ở đầu tài liệu.
 
 Công cụ bảo trì yêu cầu Node.js 24+:
 
@@ -69,7 +75,7 @@ Form có ô ẩn chống bot và giãn cách 15 giây mỗi trình duyệt; nế
 
 ## Chỉnh sửa nội dung bằng CMS
 
-`cms/grapesjs` là trình chỉnh sửa chạy trên máy: sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình và thêm khối mới. Nhấn **Xuất bản** sẽ ghi `site-overrides.json` (cùng ảnh đã tải lên và `scripts/cms-runtime.js`); các trang tĩnh tự áp dụng khi tải, HTML gốc không bị sửa. Commit và push các file đó để GitHub Pages cập nhật. Cách chạy, biến môi trường và lưu ý bảo mật: [cms/grapesjs/README.md](cms/grapesjs/README.md#publishing-to-the-clone-site-github-pages).
+`cms/grapesjs` là trình chỉnh sửa chạy trên máy: sửa chữ, ảnh, liên kết, kích thước, màu, vị trí từng khổ màn hình và thêm khối mới. Nhấn **Xuất bản** sẽ ghi `site-overrides.json` (cùng ảnh đã tải lên và `scripts/cms-runtime.js`); các trang tĩnh tự áp dụng khi tải, HTML gốc không bị sửa. Khi chạy bằng `Start-CMS`, nút Xuất bản tự commit/push các file đã xuất từ nhánh `main` sạch; chạy server trực tiếp thì cần bật `CMS_GIT_PUSH=1` hoặc tự commit/push. Cách chạy, biến môi trường và lưu ý bảo mật: [cms/grapesjs/README.md](cms/grapesjs/README.md#publishing-to-the-clone-site-github-pages).
 
 Yêu cầu editor kéo thả tự do và tiêu chí triển khai được ghi trong
 [đề xuất thiết kế editor](docs/editor-design.md); tài liệu này chưa phải tính năng đã triển khai.

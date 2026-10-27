@@ -28,7 +28,7 @@ export function createArchiveProxy({
     }
     if (isPreview) {
       const previewRoute = reqUrl.searchParams.get('pageId') || '/';
-      upstreamUrl.pathname = previewRoute === '/' ? '/' : `${previewRoute}/`;
+      upstreamUrl.pathname = resolveArchiveUrl(previewRoute === '/' ? '/' : `${previewRoute}/`, origin).pathname;
       upstreamUrl.search = '';
     }
     upstreamUrl.searchParams.delete('cms-editor');
@@ -49,6 +49,12 @@ export function createArchiveProxy({
           if (value) headers[name] = value;
         }
         if (upstream.headers['content-length']) headers['content-length'] = upstream.headers['content-length'];
+        if (upstream.headers.location) {
+          const location = new URL(upstream.headers.location, upstreamUrl);
+          if (location.origin === origin.origin) {
+            headers.location = `${location.pathname}${location.search}${location.hash}`;
+          }
+        }
         headers['X-Frame-Options'] = 'SAMEORIGIN';
         if (previewToken) {
           const preview = verifyPreviewToken(previewToken, secret);
@@ -65,7 +71,9 @@ export function createArchiveProxy({
           upstream.on('end', () => {
             let html = Buffer.concat(chunks).toString('utf8');
             if (!html.includes('src="/cms-runtime.js"')) {
-              html = html.replace(/<\/body\s*>/i, '<script defer src="/cms-runtime.js"></script></body>');
+              const base = origin.pathname.replace(/\/$/, '').replace(/["<>]/g, (value) => encodeURIComponent(value));
+              // Run at the end of parsing before the archive's deferred static bootstrap.
+              html = html.replace(/<\/body\s*>/i, `<script src="/cms-runtime.js" data-base="${base}" data-cms-proxy="1"></script></body>`);
             }
             const output = Buffer.from(html);
             headers['content-length'] = String(output.length);
@@ -110,6 +118,10 @@ export function resolveArchiveUrl(requestTarget, archiveOrigin) {
   }
   const origin = new URL(archiveOrigin);
   const upstreamUrl = new URL(requestTarget, origin);
+  const prefix = origin.pathname.replace(/\/$/, '');
+  if (prefix && upstreamUrl.pathname !== prefix && !upstreamUrl.pathname.startsWith(`${prefix}/`)) {
+    upstreamUrl.pathname = `${prefix}${upstreamUrl.pathname}`;
+  }
   if (upstreamUrl.origin !== origin.origin) throw new TypeError('Archive request cannot change origins');
   return upstreamUrl;
 }

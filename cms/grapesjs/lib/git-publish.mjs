@@ -11,9 +11,10 @@ export async function commitAndPush({ repoDir, files, message, push = true, git 
   const options = { cwd: repoDir, timeout: 120_000, maxBuffer: 1024 * 1024 };
   await run(git, ['add', '--', ...files], options);
   const status = await run(git, ['status', '--porcelain', '--', ...files], options);
-  if (!status.stdout.trim()) return { committed: false, pushed: false };
-  await run(git, ['commit', '-m', message, '--', ...files], options);
-  if (!push) return { committed: true, pushed: false };
+  const committed = Boolean(status.stdout.trim());
+  if (committed) await run(git, ['commit', '-m', message, '--', ...files], options);
+  if (!push) return { committed, pushed: false };
+  // Retry pushes even when a previous request committed successfully but lost its connection.
   await run(git, ['push', 'origin', 'HEAD'], options);
-  return { committed: true, pushed: true };
+  return { committed, pushed: true };
 }

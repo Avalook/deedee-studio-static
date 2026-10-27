@@ -37,7 +37,24 @@ const TEXT = {
 export const messagesFor = language => TEXT[language === 'en' ? 'en' : 'vi'];
 
 export function isConfigured(config) {
-  return Boolean(config && SUPABASE_URL.test(String(config.url ?? '')) && typeof config.anonKey === 'string' && config.anonKey.length > 20);
+  return Boolean(config && SUPABASE_URL.test(String(config.url ?? ''))
+    && /^[a-z][a-z0-9_]{0,62}$/.test(config.table || 'form_submissions')
+    && publicFormKey(config));
+}
+
+/** Return a browser-safe publishable key or legacy anonymous JWT. */
+function publicFormKey(config) {
+  const key = config?.publishableKey || config?.anonKey;
+  if (typeof key !== 'string') return '';
+  if (/^sb_publishable_[A-Za-z0-9_-]{20,}$/.test(key)) return key;
+  try {
+    const parts = key.split('.');
+    if (parts.length !== 3) return '';
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    return payload.role === 'anon' ? key : '';
+  } catch {
+    return '';
+  }
 }
 
 const clean = value => String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -94,15 +111,18 @@ export function buildSubmission({ form, fields, language, pathname }) {
 }
 
 export async function submitToSupabase(config, row, fetchImpl = globalThis.fetch) {
+  if (!isConfigured(config)) throw new Error('Invalid public form configuration');
+  const key = publicFormKey(config);
   const response = await fetchImpl(`${config.url}/rest/v1/${config.table || 'form_submissions'}`, {
     method: 'POST',
     headers: {
-      apikey: config.anonKey,
-      Authorization: `Bearer ${config.anonKey}`,
+      apikey: key,
+      ...(key.startsWith('sb_publishable_') ? {} : { Authorization: `Bearer ${key}` }),
       'Content-Type': 'application/json',
       Prefer: 'return=minimal',
     },
     body: JSON.stringify(row),
+    signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error(`Supabase answered ${response.status}`);
 }

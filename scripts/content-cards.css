@@ -1,0 +1,19 @@
+[data-cms-content-flow="true"]{display:flex!important;flex-direction:column!important;height:auto!important;min-height:0;pointer-events:auto!important}
+[data-cms-content-flow="true"]>main{display:contents!important}
+[data-cms-content-flow="true"]>main>section,[data-cms-content-flow="true"]>header,[data-cms-content-flow="true"]>footer{order:var(--cms-flow-order,0)!important;position:relative!important;inset:auto!important;flex:none!important}
+.cms-published-content{box-sizing:border-box!important;position:relative!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:64px max(24px,calc((100% - 1240px)/2))!important;background:#faf7fc;color:#261238;pointer-events:auto!important;font-family:Arial,Helvetica,sans-serif;isolation:isolate}
+.cms-published-content h2{margin:0 0 32px!important;color:#2e1645!important;font-size:clamp(28px,3.5vw,44px)!important;line-height:1.2!important;font-weight:800!important}
+.cms-content-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.cms-content-card{min-width:0;margin:0;background:white;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px #2410390d}
+.cms-content-card>a{display:block;height:100%;color:inherit;text-decoration:none}
+.cms-content-card>a:focus-visible{outline:3px solid #ce0093;outline-offset:-3px}
+.cms-content-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .2s ease}
+.cms-content-card>a:hover img{transform:scale(1.025)}
+.cms-content-card-copy{padding:22px}
+.cms-content-card .cms-content-card-category{margin:0 0 10px;color:#bc008a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.cms-content-card h3{margin:0 0 12px;font-size:21px;line-height:1.35;font-weight:700;overflow-wrap:anywhere}
+.cms-content-card-summary{margin:0 0 18px;color:#64576c;line-height:1.6;font-size:15px}
+.cms-content-card time{font-size:12px;color:#84758d}
+@media(max-width:900px){.cms-content-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.cms-published-content{padding:40px 24px!important}}
+@media(max-width:560px){.cms-content-grid{grid-template-columns:1fr}.cms-published-content{padding:32px 18px!important}.cms-content-card-copy{padding:20px}.cms-content-card h3{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.cms-content-card img{transition:none}}

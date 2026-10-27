@@ -11,6 +11,7 @@
     "repair:shapes": "node scripts/shape-backgrounds.mjs"
   },
   "devDependencies": {
+    "linkedom": "0.18.14",
     "parse5": "8.0.1"
   }
 }

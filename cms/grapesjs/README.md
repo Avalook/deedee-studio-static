@@ -2,7 +2,7 @@
 
 This service adds a local editing backend on top of the captured DeeDee static archive. It keeps the archive's Wix-rendered HTML, CSS, scripts, fonts, and media as the display baseline, then stores and applies validated page overrides. The archive remains available on port 4173; the CMS/editor runs on port 4174.
 
-This is a local MVP, not a hosted production CMS or a full Wix replacement. It has no live database, multi-user session persistence, production authentication, backup policy, or deployment configuration. GitHub Pages cannot run this backend.
+This remains a limited CMS, not a full Wix replacement. A single-instance hosted rollout is now provided in [docs/CMS-ONLINE.md](../../docs/CMS-ONLINE.md) and the repository root render.yaml. It has no managed accounts/MFA, multi-instance concurrency, new-article collections, or automatic external backup policy. GitHub Pages cannot run this backend.
 
 ## Run locally
 
@@ -93,7 +93,7 @@ The Node test suite covers authentication and CSRF, validation/sanitization, imm
 ## Remaining production work
 
 - Replace demo credentials with managed accounts, secure password reset/MFA, persistent sessions, HTTPS-only cookies, and deployment-grade rate limits.
-- Move revisions, uploads, and sessions to a backed-up database/object store with multi-instance concurrency controls and a tested restore process.
+- For broader use, move revisions and uploads to a backed-up database/object store with multi-instance concurrency controls. The hosted rollout currently uses one persistent disk; sessions intentionally expire on restart. Test external backups and restore before business use.
 - To let staff edit from anywhere, host this server (it can stay off the public internet and push to the repository with `CMS_GIT_PUSH=1`). The public clone itself stays on GitHub Pages.
 - Add staff usability/accessibility review, full responsive visual checks, SEO controls, localized route/content support, media rights tracking, upload scanning, monitoring, and a formal security review.
 - The editor can move selected elements within the archived page and preview four preset widths; it is not an unrestricted Wix canvas and does not yet provide reusable CMS collections, animation editing, custom breakpoint rules, page SEO, menus, forms, app integrations, or collaborative editing.

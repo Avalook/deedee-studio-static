@@ -372,6 +372,8 @@
       state.revisionId = current.revisionId;
       state.document = current.document;
       setStatus();
+      // The iframe may report ready before these API requests finish.
+      sendDocument();
     } catch (error) {
       toast(error.message, 'error');
       status.textContent = 'Không tải được bản nháp';

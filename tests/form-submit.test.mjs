@@ -93,8 +93,28 @@ test('insert uses the REST endpoint, the anon key and asks for no row back', asy
   assert.equal(call.url, 'https://abcdefghijkl.supabase.co/rest/v1/form_submissions');
   assert.equal(call.options.method, 'POST');
   assert.equal(call.options.headers.apikey, KEY);
-  assert.equal(call.options.headers.Authorization, `Bearer ${KEY}`);
+  assert.equal(call.options.headers.Authorization, undefined);
   assert.equal(call.options.headers.Prefer, 'return=minimal');
   assert.deepEqual(JSON.parse(call.options.body), { name: 'A' });
   await assert.rejects(submitToSupabase({ url: 'https://abcdefghijkl.supabase.co', anonKey: KEY }, {}, async () => ({ ok: false, status: 401 })), /401/);
+});
+
+
+test('publishable keys use apikey without a fake bearer JWT and reject privileged configuration', async () => {
+  const config = { url: 'https://abcdefghijkl.supabase.co', publishableKey: KEY, table: 'form_submissions' };
+  assert.equal(isConfigured(config), true);
+  let sent;
+  await submitToSupabase(config, { name: 'DeeDee test' }, async (url, options) => { sent = { url, options }; return { ok: true }; });
+  assert.equal(sent.options.headers.apikey, KEY);
+  assert.equal(sent.options.headers.Authorization, undefined);
+  const jwt = role => `e30.${Buffer.from(JSON.stringify({ role })).toString('base64url')}.signature`;
+  assert.equal(isConfigured({ ...config, publishableKey: jwt('service_role') }), false);
+  assert.equal(isConfigured({ ...config, publishableKey: 'sb_secret_' + 'x'.repeat(30) }), false);
+  assert.equal(isConfigured({ ...config, table: '../private' }), false);
+  assert.equal(isConfigured({ ...config, table: 'form_submissions?select=*' }), false);
+  await assert.rejects(submitToSupabase({ ...config, table: '../private' }, {}, async () => { throw new Error('must not fetch'); }), /configuration/i);
+  const legacy = jwt('anon');
+  assert.equal(isConfigured({ url: config.url, anonKey: legacy }), true);
+  await submitToSupabase({ url: config.url, anonKey: legacy }, {}, async (url, options) => { sent = { url, options }; return { ok: true }; });
+  assert.equal(sent.options.headers.Authorization, `Bearer ${legacy}`);
 });
