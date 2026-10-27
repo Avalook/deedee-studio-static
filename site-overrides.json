@@ -1,20 +1,7 @@
 {
   "version": 1,
-  "revisionId": "rev_e5bde1ce-0f74-4abc-b4e4-feb4c3afe0b8",
-  "publishedAt": "2026-10-27T09:50:23.869Z",
-  "publishedBy": "publisher",
-  "pages": {
-    "/privacy-policy": {
-      "schemaVersion": 1,
-      "pageId": "/privacy-policy",
-      "operations": [],
-      "insertions": [
-        {
-          "id": "add_1e787fae-1658-4b2c-813b-e8586b594dbe",
-          "type": "video",
-          "video": "https://avalook.github.io/deedee-studio-media/media/505c4ffe-a740-4f43-9b47-97b6f1f00928.mp4"
-        }
-      ]
-    }
-  }
+  "revisionId": null,
+  "publishedAt": null,
+  "publishedBy": null,
+  "pages": {}
 }
