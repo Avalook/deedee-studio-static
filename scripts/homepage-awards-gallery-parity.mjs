@@ -42,6 +42,8 @@ export const AWARD_GALLERY_START_OFFSET_PX = 75;
 export const AWARD_GALLERY_STEP_PX = 74;
 export const AWARD_GALLERY_MOVE_DURATION_MS = 800;
 export const AWARD_GALLERY_INTERVAL_MS = 2000;
+// The two desktop laurel strips (gold and black rows); live advances them one laurel every 2 s, endlessly.
+export const DESKTOP_AWARDS_GALLERY_IDS = Object.freeze(['pro-gallery-comp-m6xt2xqy', 'pro-gallery-comp-m6xtc7dq']);
 
 export function updateAwardsGalleryGeometry(gallery) {
   const scroller = gallery.querySelector('.gallery-horizontal-scroll');
@@ -51,7 +53,7 @@ export function updateAwardsGalleryGeometry(gallery) {
   const viewport = gallery.ownerDocument?.defaultView?.innerWidth;
   const itemWidth = awardGalleryItemWidth(scrollerWidth, viewport);
   const step = awardGalleryStep(itemWidth, viewport);
-  const items = [...gallery.querySelectorAll('[data-hook="item-container"]')];
+  const items = [...gallery.querySelectorAll('[data-hook="item-container"]')].filter(item => item.closest('[data-deedee-awards-copy]')?.dataset?.deedeeAwardsCopy !== 'true');
   const inner = scroller.querySelector?.('.gallery-horizontal-scroll-inner');
   const contentWidth = items.length * step + (isAwardPhoneViewport(viewport) ? AWARD_PHONE_TAIL_PX : 88);
 
@@ -232,6 +234,76 @@ function installAwardsCarousel(gallery, win) {
   return true;
 }
 
+/** Desktop award strips move like live: one laurel (one group) every 2 s, and loop forever.
+    A decorative copy of the strip sits after the original so jumping back by one cycle is invisible. */
+export function installSteppingAwardsGallery(gallery, win) {
+  const scroller = gallery.querySelector('.gallery-horizontal-scroll');
+  const inner = scroller?.querySelector?.('.gallery-horizontal-scroll-inner');
+  if (!inner || !win?.setTimeout || scroller.dataset.deedeeSteppingAwards) return false;
+  scroller.dataset.deedeeSteppingAwards = 'true';
+  const copy = inner.cloneNode(true);
+  copy.setAttribute('aria-hidden', 'true');
+  copy.setAttribute('data-deedee-awards-copy', 'true');
+  copy.setAttribute('inert', '');
+  for (const node of [copy, ...copy.querySelectorAll('[id]')]) node.removeAttribute('id');
+  for (const node of copy.querySelectorAll('a,button,input,select,textarea,[tabindex]')) node.setAttribute('tabindex', '-1');
+  Object.assign(copy.style, { position: 'absolute', top: '0px' });
+  scroller.style.position = 'relative';
+  scroller.style.scrollBehavior = 'auto';
+  scroller.style.scrollSnapType = 'none';
+  scroller.append(copy);
+  const motion = win.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const paused = new Set(motion?.matches ? ['motion'] : []);
+  const pointers = new Set();
+  let timer = null;
+  let cycle = 0;
+  let step = 0;
+  const measure = () => {
+    const groups = Array.from(inner.children);
+    cycle = Math.max(0, ...groups.map(group =>
+      (parseFloat(group.style.getPropertyValue('--group-left')) || 0)
+      + (parseFloat(group.style.getPropertyValue('--group-width')) || 0)));
+    step = parseFloat(groups[0]?.style.getPropertyValue('--group-width')) || 0;
+    copy.style.left = `${cycle}px`;
+    copy.style.width = `${cycle}px`;
+    if (cycle > 0 && scroller.scrollLeft >= cycle) scroller.scrollLeft %= cycle;
+  };
+  const visible = () => {
+    const rect = scroller.getBoundingClientRect();
+    return scroller.clientWidth > 0 && rect.bottom > 0 && rect.top < win.innerHeight;
+  };
+  const canMove = () => !paused.size && cycle > 0 && step > 0 && visible();
+  const advance = () => {
+    timer = null;
+    if (!canMove()) return;
+    let next = scroller.scrollLeft + step;
+    if (next >= cycle) { scroller.scrollLeft -= cycle; next -= cycle; }
+    scroller.scrollLeft = next;
+    schedule();
+  };
+  function schedule() {
+    win.clearTimeout(timer);
+    timer = canMove() ? win.setTimeout(advance, AWARD_GALLERY_INTERVAL_MS) : null;
+  }
+  const pause = reason => { paused.add(reason); win.clearTimeout(timer); timer = null; };
+  const resume = reason => { paused.delete(reason); if (timer === null) schedule(); };
+  scroller.addEventListener('pointerenter', () => pause('hover'));
+  scroller.addEventListener('pointerleave', () => resume('hover'));
+  scroller.addEventListener('focusin', () => pause('focus'));
+  scroller.addEventListener('focusout', () => resume('focus'));
+  scroller.addEventListener('pointerdown', event => { pointers.add(event.pointerId); pause('drag'); });
+  const end = event => { pointers.delete(event.pointerId); if (!pointers.size) resume('drag'); };
+  win.addEventListener('pointerup', end);
+  win.addEventListener('pointercancel', end);
+  win.addEventListener('blur', () => { pointers.clear(); resume('drag'); });
+  motion?.addEventListener?.('change', event => event.matches ? pause('motion') : resume('motion'));
+  win.addEventListener('scroll', () => visible() ? resume('offscreen') : pause('offscreen'), { passive: true });
+  win.addEventListener('resize', () => { measure(); visible() ? resume('offscreen') : pause('offscreen'); }, { passive: true });
+  measure();
+  schedule();
+  return true;
+}
+
 export function installHomepageAwardsGallery(root = document) {
   let installed = 0;
   const win = root.defaultView
@@ -247,6 +319,10 @@ export function installHomepageAwardsGallery(root = document) {
     installed += 1;
   }
 
+  for (const id of DESKTOP_AWARDS_GALLERY_IDS) {
+    const gallery = root.getElementById(id);
+    if (gallery && installSteppingAwardsGallery(gallery, win)) installed += 1;
+  }
   return installed;
 }
 

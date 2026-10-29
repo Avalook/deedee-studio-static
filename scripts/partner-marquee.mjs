@@ -183,7 +183,7 @@ function applyPartnerItem(item, scale, rowHeight, groupLeft = NaN) {
   container.style.right = 'auto';
   container.style.bottom = 'auto';
   container.style.left = px(left);
-  container.style.margin = '15px';
+  container.style.margin = '0 15px';
   container.style.width = px(width);
   container.style.height = px(height);
 

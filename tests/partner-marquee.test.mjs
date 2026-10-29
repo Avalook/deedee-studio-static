@@ -266,6 +266,27 @@ test('resize fallback recomputes visibility after responsive layout', () => {
   assert.equal(harness.pendingFrameCount(), 0);
 });
 
+test('responsive layout counts the logo margin when keeping it inside the clipped strip', () => {
+  const harness = createMarqueeHarness(false);
+  const { state } = harness;
+  const style = () => ({ values: {}, setProperty(name, value) { this.values[name] = value; }, getPropertyValue(name) { return this.values[name] || ''; } });
+  const group = { style: style(), setAttribute() {}, removeAttribute() {}, dataset: {}, querySelectorAll: () => [], cloneNode() { return { ...this, style: style(), dataset: {} }; } };
+  const container = { style: style() };
+  state.containers = []; state.groupStyles = [];
+  state.groups = [{ group, left: 0, width: 329, items: [{ left: 0, width: 299, height: 80, elements: { container } }] }];
+  state.parent = { style: {} }; state.outer = { style: {} }; state.widget = { style: {} };
+  state.track = { style: {}, querySelectorAll: () => [], append() {} };
+  state.gallery.style = {};
+  startAnimation(state);
+  for (const width of [390, 1024, 1440, 1840]) {
+    state.win.innerWidth = width; harness.dispatchWindowEvent('resize');
+    const verticalMargin = Number.parseFloat(container.style.margin);
+    const paintedBottom = Number.parseFloat(container.style.top) + verticalMargin + Number.parseFloat(container.style.height);
+    assert.ok(paintedBottom <= Number.parseFloat(state.gallery.style.height), `${width}px logo overflows the clipped gallery`);
+    assert.equal(container.style.margin, '0 15px');
+  }
+});
+
 function createMarqueeHarness(initiallyReducedMotion) {
   let onPreferenceChange;
   let nextFrameId = 0;

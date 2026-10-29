@@ -24,7 +24,9 @@ function menuPortalFor(button, doc) {
 }
 
 function populateMenuOverlay(overlay, doc) {
-  if (overlay.querySelector('nav.wixui-horizontal-menu')) return true;
+  // The static copy lacks Wix's runtime rule that re-enables taps under pointer-events:none containers.
+  overlay.querySelectorAll('nav[data-deedee-mobile-menu]').forEach(nav => { nav.style.pointerEvents = 'auto'; });
+  if (overlay.querySelector('nav.wixui-horizontal-menu, nav[data-deedee-mobile-menu]')) return true;
 
   const template = [...doc.querySelectorAll('nav.wixui-horizontal-menu')]
     .find(nav => !nav.closest('[data-hook="hamburger-overlay-root"]') && nav.querySelector('a[href]'));
@@ -37,6 +39,7 @@ function populateMenuOverlay(overlay, doc) {
   const menu = template.cloneNode(true);
   menu.style.setProperty('width', '100%', 'important');
   menu.style.setProperty('max-width', '100%', 'important');
+  menu.style.pointerEvents = 'auto';
   wrapper.append(menu);
   const closeButton = content.querySelector('[data-semantic-classname="hamburger-close-button"]');
   content.insertBefore(wrapper, closeButton || content.firstElementChild);
@@ -97,6 +100,12 @@ export function installMobileNavigation(root = document) {
     const closeTarget = target.closest('[data-hook="hamburger-overlay-dialog"], [aria-label="Close"]');
     const overlay = closeTarget?.closest('[data-hook="hamburger-overlay-root"]');
     if (overlay?.getAttribute('data-visible') === 'true') {
+      const clickedLink = target.closest('a[href]');
+      if (clickedLink) {
+        // Allow the link navigation to proceed — just close the menu
+        setMenuState(overlay, doc, false, null, false);
+        return;
+      }
       event.preventDefault();
       event.stopImmediatePropagation();
       setMenuState(overlay, doc, false);

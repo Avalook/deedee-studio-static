@@ -49,6 +49,20 @@ test('mobile menu clones navigation once, locks scrolling and restores focus on 
   assert.equal(installMobileNavigation({}), false);
 });
 
+test('mobile menu keeps the static menu tappable and lets its links navigate', () => {
+  const f = dom(`<nav class="wixui-horizontal-menu"><a href="/aboutus">About</a></nav>
+    <div id="menu-owner" data-semantic-classname="hamburger-open-button"><button aria-label="Menu" aria-haspopup="dialog">Menu</button></div>
+    <div id="portal-menu-owner"><div data-hook="hamburger-overlay-root" data-visible="false" tabindex="-1"><div data-hook="hamburger-overlay-dialog"><div data-testid="responsive-container-content"><nav data-deedee-mobile-menu><a href="/our-work/">Dự án</a></nav></div></div></div></div>`);
+  const overlay = f.document.querySelector('[data-hook="hamburger-overlay-root"]');
+  overlay.focus = () => {};
+  installMobileNavigation(f.document);
+  f.event('click', f.document.querySelector('[aria-label="Menu"]'));
+  assert.equal(overlay.querySelectorAll('nav').length, 1);
+  assert.equal(overlay.querySelector('nav').style.pointerEvents, 'auto');
+  assert.equal(f.event('click', overlay.querySelector('a')), false);
+  assert.equal(overlay.getAttribute('data-visible'), 'false');
+});
+
 test('mobile menu tolerates missing overlays without intercepting native clicks', () => {
   const f = dom('<button aria-label="Menu" aria-haspopup="dialog">Menu</button>');
   installMobileNavigation(f.document);
