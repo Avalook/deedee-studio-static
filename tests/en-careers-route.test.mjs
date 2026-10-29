@@ -70,7 +70,7 @@ test('/en/careers renders all ten source cards with their own post links and thu
   for (const card of SOURCE_CARDS) {
     assert.ok(titles.includes(card.title), `${card.title} keeps the source title`);
     assert.ok(html.includes(`href="${BASE}/en/post/${card.slug}/"`), `${card.title} links to its English post route`);
-    assert.ok(html.includes(`src="${card.image}"`), `${card.title} uses a locally archived thumbnail`);
+    assert.ok(/src="\/deedee-studio-static\/assets\/[^"?]+\.(?:webp|avif|jpe?g|png)"/.test(html.slice(html.indexOf(`/en/post/${card.slug}/`) - 6000, html.indexOf(`/en/post/${card.slug}/`))), `${card.title} uses a locally archived thumbnail`);
   }
 });
 
@@ -80,20 +80,25 @@ test('/en/careers keeps the source header behaviour and internalizes every link'
   assert.ok(!/href="https?:\/\/www\.deedeestudio\.net/.test(html), 'no site link points back to the Wix origin');
 });
 
-test('/en/careers uses Wix card columns and spacing at desktop, tablet, and phone sizes', async () => {
+test('/en/careers uses the same responsive card grid as /careers (the Wix page is the same gallery)', async () => {
   const html = await loadPage();
-  const css = await readFile(path.join(ROOT, 'assets', 'project-gallery-parity.css'), 'utf8');
+  const css = await readFile(path.join(ROOT, 'assets', 'careers-gallery-responsive.css'), 'utf8');
 
-  assert.match(html, /data-deedee-careers-gallery/);
-  assert.match(html, /project-gallery-parity\.css/);
-  assert.match(css, /data-deedee-careers-gallery/);
-  assert.match(css, /grid-template-columns:\s*repeat\(5,/);
-  assert.match(css, /grid-template-columns:\s*repeat\(3,/);
-  assert.match(css, /grid-template-columns:\s*minmax\(0,\s*1fr\)/);
-  assert.match(css, /gap:\s*32px/);
-  assert.match(css, /height:\s*calc\(350px \+ \(15vw - 19\.2px\)\)/);
-  assert.match(css, /height:\s*calc\(350px \+ 25vw - 16px\)/);
-  assert.match(css, /height:\s*calc\(350px \+ 75vw\)/);
+  assert.match(html, /data-deedee-careers-gallery[^>]*careers-gallery-responsive\.css\?v=6/);
+  assert.ok(!/project-gallery-parity\.css/.test(html), 'the project gallery stylesheet no longer applies to this page');
+  assert.match(html, /id="pro-gallery-comp-m8cy9ggi"/, 'the stylesheet targets this gallery component');
+  assert.match(css, /#pro-gallery-comp-m8cy9ggi/);
+  assert.match(css, /repeat\(2, minmax\(0, 1fr\)\)/, 'two columns on phones, as the live page shows');
+  assert.match(css, /repeat\(5, minmax\(0, 1fr\)\)/);
+});
+
+test('/en/careers shows the same sharp thumbnails as /en/news for the posts they share', async () => {
+  const { cardImages } = await import('../scripts/careers-card-images.mjs');
+  const careers = cardImages(await loadPage());
+  const news = cardImages(await readFile(path.join(ROOT, 'en', 'news', 'index.html'), 'utf8'));
+  let shared = 0;
+  for (const [slug, src] of careers) if (news.has(slug)) { shared += 1; assert.equal(src, news.get(slug), `${slug} uses the news thumbnail`); }
+  assert.ok(shared >= 8, 'most careers cards also appear on the news page');
 });
 
 test('/en/careers fetches nothing from Wix at runtime', async () => {
@@ -105,7 +110,7 @@ test('/en/careers fetches nothing from Wix at runtime', async () => {
   const assetRefs = [...new Set(html.match(/\/deedee-studio-static\/assets\/[^"')\s]+/g) ?? [])];
   assert.ok(assetRefs.length > 40, 'the page references its archived assets');
   for (const reference of assetRefs) {
-    assert.ok(existsSync(path.join(ROOT, reference.slice(BASE.length))), `${reference} exists on disk`);
+    assert.ok(existsSync(path.join(ROOT, reference.slice(BASE.length).split('?')[0])), `${reference} exists on disk`);
   }
 });
 
