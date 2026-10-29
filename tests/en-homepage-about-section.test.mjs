@@ -24,7 +24,7 @@ test('English homepage preserves the Wix-sized About Us section and uses the rep
   assert.match(parityCss, /#pro-gallery-comp-m8e63qxx/);
   assert.match(parityCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(parityCss, /row-gap:\s*20px\s*!important/);
-  assert.match(parityCss, /width:\s*calc\(100vw\s*-\s*33\.25px\)\s*!important/);
+  assert.match(parityCss, /width:\s*calc\(100vw\s*-\s*36px\)\s*!important/);
   assert.match(parityCss, /aspect-ratio:\s*16\s*\/\s*9/);
   assert.match(parityCss, /height:\s*112px\s*!important/);
   assert.match(parityCss, /opacity:\s*1\s*!important/);

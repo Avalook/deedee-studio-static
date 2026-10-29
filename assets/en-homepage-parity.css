@@ -3,7 +3,7 @@
    16:9 media, 112px text panels, and 20px between cards at 390px viewport. */
 @media screen and (max-width: 750px) {
   #comp-m7st7as9 {
-    margin-top: 6.8px !important;
+    margin-top: -1.2px !important;
     padding-bottom: 2.265625px !important;
   }
 
@@ -11,7 +11,7 @@
     height: auto !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    width: calc(100vw - 33.25px) !important;
+    width: calc(100vw - 36px) !important;
   }
 
   #comp-m7st7as9 #pro-gallery-comp-m8e63qxx,
@@ -48,7 +48,7 @@
     box-shadow: 0 8px 0 0 rgb(161, 57, 224) !important;
     display: flex !important;
     flex-direction: column !important;
-    height: calc(56.25vw + 92.875px) !important;
+    height: calc(56.25vw + 91.75px) !important;
     inset: auto !important;
     left: auto !important;
     margin: 0 !important;
@@ -65,7 +65,7 @@
     aspect-ratio: 16 / 9 !important;
     box-sizing: border-box !important;
     flex: 0 0 auto !important;
-    height: calc(56.25vw - 19.125px) !important;
+    height: calc(56.25vw - 20.25px) !important;
     margin: 0 !important;
     overflow: hidden !important;
     width: calc(100% - 0.75px) !important;

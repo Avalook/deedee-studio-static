@@ -1,0 +1,95 @@
+/* On a real phone (touch screen, up to 600px) the live career page stacks the three activity cards one under the
+   other: 387px wide, 308px tall, 20px apart. The shared project-gallery stylesheet keeps the two-card strip that a
+   narrow desktop window shows, so this only applies to touch phones. */
+@media screen and (max-width: 600px) and (hover: none) and (pointer: coarse) {
+  #comp-m8hitxkn {
+    height: auto !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn,
+  #comp-m8hitxkn #pro-gallery-container-comp-m8hitxkn,
+  #comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn,
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn .pro-gallery,
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn .pro-gallery-parent-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn [data-hook="item-container"],
+  #comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn [data-hook="item-container"][data-idx="0"],
+  #comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn [data-hook="item-container"][data-idx="1"] {
+    display: block !important;
+    opacity: 1 !important;
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    height: calc(56.25vw + 72px) !important;
+    margin: 0 !important;
+    border-width: 0 !important;
+    flex: none;
+  }
+
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn [data-hook="item-container"] .gallery-item-wrapper,
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn [data-hook="item-container"] .gallery-item-content {
+    width: 100% !important;
+    height: calc(56.25vw - 18px) !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn [data-hook="item-container"] .gallery-item-visible {
+    width: 100% !important;
+    height: calc(56.25vw - 18px) !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn .gallery-item-common-info-outer,
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn .gallery-item-common-info {
+    width: calc(100% - 2px) !important;
+    height: 90px !important;
+  }
+
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn .gallery-item-common-info-outer {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 1px !important;
+  }
+
+  /* The section and its grid rows have to grow with the three stacked cards (963px) like on live. */
+  #SITE_CONTAINER #comp-m7t6d1e6,
+  #SITE_CONTAINER .comp-m7t6d1e6-container {
+    height: calc(168.75vw + 438.6px) !important;
+    min-height: calc(168.75vw + 438.6px) !important;
+  }
+
+  #SITE_CONTAINER #comp-m7t6d1eo,
+  #SITE_CONTAINER #comp-m8hitxkn {
+    height: calc(168.75vw + 256px) !important;
+    min-height: calc(168.75vw + 256px) !important;
+  }
+
+  /* Card titles are 16px on live (the shared stylesheet leaves them at 20px). */
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn [data-hook="post-title"],
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn [data-hook="post-list-item__title"] {
+    font-size: 16px !important;
+  }
+
+  /* Wix adds a 10px bottom margin per card; live has none (the pitch is the 20px gap alone). */
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn [data-hook="item-container"] {
+    margin: 0 !important;
+  }
+
+  /* The card inside keeps a 10px bottom margin; pin the wrapper to the card height so the pitch is card + 20px gap. */
+  #comp-m8hitxkn #pro-gallery-comp-m8hitxkn #pro-gallery-margin-container-comp-m8hitxkn .item-link-wrapper {
+    height: calc(56.25vw + 72px) !important;
+    flex: none !important;
+  }
+}

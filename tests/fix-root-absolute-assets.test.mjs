@@ -23,3 +23,30 @@ test('careers card thumbnails are swapped for the news ones, only for posts the 
   assert.equal(useSharpImages(html, news).changed, 0);
   assert.equal(useSharpImages(careers, news, () => false).changed, 0, 'a missing file is never linked');
 });
+
+import { cards, retarget } from '../scripts/en-carrers-latest-posts.mjs';
+
+test('the three /en/carrers cards are retargeted to the newest posts (title, link, image) and stay stable', () => {
+  const item = (slug, title, img) => `<div data-hook="item-container"><a href="/deedee-studio-static/en/post/${slug}/"><img alt="${title}" src="${img}"></a><img alt="${title}" src="${img}2"><p>${title}</p></div>`;
+  const page = `<div id="pro-gallery-comp-x">${item('old-a', 'Old A', '/a.jpg')}${item('old-b', 'Old &amp; B', '/b.jpg')}${item('old-c', 'Old C', '/c.jpg')}</div>`;
+  const wanted = [{ slug: 'new-1', title: 'New 1', images: ['/n1.jpg'] }, { slug: 'new-2', title: 'New &amp; 2', images: ['/n2.jpg'] }, { slug: 'new-3', title: 'New 3', images: ['/n3.jpg'] }];
+  const { html, changed } = retarget(page, 'comp-x', wanted);
+  assert.equal(changed, 3);
+  assert.deepEqual(cards(html, 'comp-x').map((c) => [c.slug, c.title, c.images.at(-1)]), [['new-1', 'New 1', '/n1.jpg'], ['new-2', 'New &amp; 2', '/n2.jpg'], ['new-3', 'New 3', '/n3.jpg']]);
+  assert.ok(!/old-|Old /.test(html), 'nothing of the old posts is left');
+  assert.equal(retarget(html, 'comp-x', wanted).changed, 0, 'running it again changes nothing');
+});
+
+import { phoneFontRules, phoneCss, link } from '../scripts/add-post-phone-fonts.mjs';
+
+test('phone heading sizes are derived from the page variables and the link is added once', () => {
+  const html = '<style>.TPAMultiSection_l9pap7zt{--textH1Font: normal normal bold 30px/37px wfont_a,wf_b,orig_c; --textH2Font: normal normal bold 22px/27px wfont_d; --textH3Font: normal normal bold 18px/22px wfont_d; --textH5Font: normal normal bold 18px/22px wfont_d; --textH6Font: normal normal bold 18px/22px wfont_d; --textQuoteFont: italic normal normal 18px/22px wfont_d;}</style></head><body class="TPAMultiSection_l9pap7zt">';
+  const lines = phoneFontRules(html);
+  assert.equal(lines.length, 18);
+  assert.match(lines[0], /--textH1Font: normal normal bold 26px\/37px wfont_a,wf_b,orig_c;/);
+  assert.ok(lines.includes('    --textH3Font-size: 20px;') && lines.includes('    --textH3Font-line-height: 22px;'));
+  assert.match(lines.at(-3), /--textQuoteFont: italic normal normal 20px\/22px wfont_d;/);
+  assert.match(phoneCss(lines), /hover: none\) and \(pointer: coarse\)/);
+  const once = link(html); assert.equal(once.changed, true); assert.equal(link(once.html).changed, false);
+  assert.equal(link('<head></head><body>no article</body>').changed, false);
+});

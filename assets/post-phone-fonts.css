@@ -1,0 +1,23 @@
+/* Heading sizes the live article pages use on a phone (touch screen, up to 600px). */
+@media screen and (max-width: 600px) and (hover: none) and (pointer: coarse) {
+  body .TPAMultiSection_l9pap7zt {
+    --textH1Font: normal normal bold 26px/37px wfont_398383_cb3199b612bf41a7b1c359df757e316b,wf_cb3199b612bf41a7b1c359df7,orig_dfvn_neulis_bold;
+    --textH1Font-size: 26px;
+    --textH1Font-line-height: 37px;
+    --textH2Font: normal normal bold 24px/27px wfont_484b05_6dcb822d3070487a9e35098579a03b1f,wf_6dcb822d3070487a9e3509857,orig_dfvn_graphit_regular;
+    --textH2Font-size: 24px;
+    --textH2Font-line-height: 27px;
+    --textH3Font: normal normal bold 20px/22px wfont_484b05_6dcb822d3070487a9e35098579a03b1f,wf_6dcb822d3070487a9e3509857,orig_dfvn_graphit_regular;
+    --textH3Font-size: 20px;
+    --textH3Font-line-height: 22px;
+    --textH5Font: normal normal bold 16px/22px wfont_484b05_6dcb822d3070487a9e35098579a03b1f,wf_6dcb822d3070487a9e3509857,orig_dfvn_graphit_regular;
+    --textH5Font-size: 16px;
+    --textH5Font-line-height: 22px;
+    --textH6Font: normal normal bold 14px/22px wfont_484b05_6dcb822d3070487a9e35098579a03b1f,wf_6dcb822d3070487a9e3509857,orig_dfvn_graphit_regular;
+    --textH6Font-size: 14px;
+    --textH6Font-line-height: 22px;
+    --textQuoteFont: italic normal normal 20px/22px wfont_484b05_6dcb822d3070487a9e35098579a03b1f,wf_6dcb822d3070487a9e3509857,orig_dfvn_graphit_regular;
+    --textQuoteFont-size: 20px;
+    --textQuoteFont-line-height: 22px;
+  }
+}
