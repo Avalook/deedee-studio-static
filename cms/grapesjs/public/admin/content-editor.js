@@ -156,7 +156,7 @@ function escapeAttribute(value) {
 async function upload(kind, files) {
   if (!files.length) return;
   for (const file of files) {
-    if (file.size > 2 * 1024 * 1024) throw new Error(`Ảnh “${file.name}” vượt quá 2 MB.`);
+    if (file.size > 5 * 1024 * 1024) throw new Error(`Ảnh “${file.name}” vượt quá 5 MB.`);
     if (!['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(file.type)) throw new Error('Chỉ hỗ trợ PNG, JPG, WebP hoặc GIF.');
   }
   const uploaded = [];
