@@ -249,10 +249,13 @@ export async function loadProjectData(fetchImpl = fetch, url = '/deedee-studio-s
   return validateProjectData(await response.json());
 }
 export function toggleTestimonial(button) {
-  const text = button?.closest?.('[data-testid="repeater-item"], [role="listitem"]')?.querySelector?.('.iwXk2R');
+  // Expanding drops the clamp class, so the expanded text is found again by its marker.
+  const text = button?.closest?.('[data-testid="repeater-item"], [role="listitem"]')
+    ?.querySelector?.('.iwXk2R, [data-deedee-testimonial-expanded]');
   if (!text) return false;
   const expanded = button.getAttribute('aria-expanded') === 'true';
   text.classList.toggle('iwXk2R', expanded);
+  text.toggleAttribute('data-deedee-testimonial-expanded', !expanded);
   button.setAttribute('aria-expanded', String(!expanded));
   button.textContent = expanded ? 'Show More' : 'Show Less';
   return true;

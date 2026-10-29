@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import { parseHTML } from 'linkedom';
 import {
   contactHref,
   formDropdownOptions,
@@ -57,17 +58,18 @@ test('pagination follows the source six/nine-card batches without mutating data'
 });
 
 test('testimonial expansion preserves text and restores the source clamp', () => {
-  const classes = new Set(['iwXk2R']);
-  const text = { classList: { toggle(name, enable) { if (enable) classes.add(name); else classes.delete(name); } } };
-  const attrs = { 'aria-expanded': 'false' };
-  const button = { textContent: 'Show More', dataset: {}, getAttribute: name => attrs[name], setAttribute: (name, value) => { attrs[name] = value; }, closest: () => ({ querySelector: () => text }) };
+  const { document } = parseHTML('<div role="listitem"><p class="iwXk2R">Long quote</p><button aria-expanded="false">Show More</button></div>');
+  const text = document.querySelector('p');
+  const button = document.querySelector('button');
   assert.equal(toggleTestimonial(button), true);
-  assert.equal(attrs['aria-expanded'], 'true');
+  assert.equal(button.getAttribute('aria-expanded'), 'true');
   assert.equal(button.textContent, 'Show Less');
-  assert.ok(!classes.has('iwXk2R'));
-  toggleTestimonial(button);
+  assert.ok(!text.classList.contains('iwXk2R'));
+  assert.equal(toggleTestimonial(button), true, 'Show Less still finds the expanded text');
   assert.equal(button.textContent, 'Show More');
-  assert.ok(classes.has('iwXk2R'));
+  assert.ok(text.classList.contains('iwXk2R'));
+  assert.equal(toggleTestimonial(button), true, 'and it can be expanded again');
+  assert.equal(button.textContent, 'Show Less');
   assert.equal(toggleTestimonial({ closest: () => null }), false);
 });
 
@@ -109,7 +111,7 @@ test('runtime corrects CTA links and delegates native testimonial clicks', async
   installSiteControls(root, '/deedee-studio-static/en/our-work');
   assert.equal(attrs.href, '/deedee-studio-static/en/contact-us/');
   let prevented = false;
-  const button = { dataset: {}, textContent: 'Show More', getAttribute: () => 'false', setAttribute() {}, closest: () => ({ querySelector: () => ({ classList: { toggle() {} } }) }) };
+  const button = { dataset: {}, textContent: 'Show More', getAttribute: () => 'false', setAttribute() {}, closest: () => ({ querySelector: () => ({ classList: { toggle() {} }, toggleAttribute() {} }) }) };
   await click({ target: { closest: selector => selector.includes('ellipsis') ? button : null }, preventDefault: () => { prevented = true; } });
   assert.equal(button.textContent, 'Show Less');
   assert.ok(prevented);
