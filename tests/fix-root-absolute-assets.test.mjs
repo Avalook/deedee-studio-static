@@ -37,6 +37,17 @@ test('the three /en/carrers cards are retargeted to the newest posts (title, lin
   assert.equal(retarget(html, 'comp-x', wanted).changed, 0, 'running it again changes nothing');
 });
 
+test('retargeting the last card leaves the images and text after the gallery alone', () => {
+  const item = (slug, img) => `<div data-hook="item-container"><a href="/en/post/${slug}/"><img alt="${slug}" src="${img}"></a></div>`;
+  const after = '<section><img alt="bg" src="/bg.jpg"><img alt="logo" src="/logo.png"><a href="/en/post/old-c/">old-c</a></section>';
+  const page = `<div id="pro-gallery-comp-x">${item('old-c', '/c.jpg')}<div data-key="items-styles"></div></div>${after}`;
+  const { html, changed } = retarget(page, 'comp-x', [{ slug: 'new-1', title: 'new-1', images: ['/n1.jpg'] }]);
+  assert.equal(changed, 1);
+  assert.ok(html.endsWith(`<div data-key="items-styles"></div></div>${after}`), 'everything after the item list is untouched');
+  assert.deepEqual(cards(html, 'comp-x').map((c) => [c.slug, c.images]), [['new-1', ['/n1.jpg']]]);
+  assert.equal(retarget(html, 'comp-x', [{ slug: 'new-1', title: 'new-1', images: ['/n2.jpg'] }]).changed, 1, 'a new thumbnail alone is applied');
+});
+
 import { phoneFontRules, phoneCss, link } from '../scripts/add-post-phone-fonts.mjs';
 
 test('phone heading sizes are derived from the page variables and the link is added once', () => {
