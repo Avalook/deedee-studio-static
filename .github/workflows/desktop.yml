@@ -19,6 +19,13 @@ jobs:
         working-directory: cms/desktop
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Three page folders have ':' in their name, which Windows cannot create.
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/*
+            !*:*
       - uses: actions/setup-node@v4
         with:
           node-version: '24'

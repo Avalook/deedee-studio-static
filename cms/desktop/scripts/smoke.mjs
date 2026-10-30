@@ -19,6 +19,7 @@ const root = await mkdtemp(path.join(os.tmpdir(), 'deedee-smoke-'));
 const remote = path.join(root, 'remote.git');
 const git = (args, cwd = root) => execFileSync('git', args, { cwd, stdio: 'pipe' });
 git(['init', '--bare', '--initial-branch=main', remote]);
+git(['config', 'receive.shallowUpdate', 'true'], remote);
 git(['push', remote, 'HEAD:refs/heads/main'], repository);
 git(['config', 'uploadpack.allowFilter', 'true'], remote);
 const result = path.join(root, 'result.json');

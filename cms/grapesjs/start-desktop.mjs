@@ -10,7 +10,8 @@ const SITE = 'https://avalook.github.io/deedee-studio-static';
 const REPOSITORY = 'https://github.com/Avalook/deedee-studio-static.git';
 export const EXIT_NO_ACCESS = 3;
 // Every page, so SEO edits can be written into them, without the media archive the pages only link to.
-const CHECKOUT = ['/*', '!/assets/*', '/assets/cms/', '!/cms/', '!/docs/', '!/tests/', '!/tools/'];
+// Three project pages have a ':' in their folder name, which Windows cannot create; edits to them still apply through the overrides.
+const CHECKOUT = ['/*', '!/assets/*', '/assets/cms/', '!/cms/', '!/docs/', '!/tests/', '!/tools/', '!*:*'];
 
 const env = process.env;
 const repoDir = env.CMS_EXPORT_DIR;

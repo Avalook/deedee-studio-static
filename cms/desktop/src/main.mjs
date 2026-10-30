@@ -94,16 +94,20 @@ function openEditor() {
   return window.loadURL(`${origin}/admin`);
 }
 
+// GitHub answers a wrong or expired code with 401 even for public data, so the checkout fails before the write check.
+const codeRejected = (token) => fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${token}` } })
+  .then((response) => response.status === 401, () => false);
+
 async function launch() {
   status('Đang cập nhật dữ liệu website. Lần đầu có thể mất vài phút…');
   const started = await startServer();
   if (started.exited) {
     server = null;
     if (smoke) app.exit(1);
-    if (started.code === EXIT_NO_ACCESS) {
+    if (started.code === EXIT_NO_ACCESS || await codeRejected(values.token)) {
       await secrets.clear();
       values = null;
-      status('Kích hoạt DeeDee CMS', { needsCode: true, error: 'Mã này không có quyền xuất bản lên website. Hãy kiểm tra lại mã.' });
+      status('Kích hoạt DeeDee CMS', { needsCode: true, error: 'Mã này sai, đã hết hạn hoặc không có quyền xuất bản lên website.' });
       return;
     }
     status('Chưa mở được CMS', { error: 'Hãy kiểm tra kết nối Internet rồi mở lại ứng dụng.' });
