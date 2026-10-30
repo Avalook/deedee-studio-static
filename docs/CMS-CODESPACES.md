@@ -1,5 +1,7 @@
 # Dùng CMS qua GitHub Codespaces (miễn phí, không cần server riêng)
 
+> Không còn dùng để bàn giao từ 31/10/2026. Khách dùng ứng dụng, xem `CMS-APP.md`. Tài liệu này giữ lại cho người phát triển.
+
 CMS là một server Node nên GitHub Pages không chạy được. Codespaces chạy nó ngay trong repo này; nút **Xuất bản** commit thẳng vào `main` bằng quyền GitHub của chính người đang dùng, nên **không cần token hay Render**.
 
 ## Điều kiện

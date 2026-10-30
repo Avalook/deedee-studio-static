@@ -1,5 +1,9 @@
 # Bàn giao website DeeDee Studio (bản clone)
 
+## Cập nhật 31/10/2026: CMS chuyển sang ứng dụng
+
+CMS giờ là ứng dụng cho Mac và Windows, xem `docs/CMS-APP.md`. Đây là cách dùng duy nhất khi bàn giao; các mục Codespaces, Render và `Start-CMS` bên dưới là cách cũ, không dùng cho khách. Những mục bên dưới có số liệu cũ, số mới nhất nằm trong báo cáo bàn giao ngày 31/10.
+
 Cập nhật 26/10/2026 · commit `f6682c68`
 
 ## Sửa footer và xoá thành phần CMS (27/10/2026)
