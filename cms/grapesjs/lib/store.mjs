@@ -317,6 +317,34 @@ export async function createStore({ dataDir, seedDir, demoUsers }) {
       });
     },
 
+    /** Take a publication made by another install as this store's release, keeping draft pages not yet published here. */
+    adoptRelease({ revisionId, publishedAt, publishedBy, pages }) {
+      return withLock(async () => {
+        const [draft, previous] = await Promise.all([getRevision(state.draftRevisionId), getRelease(state.publishedReleaseId)]);
+        const before = previous?.siteDocument?.pages || {};
+        const unpublished = Object.entries(draft?.projectData?.pages || {})
+          .filter(([pageId, page]) => JSON.stringify(page) !== JSON.stringify(before[pageId]));
+        const base = { html: draft?.html || '', css: draft?.css || '', createdBy: publishedBy || 'system', createdAt: isoNow() };
+        const revision = { ...base, id: revisionId, label: 'Published from another machine', baseRevisionId: state.draftRevisionId,
+          projectData: { schemaVersion: 1, pages } };
+        await writeRevision(revision);
+        let draftRevisionId = revision.id;
+        if (unpublished.length) {
+          const merged = { ...base, id: `rev_${randomUUID()}`, label: 'Unpublished edits kept after sync', baseRevisionId: revision.id,
+            projectData: { schemaVersion: 1, pages: { ...pages, ...Object.fromEntries(unpublished) } } };
+          await writeRevision(merged);
+          draftRevisionId = merged.id;
+        }
+        const release = { id: `rel_${randomUUID()}`, revisionId, publishedAt: publishedAt || isoNow(), publishedBy: publishedBy || 'system',
+          html: revision.html, css: revision.css, siteDocument: revision.projectData };
+        await writeJsonAtomic(releasePath(release.id), release);
+        state = { ...state, draftRevisionId, publishedReleaseId: release.id };
+        await writeJsonAtomic(stateFile, state);
+        await appendAudit({ action: 'adopt-release', target: release.id, details: { revisionId, keptDraftPages: unpublished.length } });
+        return release;
+      });
+    },
+
     restoreRevisionAsDraft(id, actor) {
       return withLock(async () => {
         const source = await getRevision(id);

@@ -1,0 +1,61 @@
+{
+  "name": "deedee-cms-desktop",
+  "productName": "DeeDee CMS",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DeeDee Studio website editor.",
+  "author": "DeeDee Animation Studio",
+  "type": "module",
+  "main": "src/main.mjs",
+  "scripts": {
+    "prepare-cms": "node scripts/prepare-cms.mjs",
+    "start": "npm run prepare-cms && electron .",
+    "dist": "npm run prepare-cms && electron-builder --publish never",
+    "test": "node --test test/*.test.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "dugite": "3.3.2",
+    "electron": "45.2.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "net.deedeestudio.cms",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "asar": false,
+    "files": [
+      "src/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/cms",
+        "to": "cms"
+      },
+      {
+        "from": "node_modules/dugite/git",
+        "to": "git"
+      }
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity",
+      "identity": null
+    },
+    "dmg": {
+      "sign": false
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "afterPack": "scripts/after-pack.cjs",
+    "artifactName": "DeeDee-CMS-${version}-${arch}.${ext}"
+  }
+}

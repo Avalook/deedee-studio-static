@@ -44,6 +44,7 @@ import { exportStaticSite } from './lib/export.mjs';
 import { commitAndPush } from './lib/git-publish.mjs';
 import { validateHostedEnvironment, assertHostedUsers } from './lib/hosted-config.mjs';
 import { syncRepository } from './lib/hosted-repository.mjs';
+import { adoptPublishedOverrides, publishedElsewhere } from './lib/shared-overrides.mjs';
 import { createPublishQueue } from './lib/publish-queue.mjs';
 import { createContentStore } from './lib/content-store.mjs';
 import { createContentRoutes } from './lib/content-routes.mjs';
@@ -106,6 +107,7 @@ async function loadSecret() {
 const secret = await loadSecret();
 const store = await createStore({ dataDir: DATA_DIR, seedDir: SEED_DIR, demoUsers: DEMO_USERS });
 if (HOSTED) assertHostedUsers(JSON.parse(await fs.readFile(path.join(DATA_DIR, 'users.json'), 'utf8')).users);
+if (GIT_PUSH_ENABLED) await adoptPublishedOverrides({ store, outDir: EXPORT_DIR, uploadsDir: path.join(DATA_DIR, 'uploads') });
 const enqueuePublish = createPublishQueue();
 const contentManifest = JSON.parse(await fs.readFile(path.join(STATIC_SITE_DIR, 'manifest.json'), 'utf8'));
 const reservedContentRoutes = (contentManifest.pages || []).map((page) => page.route);
@@ -477,6 +479,7 @@ async function exportRelease(release, actor) {
   try {
     if (GIT_PUSH_ENABLED) await syncRepository(EXPORT_DIR);
     if (GIT_PUSH_ENABLED && MEDIA_REPO) await syncRepository(MEDIA_REPO.dir);
+    if (GIT_PUSH_ENABLED && await publishedElsewhere({ store, repoDir: EXPORT_DIR })) return { enabled: true, stale: true };
     const exported = await exportStaticSite({
       release,
       outDir: EXPORT_DIR,
@@ -513,6 +516,9 @@ async function handlePublish(req, res, session, revisionId) {
     const candidate = { revisionId, publishedAt: new Date().toISOString(),
       publishedBy: session.user.username, siteDocument: revision.projectData };
     const exported = await exportRelease(candidate, session.user.username);
+    if (exported.stale) {
+      throw new HttpError(409, 'Máy khác vừa xuất bản bản mới hơn. Đóng rồi mở lại CMS để lấy bản đó, sau đó xuất bản lại.', 'OVERRIDES_STALE');
+    }
     if (exported.error || exported.gitError) {
       throw new HttpError(502, exported.error || exported.gitError, 'PUBLISH_FAILED');
     }
