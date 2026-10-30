@@ -21,6 +21,7 @@ test('Windows keeps its own spelling of the path variable', () => {
   assert.equal(env.Path, 'C:\\app\\git\\cmd;C:\\app\\git\\mingw64\\bin;C:\\app\\git\\usr\\bin;C:\\Windows');
   assert.equal(env.PATH, undefined);
   assert.equal(env.GIT_EXEC_PATH, 'C:\\app\\git\\mingw64\\libexec\\git-core');
+  assert.equal(env.GIT_CONFIG_KEY_1, 'core.protectNTFS');
 });
 
 test('activation codes are checked before anything is stored', () => {

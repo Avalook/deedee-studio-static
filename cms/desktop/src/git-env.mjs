@@ -14,9 +14,12 @@ export function gitEnvironment(env, { gitDir, token, platform = process.platform
     [key]: [...bins, env[key] || ''].join(delimiter),
     GIT_EXEC_PATH: join(gitDir, ...(windows ? ['mingw64', 'libexec', 'git-core'] : ['libexec', 'git-core'])),
     GIT_TEMPLATE_DIR: join(gitDir, ...(windows ? ['mingw64', 'share', 'git-core', 'templates'] : ['share', 'git-core', 'templates'])),
-    GIT_CONFIG_COUNT: '1',
+    GIT_CONFIG_COUNT: '2',
     GIT_CONFIG_KEY_0: 'http.https://github.com/.extraheader',
     GIT_CONFIG_VALUE_0: `Authorization: Basic ${Buffer.from(`x-access-token:${token}`).toString('base64')}`,
+    // Git for Windows rejects the three ':' folders even though the checkout leaves them out of the working tree.
+    GIT_CONFIG_KEY_1: 'core.protectNTFS',
+    GIT_CONFIG_VALUE_1: 'false',
   };
 }
 

@@ -12,12 +12,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-15-intel, windows-latest]
+        os: [macos-latest, macos-15-intel, windows-latest]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
         working-directory: cms/desktop
     steps:
+      - run: git config --global core.protectNTFS false
+        working-directory: ${{ runner.temp }}
       - uses: actions/checkout@v4
         with:
           # Three page folders have ':' in their name, which Windows cannot create.
