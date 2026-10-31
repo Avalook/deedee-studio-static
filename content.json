@@ -1,4 +1,25 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "title": "Bài viết mới",
+      "summary": "Mô tả mới",
+      "category": "Tin tức",
+      "author": "Tuyền",
+      "client": "",
+      "year": "",
+      "services": "",
+      "type": "article",
+      "language": "vi",
+      "slug": "bai-viet-moi",
+      "featured": true,
+      "publishedAt": "2026-10-31T00:00:00.000Z",
+      "bodyHtml": "<strong><em>Nội dung chính<figure><img src=\"/deedee-studio-static/assets/cms/04fad8cc-b3c5-4f46-a3c7-977afb3707cd.png\" alt=\"\" loading=\"lazy\" /><figcaption></figcaption></figure></em></strong>",
+      "cover": "/deedee-studio-static/assets/cms/c593b52b-a2ac-4fe7-b325-7e9bf2719266.png",
+      "videoUrl": "",
+      "gallery": [],
+      "route": "/post/bai-viet-moi",
+      "id": "content_c0f593a9-f00d-4a37-b2e3-6764eba28bc4"
+    }
+  ]
 }
