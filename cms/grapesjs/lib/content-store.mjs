@@ -17,6 +17,14 @@ export async function createContentStore({ dataDir, staticSiteDir, reservedRoute
   await mkdir(dataDir, { recursive: true, mode: 0o700 });
   const file = path.join(dataDir, 'content-store.json');
   let state;
+  const snapshotOf = (item) => {
+    if (!/^content_[a-f0-9-]{36}$/.test(item.id)) throw new Error('Invalid public content identity');
+    const snapshot = { ...validateContent(item), id: item.id };
+    if (reservedRoutes.includes(snapshot.route)) throw new Error('Public content collides with archived route');
+    return snapshot;
+  };
+  const publishedRecord = (snapshot) => ({ draft: snapshot, published: snapshot, lockedRoute: snapshot.route,
+    firstPublishedAt: snapshot.publishedAt, createdAt: snapshot.publishedAt, updatedAt: snapshot.publishedAt });
   try { state = JSON.parse(await readFile(file, 'utf8')); } catch (error) {
     if (error.code !== 'ENOENT') throw error;
     let imported = [];
@@ -24,13 +32,7 @@ export async function createContentStore({ dataDir, staticSiteDir, reservedRoute
       try {
         const catalog = JSON.parse(await readFile(publicCatalogFile, 'utf8'));
         if (catalog.version !== 1 || !Array.isArray(catalog.items)) throw new Error('Invalid public catalog');
-        imported = catalog.items.map((item) => {
-          if (!/^content_[a-f0-9-]{36}$/.test(item.id)) throw new Error('Invalid public content identity');
-          const snapshot = { ...validateContent(item), id: item.id };
-          if (reservedRoutes.includes(snapshot.route)) throw new Error('Public content collides with archived route');
-          return { draft: snapshot, published: snapshot, lockedRoute: snapshot.route,
-            firstPublishedAt: snapshot.publishedAt, createdAt: snapshot.publishedAt, updatedAt: snapshot.publishedAt };
-        });
+        imported = catalog.items.map((item) => publishedRecord(snapshotOf(item)));
       } catch (catalogError) { if (catalogError.code !== 'ENOENT') throw catalogError; }
     }
     state = { version: 1, records: imported };
@@ -48,11 +50,14 @@ export async function createContentStore({ dataDir, staticSiteDir, reservedRoute
     if (!record) throw new HttpError(404, 'Content item not found', 'NOT_FOUND');
     return record;
   }
-  async function available(item, own) {
+  function assertRouteFree(item, own) {
     if (reserved.has(item.route) || state.records.some((entry) => entry.draft.id !== own?.draft.id &&
       [entry.draft.route, entry.published?.route, entry.lockedRoute].includes(item.route))) {
-      throw new HttpError(409, 'This route is already used', 'ROUTE_CONFLICT');
+      throw new HttpError(409, 'Đường dẫn này đã có bài khác dùng. Đổi slug rồi thử lại.', 'ROUTE_CONFLICT');
     }
+  }
+  async function available(item, own) {
+    assertRouteFree(item, own);
     if (own?.lockedRoute && item.route !== own.lockedRoute) throw new HttpError(409, 'Published route cannot change', 'ROUTE_CONFLICT');
     if (own?.lockedRoute === item.route) return;
     try { await access(path.join(staticSiteDir, item.route.slice(1), 'index.html')); } catch (error) {
@@ -91,6 +96,23 @@ export async function createContentStore({ dataDir, staticSiteDir, reservedRoute
         const next = { ...current, published, lockedRoute: published?.route || current.lockedRoute,
           firstPublishedAt: current.firstPublishedAt || (published ? new Date().toISOString() : null) };
         await persist({ ...state, records: state.records.map((record) => record === current ? next : record) }); return view(next);
+      });
+    },
+    /** Checked before exporting: another machine's adopted item may have taken this draft's route. */
+    async assertPublishable(id) { const current = recordFor(id); if (current.lockedRoute !== current.draft.route) assertRouteFree(current.draft, current); },
+    /** Match the published catalog on main. Local edits that were never published stay as drafts. */
+    async adoptCatalog(items) {
+      return lock(async () => {
+        const incoming = new Map(items.map((item) => { const snapshot = snapshotOf(item); return [snapshot.id, snapshot]; }));
+        const records = state.records.map((record) => {
+          const snapshot = incoming.get(record.draft.id) ?? null;
+          incoming.delete(record.draft.id);
+          const edited = JSON.stringify(record.draft) !== JSON.stringify(record.published);
+          return { ...record, published: snapshot, draft: edited || !snapshot ? record.draft : snapshot,
+            lockedRoute: snapshot?.route || record.lockedRoute, firstPublishedAt: record.firstPublishedAt || snapshot?.publishedAt || null };
+        });
+        const next = [...records, ...[...incoming.values()].map(publishedRecord)];
+        if (JSON.stringify(next) !== JSON.stringify(state.records)) await persist({ ...state, records: next });
       });
     },
     async isAssetPublished(filename) {

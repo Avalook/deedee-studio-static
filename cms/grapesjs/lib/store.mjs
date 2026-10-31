@@ -475,6 +475,16 @@ export async function createStore({ dataDir, seedDir, demoUsers }) {
       });
     },
 
+    /** Register media published by another install, under its own name so that published references stay valid. */
+    adoptAsset({ file, buffer, type }) {
+      return withLock(async () => {
+        if (!ASSET_FILE.test(file) || assets.some((asset) => asset.file === file)) return;
+        await fs.writeFile(path.join(uploadsDir, file), buffer, { mode: 0o600 });
+        assets = [{ id: file.slice(0, 36), file, name: file, type, size: buffer.length, createdAt: isoNow() }, ...assets];
+        await writeJsonAtomic(assetsFile, assets);
+      });
+    },
+
     async getAssetFile(filename) {
       if (!ASSET_FILE.test(filename)) return null;
       const asset = assets.find((entry) => entry.file === filename);

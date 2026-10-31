@@ -31,13 +31,13 @@ test('draft and published snapshot lifecycle persists and protects original rout
   const root = await mkdtemp(path.join(os.tmpdir(), 'content-store-')); t.after(() => rm(root, { recursive: true, force: true }));
   const args = { dataDir: path.join(root, 'data'), staticSiteDir: root, reservedRoutes: ['/post/archived'] };
   const store = await createContentStore(args);
-  await assert.rejects(store.create(item({ slug: 'archived' })), /route/i);
+  await assert.rejects(store.create(item({ slug: 'archived' })), /đường dẫn/i);
   await mkdir(path.join(root, 'post', 'existing'), { recursive: true });
   await writeFile(path.join(root, 'post', 'existing', 'index.html'), 'archive');
   await assert.rejects(store.create(item({ slug: 'existing' })), /route/i);
   const first = await store.create(item());
   assert.equal(first.status, 'draft'); assert.equal(first.isPublished, false);
-  await assert.rejects(store.create(item()), /route/i);
+  await assert.rejects(store.create(item()), /đường dẫn/i);
   assert.deepEqual(await store.published(), []);
   await store.commitPublication(first.id, first);
   const changed = await store.update(first.id, item({ title: 'Draft changed' }));
@@ -49,7 +49,7 @@ test('draft and published snapshot lifecycle persists and protects original rout
   assert.equal((await reopened.published())[0].title, 'Bài mới');
   await reopened.commitPublication(first.id, null);
   assert.deepEqual(await reopened.published(), []);
-  await assert.rejects(reopened.create(item()), /route/i);
+  await assert.rejects(reopened.create(item()), /đường dẫn/i);
 });
 
 test('new machine imports published snapshots and stale catalog exports fail safely', async (t) => {

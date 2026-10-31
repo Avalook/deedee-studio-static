@@ -21,6 +21,7 @@ export function createContentRoutes({ contentStore, requireSession, requireCsrf,
   async function publish(id, remove, actor) {
     return enqueuePublish(async () => {
       const item = await contentStore.get(id);
+      if (!remove) await contentStore.assertPublishable(id);
       const previousItems = await contentStore.published();
       const snapshot = remove ? null : Object.fromEntries(Object.entries(item).filter(([key]) =>
         !['createdAt', 'updatedAt', 'status', 'isPublished', 'hasUnpublishedChanges', 'publishedItem', 'firstPublishedAt'].includes(key)));
@@ -42,7 +43,7 @@ export function createContentRoutes({ contentStore, requireSession, requireCsrf,
           message: `cms: ${remove ? 'unpublish' : 'publish'} content ${id} by ${actor}` });
       } catch (error) {
         if (error.message === 'Published catalog changed on another machine; reconcile before publishing') {
-          throw new HttpError(409, 'Another machine published newer content. Reconcile the shared catalog before publishing.', 'CONTENT_STALE');
+          throw new HttpError(409, 'Máy khác vừa đăng bài. Đóng rồi mở lại app, bản nháp vẫn được giữ, sau đó đăng lại.', 'CONTENT_STALE');
         }
         throw new HttpError(502, 'Content was saved, but export or Git publication failed. Check media and repository access before retrying.', 'PUBLISH_FAILED');
       }
