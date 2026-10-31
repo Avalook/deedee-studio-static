@@ -46,7 +46,7 @@
     // Let mobile-navigation.mjs handle hamburger menu interactions in editor mode.
     if (element.closest('button[aria-label="Menu"][aria-haspopup="dialog"]')) return null;
     if (element.closest('[data-hook="hamburger-overlay-root"]')) return null;
-    const target = element.closest('[data-cms-added], [id^="comp-"], [id^="SITE_"], h1, h2, h3, h4, p, a, button, img, section, article');
+    const target = element.closest('[data-cms-added], [data-deedee-news-card], [id^="comp-"], [id^="SITE_"], h1, h2, h3, h4, p, a, button, img, section, article');
     if (!target || target === document.body || target === document.documentElement) return null;
     if (target.closest('script,style,svg,head')) return null;
     return target;
@@ -58,6 +58,8 @@
     if (element.closest('header,nav,footer,[role="navigation"],#SITE_HEADER,#SITE_FOOTER,[data-cms-protected]')) return false;
     if (['main', 'header', 'nav', 'footer', 'script', 'style', 'head', 'html', 'body'].includes(element.localName)) return false;
     if (element.querySelector('header,nav,main,footer,[role="navigation"],[data-cms-protected],[id^="SITE_"],#PAGES_CONTAINER,#masterPage')) return false;
+    // A news gallery holds every card of a tab: cards go one at a time, or a single click empties the tab.
+    if (!element.matches('[data-deedee-news-card]') && element.querySelector('[data-deedee-news-card]')) return false;
     return Boolean(element.closest('#SITE_CONTAINER,main,[data-cms-added]'));
   }
 
@@ -249,8 +251,15 @@ function isTextEditable(element) {
       element.parentNode.replaceChild(anchor, element);
       removedOriginals.set(element, anchor);
     }
+    // News cards are rebuilt by scripts/news-pagination.mjs, which leaves deleted ones out of its pages.
+    window.__deedeeCmsDeleted = documentModel.operations.filter((operation) => operation.deleted === true).map((operation) => operation.selector);
+    window.dispatchEvent(new window.Event('deedee-cms-applied'));
     if (selected && !selected.isConnected) { selected.removeAttribute('data-cms-selected'); selected = null; send('selected', { selection: null }); }
   }
+
+  window.addEventListener('deedee-news-rendered', () => {
+    if (documentModel.operations.some((operation) => operation.selector.startsWith('#news-'))) applyDocument(documentModel);
+  });
 
   // Same as portableSelector() in public/admin/document-scope.mjs.
   function portableSelector(selector) {
@@ -260,12 +269,14 @@ function isTextEditable(element) {
   function selectedInfo(element) {
     const rect = element.getBoundingClientRect();
     const own = selectorFor(element);
+    const card = element.closest('[data-deedee-news-card]');
     const operation = documentModel.operations.filter((item) => item.selector === own || item.selector === portableSelector(own))
       .reduce((merged, item) => ({ ...merged, ...item }), {});
     return {
       selector: selectorFor(element),
       deletable: canDelete(element),
       insertionId: element.getAttribute('data-cms-added') || null,
+      cardSelector: card && card !== element ? `#${card.id}` : null,
       tag: element.localName,
       label: (element.innerText || element.alt || element.id || element.localName).trim().slice(0, 100),
       text: isTextEditable(element) ? element.innerText : null,

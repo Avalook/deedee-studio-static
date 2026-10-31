@@ -10,7 +10,9 @@ import {
   getNewsPageCount,
   getNewsPageIndices,
   getResponsiveNewsGalleryLayout,
+  newsCardId,
   newsLanguageFor,
+  paginateNewsCards,
   NEWS_PAGE_INDICES_EN,
   NEWS_UNARCHIVED_ITEMS_EN,
 } from '../scripts/news-pagination.mjs';
@@ -24,6 +26,21 @@ import {
 } from '../news/pagination.js';
 
 const PROJECT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+test('deleting a card moves the later ones up, and nothing changes until a card is deleted', () => {
+  const pages = [[0, 1, 2], [3, 4]];
+  assert.equal(paginateNewsCards(pages, () => false, 3), pages);
+  assert.deepEqual(paginateNewsCards(pages, index => index === 1, 3), [[0, 2, 3], [4]]);
+  assert.deepEqual(paginateNewsCards(pages, index => index > 1, 3), [[0, 1]]);
+  assert.deepEqual(paginateNewsCards(pages, () => true, 3), []);
+  assert.deepEqual(paginateNewsCards([[0, 1], [3]], index => index === 3), [[0, 1]]);
+});
+
+test('a card id follows the post, not its position', () => {
+  assert.equal(newsCardId('activity', 4, '56146b91-cd84'), 'news-activity-56146b91-cd84');
+  assert.equal(newsCardId('activity', 48), 'news-activity-unarchived-48');
+  assert.match(newsCardId('expert', 0, '56146b91-cd84-4165-96ec-e68192f47097'), /^[A-Za-z][A-Za-z0-9_-]{0,127}$/);
+});
 
 test('activity tab matches the freshly captured six Wix pages', () => {
   assert.deepEqual(getNewsPageIndices('activity', 1), [0, 1, 2, 3, 4, 5, 6, 7, 8]);

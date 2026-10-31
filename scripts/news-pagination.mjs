@@ -201,6 +201,27 @@ export function getNewsPageIndices(tab, page, totalItems = Infinity, language = 
   return [...indices];
 }
 
+/** Page maps once cards deleted in the CMS are gone. Until something is deleted the Wix page maps stand as they are. */
+export function paginateNewsCards(pages, isDeleted, pageSize = 9) {
+  const indices = pages.flat();
+  const kept = indices.filter(index => !isDeleted(index));
+  if (kept.length === indices.length) return pages;
+  return Array.from({ length: Math.ceil(kept.length / pageSize) }, (_, page) => kept.slice(page * pageSize, (page + 1) * pageSize));
+}
+
+/** Cards are rebuilt on every page change, so CMS edits need an id that follows the post and not its position. */
+export function newsCardId(tab, index, sourceId) {
+  return `news-${tab}-${sourceId ?? `unarchived-${index}`}`;
+}
+
+/** The item, not its wrapper: items are absolutely positioned, so the wrapper has no height to select. */
+function identifyCard(card, id) {
+  const item = card.querySelector('[data-hook="item-container"]');
+  if (!item) return;
+  item.id = id;
+  item.setAttribute('data-deedee-news-card', '');
+}
+
 export function getResponsiveNewsGalleryLayout(viewportWidth, galleryWidth, itemCount) {
   if (viewportWidth > 1100 || galleryWidth <= 0 || itemCount <= 0) return null;
 
@@ -297,12 +318,10 @@ function createUnarchivedCard(spec, layoutCard, index) {
   const card = layoutCard.cloneNode(true);
   card.dataset.id = `unarchived-news-${index}`;
   card.dataset.idx = String(index);
-  card.id = `news-unarchived-${index}`;
 
   const item = card.querySelector('[data-hook="item-container"]');
   if (item) {
     item.dataset.id = card.dataset.id;
-    item.id = `news-unarchived-item-${index}`;
     for (const element of item.querySelectorAll('[style]')) {
       if (element.style.backgroundImage) element.style.backgroundImage = 'none';
     }
@@ -496,43 +515,64 @@ async function mountNewsTab({
   ]);
   const extras = NEWS_LANGUAGES[language].extras[tab] ?? [];
   const totalItems = archiveCards.length + extras.length;
-  const pageCount = getNewsPageCount(tab, language);
+  const fixedPages = Array.from({ length: getNewsPageCount(tab, language) }, (_, page) => (
+    getNewsPageIndices(tab, page + 1, totalItems, language)
+  ));
+  const view = document.defaultView;
+  const cardId = index => newsCardId(tab, index, archiveCards[index]?.dataset.id);
+  const visiblePages = () => {
+    const deleted = new Set(view?.__deedeeCmsDeleted ?? []);
+    return paginateNewsCards(fixedPages, index => deleted.has(`#${cardId(index)}`));
+  };
   let currentPage = 1;
   let usedWidth;
+  let renderedDeletions;
 
-  const render = page => {
+  const render = requestedPage => {
     usedWidth = gallery.parentElement?.clientWidth;
-    const indices = getNewsPageIndices(tab, page, totalItems, language);
-    if (indices.length === 0) return false;
+    renderedDeletions = String(view?.__deedeeCmsDeleted ?? '');
+    const pages = visiblePages();
+    const page = Math.max(1, Math.min(requestedPage, pages.length));
+    const indices = pages[page - 1] ?? [];
+    if (indices.length === 0 && pages === fixedPages) return false;
 
-    const cards = indices
-      .map(index => getCardForIndex(index, archiveCards, extras, layoutCards, imageMap))
-      .filter(Boolean);
+    const cards = indices.map(index => {
+      const card = getCardForIndex(index, archiveCards, extras, layoutCards, imageMap);
+      if (card) identifyCard(card, cardId(index));
+      return card;
+    }).filter(Boolean);
     cards.forEach((card, index) => applyLayout(card, layoutCards[index % layoutCards.length], index));
     gallery.replaceChildren(...cards);
-    applyResponsiveNewsGalleryLayout(gallery, cards, document.defaultView?.innerWidth ?? 1440);
+    applyResponsiveNewsGalleryLayout(gallery, cards, view?.innerWidth ?? 1440);
     currentPage = page;
-    setPageControlState(panel, page, pageCount);
+    setPageControlState(panel, page, pages.length);
     updateGalleryHeight(gallery, cards);
+    if (typeof view?.Event === 'function') view.dispatchEvent(new view.Event('deedee-news-rendered'));
     return true;
   };
+
+  // The CMS runtime can apply its edits before or after this tab mounts, and again on every edit in the editor.
+  view?.addEventListener('deedee-cms-applied', () => {
+    if (String(view.__deedeeCmsDeleted ?? '') !== renderedDeletions) render(currentPage);
+  });
 
   panel.addEventListener('click', event => {
     const control = event.target.closest('[data-hook^="pagination__"]');
     if (!control || !panel.contains(control)) return;
     const hook = control.dataset.hook ?? '';
     const number = hook.match(/^pagination__(\d+)$/)?.[1];
+    const pages = visiblePages();
     const target = number ? Number(number)
       : hook.endsWith('__first') ? 1
         : hook.endsWith('__previous') ? currentPage - 1
           : hook.endsWith('__next') ? currentPage + 1
-            : hook.endsWith('__last') ? pageCount : null;
-    if (target === null || !getNewsPageIndices(tab, target, totalItems, language).length) return;
+            : hook.endsWith('__last') ? pages.length : null;
+    if (target === null || !pages[target - 1]?.length) return;
     event.preventDefault();
     render(target);
   });
 
-  document.defaultView?.addEventListener('resize', () => render(currentPage), { passive: true });
+  view?.addEventListener('resize', () => render(currentPage), { passive: true });
   render(1);
 
   // This can run before the page's stylesheets have laid the gallery's parent out, so the first measurement may be
@@ -544,7 +584,6 @@ async function mountNewsTab({
     usedWidth = parent.clientWidth;
     render(currentPage);
   };
-  const view = document.defaultView;
   view?.addEventListener('load', relayoutIfParentChanged, { once: true });
   if (typeof view?.ResizeObserver === 'function' && parent) new view.ResizeObserver(relayoutIfParentChanged).observe(parent);
   for (const delay of [250, 1000, 2500]) view?.setTimeout?.(relayoutIfParentChanged, delay);

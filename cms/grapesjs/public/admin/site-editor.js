@@ -182,6 +182,7 @@ import { mergeDocuments, portableSelector } from './document-scope.mjs';
   function setSelection(selection) {
     state.selection = selection;
     byId('delete-component').disabled = !selection?.deletable;
+    byId('select-card').hidden = !selection?.cardSelector;
     byId('selection-label').textContent = selection ? `${selection.tag} · ${selection.label || selection.selector}` : 'Chưa chọn thành phần';
     byId('text').value = selection?.text ?? '';
     byId('text').disabled = !selection?.editableText;
@@ -361,6 +362,9 @@ import { mergeDocuments, portableSelector } from './document-scope.mjs';
     });
     byId('undo').addEventListener('click', () => { if (state.undo.length) applyUndo(null, true); });
     byId('delete-component').addEventListener('click', deleteSelection);
+    byId('select-card').addEventListener('click', () => {
+      frame.contentWindow?.postMessage({ source: 'deedee-cms-admin', type: 'select', selector: state.selection?.cardSelector }, location.origin);
+    });
     document.addEventListener('keydown', (event) => {
       if (!shouldDeleteComponent(event, state.selection)) return;
       event.preventDefault(); deleteSelection();

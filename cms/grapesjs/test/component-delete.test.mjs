@@ -71,3 +71,34 @@ test('runtime removes nested originals without selector drift, undo restores exa
   send({ ...empty, operations: [{ selector: '#wrapper', deleted: true }] });
   assert.ok(document.querySelector('#wrapper'));
 });
+
+test('news galleries cannot be deleted whole; single cards can, and the pagination is told which', async () => {
+  const { window, document } = parseHTML('<html><head></head><body><main id="SITE_CONTAINER"><div id="comp-gallery"><div id="news-activity-a" data-deedee-news-card><h2 id="title">A</h2></div><div id="news-activity-b" data-deedee-news-card>B</div></div></main></body></html>');
+  const messages = []; const parent = { postMessage(message) { messages.push(message); } }; const location = { search: '?cms-editor=1', pathname: '/', origin: 'http://cms.test' };
+  // linkedom windows share their properties, and the runtime refuses to start twice.
+  Object.assign(window, { parent, location, innerWidth: 1440, __deedeeCmsRuntime: false });
+  const context = vm.createContext({ window, document, location, Element: window.Element, Node: window.Node,
+    HTMLImageElement: window.HTMLImageElement, HTMLAnchorElement: window.HTMLAnchorElement,
+    NodeFilter: { SHOW_TEXT: 4 }, URLSearchParams, WeakMap, Map, getComputedStyle: () => ({ display: 'block', color: 'rgb(0,0,0)', backgroundColor: 'rgb(255,255,255)', fontSize: '16px' }) });
+  vm.runInContext(await readFile(new URL('../public/cms-runtime.js', import.meta.url), 'utf8'), context);
+  const post = (data) => { const event = new window.Event('message'); Object.assign(event, { source: parent, origin: location.origin, data: { source: 'deedee-cms-admin', ...data } }); window.dispatchEvent(event); };
+  const selection = () => messages.filter((message) => message.type === 'selected').at(-1).selection;
+  let applied = 0; window.addEventListener('deedee-cms-applied', () => { applied += 1; });
+
+  post({ type: 'set-document', document: { ...empty, operations: [{ selector: '#comp-gallery', deleted: true }] } });
+  assert.ok(document.querySelector('#news-activity-a'), 'a gallery delete is ignored');
+  for (const [id, width] of [['comp-gallery', 900], ['news-activity-a', 300], ['title', 200]]) document.getElementById(id).getBoundingClientRect = () => ({ width, height: 20 });
+  post({ type: 'select', selector: '#comp-gallery' }); assert.equal(selection().deletable, false);
+  post({ type: 'select', selector: '#title' }); assert.equal(selection().cardSelector, '#news-activity-a');
+  post({ type: 'select', selector: '#news-activity-a' }); assert.equal(selection().deletable, true); assert.equal(selection().cardSelector, null);
+
+  post({ type: 'set-document', document: { ...empty, operations: [{ selector: '#news-activity-a', deleted: true }] } });
+  assert.deepEqual([...window.__deedeeCmsDeleted], ['#news-activity-a']);
+  assert.ok(!document.querySelector('#news-activity-a'));
+  const before = applied;
+  const gallery = document.querySelector('#comp-gallery');
+  gallery.innerHTML = '<div id="news-activity-a" data-deedee-news-card>A</div>';
+  window.dispatchEvent(new window.Event('deedee-news-rendered'));
+  assert.equal(applied, before + 1, 'edits are applied again after the gallery is rebuilt');
+  assert.ok(!document.querySelector('#news-activity-a'));
+});
