@@ -4,6 +4,7 @@ import { mkdtemp, rm, stat } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { gitEnvironment, isActivationCode } from '../src/git-env.mjs';
+import { ONE_USER_CSS } from '../src/one-user.mjs';
 import { createSecrets, newSecrets } from '../src/secrets.mjs';
 
 const CODE = `github_pat_${'a'.repeat(40)}`;
@@ -22,6 +23,10 @@ test('Windows keeps its own spelling of the path variable', () => {
   assert.equal(env.PATH, undefined);
   assert.equal(env.GIT_EXEC_PATH, 'C:\\app\\git\\mingw64\\libexec\\git-core');
   assert.equal(env.GIT_CONFIG_KEY_1, 'core.protectNTFS');
+});
+
+test('the activation code is the only access: accounts and sign-out are not shown', () => {
+  for (const selector of ['#logout', '.account', '#user', '#role-note', 'a[href="/admin/users"]']) assert.ok(ONE_USER_CSS.includes(selector), selector);
 });
 
 test('activation codes are checked before anything is stored', () => {

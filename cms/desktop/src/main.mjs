@@ -6,6 +6,7 @@ import net from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gitEnvironment, isActivationCode } from './git-env.mjs';
+import { ONE_USER_CSS } from './one-user.mjs';
 import { createSecrets, newSecrets } from './secrets.mjs';
 import { runSmokeTest } from './smoke.mjs';
 
@@ -85,6 +86,7 @@ function openEditor() {
     event.preventDefault();
     shell.openExternal(url);
   });
+  contents.on('dom-ready', () => contents.insertCSS(ONE_USER_CSS));
   // Sessions last 8 hours and signing out has no meaning here: go straight back in.
   contents.on('did-navigate', async (_event, url) => {
     if (!new URL(url).pathname.startsWith('/admin/login')) return;

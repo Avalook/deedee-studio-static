@@ -38,6 +38,8 @@ Lần đầu, dán mã kích hoạt rồi bấm **Kích hoạt**. App tải dữ
 
 ## Dùng hằng ngày
 
+App không có đăng nhập, tài khoản hay phân quyền: mã kích hoạt là quyền duy nhất, ai có app đã kích hoạt là sửa và xuất bản được mọi thứ. Muốn ngừng cho một máy dùng, xoá mã của máy đó trên GitHub.
+
 1. Sửa trang ở **trình sửa giao diện**, thêm bài ở **Bài viết & dự án**.
 2. **Lưu nháp** chưa đổi gì trên web. Bấm **Xuất bản** thì web cập nhật sau khoảng 1–2 phút.
 3. Sửa xong đóng app. Website vẫn chạy bình thường khi app đóng.
