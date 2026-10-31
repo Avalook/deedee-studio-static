@@ -91,3 +91,6 @@
     width: calc(100vw - 175px) !important;
   }
 }
+
+/* The partner ticker runs past the viewport, so the page could slide sideways on a trackpad (Wix has the same flaw). */
+body { overflow-x: hidden; }

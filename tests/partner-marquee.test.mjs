@@ -520,3 +520,9 @@ test('the partner ticker ignores the OS reduced-motion preference like the live 
   const source = await readFile(new URL('../scripts/partner-marquee.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /matchMedia\([^)]*prefers-reduced-motion/);
 });
+
+test('the ticker running past the viewport cannot slide the home page sideways', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const css = await readFile(new URL('../assets/homepage-awards-gallery-parity.css', import.meta.url), 'utf8');
+  assert.match(css, /body\s*\{\s*overflow-x:\s*hidden;/);
+});
