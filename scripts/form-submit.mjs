@@ -70,11 +70,13 @@ export function collectFormFields(form) {
     const dropdown = wrapper.querySelector('[data-hook="dropdown-base-text"]');
     const label = wrapper.parentElement?.querySelector('label');
     const labelText = clean(label?.textContent).replace(/\*$/, '').trim();
+    // Wix gives a dropdown a plain <div> for its label, with the same text on the button.
+    const named = control ?? wrapper.querySelector('[data-hook="dropdown-base"]');
     const country = wrapper.querySelector('[data-country-code]')?.dataset?.countryCode;
     fields.push({
       key,
       type,
-      label: labelText || clean(control?.getAttribute?.('aria-label')) || key,
+      label: labelText || clean(named?.getAttribute?.('aria-label')) || key,
       value: clean(control ? control.value : dropdown?.textContent),
       required: /\*/.test(label?.textContent ?? '') || Boolean(wrapper.querySelector('[aria-label="required"]')),
       country: country ? clean(country) : undefined,

@@ -39,6 +39,13 @@ const fields = () => collectFormFields(formWith(
   { getAttribute: name => ({ 'data-hook': 'form-field-send', 'data-field-type': 'SUBMIT_BUTTON' })[name], querySelector: () => null, parentElement: null },
 ));
 
+test('a dropdown takes its label from the button, since Wix gives it no label element', () => {
+  const button = { getAttribute: () => 'Loại dự án' };
+  const dropdown = { ...field({ key: 'loai_du_an_1', type: 'DROPDOWN', label: '', value: 'Short film', dropdown: true }), parentElement: { querySelector: () => null } };
+  const wrapper = { ...dropdown, querySelector: selector => selector === '[data-hook="dropdown-base"]' ? button : dropdown.querySelector(selector) };
+  assert.equal(collectFormFields(formWith(wrapper))[0].label, 'Loại dự án');
+});
+
 test('collects labelled values, dropdown choices and the phone country, skipping the submit button', () => {
   const collected = fields();
   assert.deepEqual(collected.map(f => f.key), ['ho_ten', 'email', 'phone', 'loai_du_an_1', 'mo_ta']);
