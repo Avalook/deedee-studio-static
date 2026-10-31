@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "revisionId": "rev_8e4f5055-6327-4a1a-b902-b0e02ec40ec9",
-  "publishedAt": "2026-10-31T03:32:32.287Z",
+  "revisionId": "rev_982c8898-cfd4-469c-ac65-5faa14daddee",
+  "publishedAt": "2026-10-31T06:22:24.710Z",
   "publishedBy": "admin",
   "pages": {
     "/": {
@@ -9,10 +9,28 @@
       "pageId": "/",
       "operations": [
         {
+          "selector": "#comp-m78h36cf_r_comp-mehzul5c > p:nth-of-type(1) > span:nth-of-type(1) > a:nth-of-type(1)",
+          "offsets": {
+            "desktop": {
+              "x": -0.8,
+              "y": -160.8
+            }
+          }
+        },
+        {
+          "selector": "#comp-m78h36cf_r_comp-m8npmz1u2 > p:nth-of-type(1)",
+          "offsets": {
+            "desktop": {
+              "x": 4.8,
+              "y": -1.6
+            }
+          }
+        },
+        {
           "selector": "#img_6_comp-m78h36cf_r_comp-m8npmz1x2 > img:nth-of-type(1)",
           "offsets": {
             "desktop": {
-              "x": -5.6,
+              "x": 41.6,
               "y": 0.8
             }
           }
