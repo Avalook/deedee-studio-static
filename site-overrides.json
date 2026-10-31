@@ -1,7 +1,24 @@
 {
   "version": 1,
-  "revisionId": null,
-  "publishedAt": null,
-  "publishedBy": null,
-  "pages": {}
+  "revisionId": "rev_550fd6b4-024e-4272-bab7-bbe6953155d3",
+  "publishedAt": "2026-10-31T02:34:35.061Z",
+  "publishedBy": "admin",
+  "pages": {
+    "/": {
+      "schemaVersion": 1,
+      "pageId": "/",
+      "operations": [
+        {
+          "selector": "#img_6_comp-m78h36cf_r_comp-m8npmz1x2 > img:nth-of-type(1)",
+          "offsets": {
+            "desktop": {
+              "x": -18.4,
+              "y": 0
+            }
+          }
+        }
+      ],
+      "insertions": []
+    }
+  }
 }
