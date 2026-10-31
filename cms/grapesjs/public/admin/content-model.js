@@ -6,6 +6,9 @@ export function blankContent(type = 'article', language = 'vi') {
   return { type, language, slug: '', title: '', summary: '', cover: '', bodyHtml: '', category: '', featured: false, author: '', publishedAt: '', client: '', year: '', services: '', videoUrl: '', gallery: [] };
 }
 
+/** Same rule as the server's requirePublisher: admins can do everything a publisher can. */
+export const canPublish = (user) => ['publisher', 'admin'].includes(user?.role);
+
 /** Make a portable ASCII slug from a Vietnamese title. */
 export function slugify(value) {
   return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100).replace(/-+$/g, '');

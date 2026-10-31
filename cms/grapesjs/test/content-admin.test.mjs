@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { blankContent, contentPayload, createContentClient, publicationLabel, slugify, wrapSelection } from '../public/admin/content-model.js';
+import { blankContent, canPublish, contentPayload, createContentClient, publicationLabel, slugify, wrapSelection } from '../public/admin/content-model.js';
 
 test('new article/project drafts have isolated arrays and locale defaults', () => {
   const article = blankContent();
@@ -9,6 +9,13 @@ test('new article/project drafts have isolated arrays and locale defaults', () =
   assert.equal(project.language, 'en');
   assert.notEqual(article.gallery, project.gallery);
   assert.equal(article.featured, false);
+});
+
+test('admins can publish from the content page, as the desktop app signs in as admin', () => {
+  assert.equal(canPublish({ role: 'admin' }), true);
+  assert.equal(canPublish({ role: 'publisher' }), true);
+  assert.equal(canPublish({ role: 'editor' }), false);
+  assert.equal(canPublish(null), false);
 });
 
 test('Vietnamese title becomes portable slug without unsafe route characters', () => {

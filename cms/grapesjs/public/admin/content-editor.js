@@ -1,4 +1,4 @@
-import { blankContent, contentPayload, createContentClient, publicationLabel, slugify, wrapSelection } from './content-model.js';
+import { blankContent, canPublish, contentPayload, createContentClient, publicationLabel, slugify, wrapSelection } from './content-model.js';
 
 const byId = id => document.getElementById(id);
 const fieldNames = Object.keys(blankContent());
@@ -21,7 +21,7 @@ function setBusy(value) {
   document.body.dataset.busy = String(value);
   byId('content-form').inert = value;
   for (const id of ['save', 'preview', 'new-content', 'unpublish']) byId(id).disabled = value;
-  byId('publish').disabled = value || state.user?.role !== 'publisher';
+  byId('publish').disabled = value || !canPublish(state.user);
 }
 
 async function run(action) {
@@ -76,7 +76,7 @@ function showItem(item) {
   byId('item-status').textContent = item.id ? publicationLabel(item) : 'Bản nháp mới';
   byId('item-status').dataset.status = item.status || 'draft';
   byId('save-status').textContent = item.id ? 'Đã lưu nháp. Chỉ nội dung đã xuất bản mới xuất hiện trên website.' : 'Điền tiêu đề và đường dẫn để bắt đầu.';
-  byId('unpublish').hidden = !item.isPublished || state.user?.role !== 'publisher';
+  byId('unpublish').hidden = !item.isPublished || !canPublish(state.user);
   byId('notice').hidden = true;
   updateRoute();
   updateCover();
@@ -245,7 +245,7 @@ async function boot() {
     const session = await response.json();
     state = { ...state, user: session.user, client: createContentClient(fetch, session.csrf) };
     byId('account').textContent = `${session.user.username} · ${session.user.role}`;
-    byId('role-note').textContent = session.user.role === 'publisher' ? 'Bạn có quyền lưu nháp và xuất bản.' : 'Bạn có quyền lưu nháp. Tài khoản publisher sẽ duyệt và xuất bản.';
+    byId('role-note').textContent = canPublish(session.user) ? 'Bạn có quyền lưu nháp và xuất bản.' : 'Bạn có quyền lưu nháp. Tài khoản publisher sẽ duyệt và xuất bản.';
     await refreshList();
     const requestedId = new URLSearchParams(location.search).get('id');
     showItem(requestedId ? (await state.client.get(requestedId)).item : blankContent());
