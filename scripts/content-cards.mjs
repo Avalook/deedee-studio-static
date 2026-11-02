@@ -71,7 +71,9 @@ function preserveSectionOrder(main, win) {
 
 function mount(root, items, context, win) {
   const main = root.querySelector('main'); if (!main) return false;
-  const section = element(root, 'section', '', { class: 'cms-published-content', 'data-cms-content': context.page, 'aria-labelledby': 'cms-content-title' });
+  // A div, not a section: CMS edits address captured sections by position, and one more would shift them all.
+  // Articles are managed in "Bài viết & dự án", so the editor must not delete this block either.
+  const section = element(root, 'div', '', { class: 'cms-published-content', role: 'region', 'data-cms-protected': '', 'data-cms-content': context.page, 'aria-labelledby': 'cms-content-title' });
   const labels = context.language === 'en' ? { home: 'Latest from DeeDee', news: 'Latest news', projects: 'Latest projects' } : { home: 'Mới từ DeeDee', news: 'Bài viết mới', projects: 'Dự án mới' };
   section.append(element(root, 'h2', labels[context.page], { id: 'cms-content-title' }));
   const grid = element(root, 'div', '', { class: 'cms-content-grid' });

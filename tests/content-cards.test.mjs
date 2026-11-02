@@ -71,6 +71,17 @@ test('missing/failed catalogs and unrelated routes leave archived page untouched
   assert.equal(await installPublishedContent(root, { location: { pathname: '/aboutus' } }, { fetchImpl: () => { throw new Error('should not fetch'); } }), false);
 });
 
+test('the block does not shift the page\'s sections, and the CMS editor cannot delete it', async () => {
+  const { root, main } = fixture();
+  const items = [{ route: '/post/a', title: 'A', type: 'article', language: 'vi', featured: true, publishedAt: '2026-01-01' }];
+  const fetchImpl = async () => ({ ok: true, json: async () => ({ version: 1, items }) });
+  assert.equal(await installPublishedContent(root, { location: { pathname: '/' }, getComputedStyle: () => ({}) }, { fetchImpl }), true);
+  const block = main.children[1];
+  assert.equal(block.tagName.toLowerCase(), 'div');
+  assert.equal(main.children.filter(node => node.tagName.toLowerCase() === 'section').length, 2);
+  assert.ok('data-cms-protected' in block.attrs);
+});
+
 test('preserves responsive grid visual order when mobile header occurs after content in DOM', async () => {
   const { root, main, parent } = fixture();
   const header = new Element('header'); const footer = new Element('footer');
