@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "revisionId": "rev_f8f37649-3358-40c2-9be2-4adc15014941",
-  "publishedAt": "2026-11-02T03:52:30.214Z",
+  "revisionId": "rev_b3b6eeac-daab-4c23-a252-757622252ca2",
+  "publishedAt": "2026-11-02T05:32:38.000Z",
   "publishedBy": "admin",
   "pages": {
     "/": {
@@ -27,18 +27,6 @@
           }
         },
         {
-          "selector": "#PAGE_SECTIONSaestk > section:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > a:nth-of-type(1)",
-          "deleted": true
-        },
-        {
-          "selector": "#cms-content-title",
-          "deleted": true
-        },
-        {
-          "selector": "#PAGE_SECTIONSaestk > section:nth-of-type(2)",
-          "deleted": true
-        },
-        {
           "selector": "#img_6_comp-m78h36cf_r_comp-m8npmz1x2 > img:nth-of-type(1)",
           "offsets": {
             "desktop": {
@@ -53,29 +41,7 @@
     "*": {
       "schemaVersion": 1,
       "pageId": "*",
-      "operations": [
-        {
-          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > a:nth-of-type(1) > div:nth-of-type(1) > p:nth-of-type(2)",
-          "offsets": {
-            "desktop": {
-              "x": -0.83,
-              "y": 1.22
-            }
-          }
-        },
-        {
-          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > a:nth-of-type(1)",
-          "deleted": true
-        },
-        {
-          "selector": "#cms-content-title",
-          "deleted": true
-        },
-        {
-          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2)",
-          "deleted": true
-        }
-      ],
+      "operations": [],
       "insertions": []
     }
   }
