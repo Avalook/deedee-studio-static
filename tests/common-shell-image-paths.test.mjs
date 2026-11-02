@@ -35,8 +35,11 @@ test('shared shell images use archived base assets instead of Wix transform URLs
 // Wix currently sends this CTA through /blog to an /explore 404; the static alias repairs it to the existing news listing.
 test('article “Xem tất cả” links resolve through the blog alias to the news listing', () => {
   const postsDirectory = new URL('../post/', import.meta.url);
+  // Articles published from the CMS are not archived pages and have their own template.
+  const catalog = JSON.parse(readFileSync(new URL('../content.json', import.meta.url), 'utf8'));
+  const published = new Set(catalog.items.map((item) => item.slug));
   const postDirectories = readdirSync(postsDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory());
+    .filter((entry) => entry.isDirectory() && !published.has(entry.name));
 
   assert.ok(postDirectories.length > 0, 'Expected archived article pages');
   for (const entry of postDirectories) {
