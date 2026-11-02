@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { parseHTML } from 'linkedom';
 import {
   counterpartPath,
+  fallbackPath,
   installLanguageSwitch,
   isEnglishPath,
   languageDestination,
@@ -31,14 +33,22 @@ test('isEnglishPath only matches the /en section', () => {
   assert.equal(isEnglishPath(`${B}/news`), false);
 });
 
-test('destination follows live: existing twin, VI to missing EN is a 404, EN to missing VI stays', async () => {
+test('a page with a twin goes to it; articles without one go to News, other pages to the home page', async () => {
   const present = new Set([`${B}/en/our-work`, `${B}/our-work`]);
   const exists = async path => present.has(path);
   assert.equal(await languageDestination({ pathname: `${B}/our-work/`, wantsEnglish: true, exists }), `${B}/en/our-work`);
   assert.equal(await languageDestination({ pathname: `${B}/en/our-work`, wantsEnglish: false, exists }), `${B}/our-work`);
-  assert.equal(await languageDestination({ pathname: `${B}/post/animation-la-gi`, wantsEnglish: true, exists }), `${B}/en/post/animation-la-gi`);
-  assert.equal(await languageDestination({ pathname: `${B}/en/post/types-jobs-animation-house`, wantsEnglish: false, exists }), null);
+  assert.equal(await languageDestination({ pathname: `${B}/post/animation-la-gi`, wantsEnglish: true, exists }), `${B}/en/news`);
+  assert.equal(await languageDestination({ pathname: `${B}/en/post/types-jobs-animation-house`, wantsEnglish: false, exists }), `${B}/news`);
+  assert.equal(await languageDestination({ pathname: `${B}/en/webinar`, wantsEnglish: false, exists }), `${B}/`);
+  assert.equal(await languageDestination({ pathname: `${B}/freefirehack-x`, wantsEnglish: true, exists }), `${B}/en`);
   assert.equal(await languageDestination({ pathname: `${B}/our-work`, wantsEnglish: false, exists }), null, 'already Vietnamese');
+});
+
+test('the fallback depends only on the page type and the wanted language', () => {
+  assert.equal(fallbackPath(`${B}/post/x/`, true), `${B}/en/news`);
+  assert.equal(fallbackPath(`${B}/en/post/x`, false), `${B}/news`);
+  assert.equal(fallbackPath(`${B}/en/careers`, false), `${B}/`);
 });
 
 function harness(pathname, present) {
@@ -89,4 +99,43 @@ test('unrelated clicks are ignored', async () => {
 test('install is skipped when there is no window or fetch', () => {
   assert.equal(installLanguageSwitch({}, null, fetch), false);
   assert.equal(installLanguageSwitch({}, { addEventListener() {} }, null), false);
+});
+
+test('a fallback drops the query, which belongs to the page left behind', async () => {
+  const h = harness(`${B}/post/x`, new Set());
+  await h.click('dropdown-option-en');
+  assert.deepEqual(h.assigned, [`${B}/en/news`]);
+});
+
+function languageDom(body, pathname) {
+  const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${body}</body></html>`);
+  const win = { location: { pathname, search: '', hash: '', assign() {} }, addEventListener: (type, fn) => { window.__click = fn; },
+    getComputedStyle: () => ({ color: 'rgb(255, 255, 255)' }) };
+  return { document, win, click: target => window.__click({ target, stopImmediatePropagation() {}, preventDefault() {} }) };
+}
+
+test('an empty header slot gets a working control for the current language', async () => {
+  const f = languageDom('<div id="comp-a_r_comp-m73k8b651"></div><div id="comp-b_r_comp-m7nfzsy49"></div><div id="comp-c_r_comp-other"></div>', `${B}/en/all-project/x`);
+  assert.equal(installLanguageSwitch(f.document, f.win, async () => ({ ok: true })), true);
+  const controls = [...f.document.querySelectorAll('[data-testid="language-selector-container"]')];
+  assert.equal(controls.length, 2);
+  const handle = controls[0].querySelector('[data-testid="languages-dropdown-handle"]');
+  assert.equal(handle.textContent, 'EN');
+  assert.ok(f.document.querySelector('[data-testid="dropdown-option-vi"]'));
+  assert.ok(f.document.getElementById('deedee-language-switch-style'), 'styles are added once');
+  await f.click(handle);
+  assert.equal(handle.getAttribute('aria-expanded'), 'true');
+  assert.equal(controls[0].querySelector('[role="menu"]').getAttribute('aria-hidden'), 'false');
+  await f.click(f.document.body);
+  assert.equal(handle.getAttribute('aria-expanded'), 'false', 'a click elsewhere closes it');
+});
+
+test('a control already in the page is left alone but still opens', async () => {
+  const f = languageDom(`<div id="comp-a_r_comp-m73k8b651" data-testid="language-selector-container"><div data-testid="languages-dropdown-handle-container">
+    <button data-testid="languages-dropdown-handle" aria-expanded="false">VI</button><div role="menu" aria-hidden="true"></div></div></div>`, `${B}/news`);
+  installLanguageSwitch(f.document, f.win, async () => ({ ok: true }));
+  const handle = f.document.querySelector('[data-testid="languages-dropdown-handle"]');
+  await f.click(handle);
+  assert.ok(handle.closest('[data-testid="languages-dropdown-handle-container"]').classList.contains('FDTMKK'));
+  assert.equal(f.document.querySelectorAll('[data-deedee-language]').length, 0);
 });
