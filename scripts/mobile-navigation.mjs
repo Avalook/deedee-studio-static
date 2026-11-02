@@ -23,6 +23,18 @@ function menuPortalFor(button, doc) {
   return portalId ? doc.getElementById(portalId) : null;
 }
 
+const MENU_STYLE_ID = 'deedee-mobile-menu-style';
+// Live Wix's rows: right aligned, 58px high, a hairline between them, the current page in the site's purple.
+const MENU_STYLES = `
+[data-deedee-mobile-menu-content] { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; }
+[data-deedee-mobile-menu-content] nav { display: flex; flex-direction: column; width: 100%; background: #fff; border-radius: 0 0 24px 24px; overflow: hidden; }
+[data-deedee-mobile-menu-content] a { box-sizing: border-box; display: flex; align-items: center; justify-content: flex-end; height: 58px; padding: 0 24px; border-top: 1px solid #dfe5ec; color: #000; font-size: 17.65px; line-height: 25px; text-decoration: none; white-space: nowrap; }
+[data-deedee-mobile-menu-content] a[aria-current="page"] { color: #a033e0; }
+/* The home page's own menu rules in mobile-menu-parity.css are stronger than the ones above. */
+#comp-m7hggz5t1 [data-deedee-mobile-menu-content] nav > a { top: 0 !important; border-top: 1px solid #dfe5ec !important; }
+#comp-m7hggz5t1 [data-deedee-mobile-menu-content] nav > a[aria-current="page"] { color: #a033e0 !important; }
+`;
+
 function populateMenuOverlay(overlay, doc) {
   // The static copy lacks Wix's runtime rule that re-enables taps under pointer-events:none containers.
   overlay.querySelectorAll('nav[data-deedee-mobile-menu]').forEach(nav => { nav.style.pointerEvents = 'auto'; });
@@ -33,17 +45,56 @@ function populateMenuOverlay(overlay, doc) {
   const content = [...overlay.querySelectorAll('[data-testid="responsive-container-content"]')].at(-1);
   if (!template || !content) return false;
 
+  addMenuStyles(doc);
   const wrapper = doc.createElement('div');
   wrapper.setAttribute('data-deedee-mobile-menu-content', '');
-  wrapper.style.cssText = 'box-sizing:border-box;width:100%;min-width:0;max-width:100%;';
-  const menu = template.cloneNode(true);
-  menu.style.setProperty('width', '100%', 'important');
-  menu.style.setProperty('max-width', '100%', 'important');
+  const menu = doc.createElement('nav');
+  menu.setAttribute('data-deedee-mobile-menu', '');
+  menu.setAttribute('aria-label', 'Site');
   menu.style.pointerEvents = 'auto';
+  const links = topLevelLinks(template);
+  const here = currentPath(doc.location?.pathname);
+  for (const link of links) {
+    const item = doc.createElement('a');
+    item.setAttribute('href', link.getAttribute('href'));
+    item.textContent = link.textContent.trim();
+    if (currentPath(link.getAttribute('href')) === here) item.setAttribute('aria-current', 'page');
+    menu.append(item);
+  }
+  // The site's font is set on the label inside each link, not on the link.
+  const label = links[0]?.querySelector('span') ?? links[0];
+  const font = label && doc.defaultView?.getComputedStyle?.(label).fontFamily;
+  if (font) wrapper.style.fontFamily = font;
   wrapper.append(menu);
   const closeButton = content.querySelector('[data-semantic-classname="hamburger-close-button"]');
   content.insertBefore(wrapper, closeButton || content.firstElementChild);
   return true;
+}
+
+/** The first level only: "Career" opens a submenu on desktop, and the phone menu shows six rows. */
+function topLevelLinks(template) {
+  const seen = new Set();
+  return [...template.querySelectorAll('a[href]')].filter(link => {
+    const depth = link.closest('[data-item-depth]')?.getAttribute('data-item-depth') ?? '0';
+    const href = link.getAttribute('href');
+    if (depth !== '0' || seen.has(href)) return false;
+    seen.add(href);
+    return true;
+  });
+}
+
+function currentPath(path) {
+  let value = String(path ?? '');
+  try { value = decodeURI(new URL(value, 'https://deedee.invalid/').pathname); } catch { /* keep the raw path */ }
+  return value.replace(/\/+$/, '');
+}
+
+function addMenuStyles(doc) {
+  if (!doc.head || doc.getElementById(MENU_STYLE_ID)) return;
+  const style = doc.createElement('style');
+  style.id = MENU_STYLE_ID;
+  style.textContent = MENU_STYLES;
+  doc.head.append(style);
 }
 
 function setMenuState(overlay, doc, open, openerButton = null, restoreFocus = true) {
