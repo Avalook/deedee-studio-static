@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "revisionId": "rev_fea27934-08ab-41ba-8030-e941c1a302a8",
-  "publishedAt": "2026-11-02T03:51:51.718Z",
+  "revisionId": "rev_f8f37649-3358-40c2-9be2-4adc15014941",
+  "publishedAt": "2026-11-02T03:52:30.214Z",
   "publishedBy": "admin",
   "pages": {
     "/": {
@@ -46,6 +46,34 @@
               "y": 0.1
             }
           }
+        }
+      ],
+      "insertions": []
+    },
+    "*": {
+      "schemaVersion": 1,
+      "pageId": "*",
+      "operations": [
+        {
+          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > a:nth-of-type(1) > div:nth-of-type(1) > p:nth-of-type(2)",
+          "offsets": {
+            "desktop": {
+              "x": -0.83,
+              "y": 1.22
+            }
+          }
+        },
+        {
+          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > a:nth-of-type(1)",
+          "deleted": true
+        },
+        {
+          "selector": "#cms-content-title",
+          "deleted": true
+        },
+        {
+          "selector": "#PAGE_SECTIONSsvzgj > section:nth-of-type(2)",
+          "deleted": true
         }
       ],
       "insertions": []
