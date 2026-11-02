@@ -117,14 +117,15 @@ const switchLanguage = async (route, to) => {
   return new URL(p.url()).pathname.replace(/^\/deedee-studio-static/, '').replace(/\/$/, '') || '/';
 };
 for (const [route, to, expected] of [
-  ['/post/animation-la-gi', 'en', '/en/post/animation-la-gi'],
-  ['/en/post/types-jobs-animation-house', 'vi', '/en/post/types-jobs-animation-house'],
+  // Articles have no twin in the other language, so they go to its News page (live Wix shows a 404).
+  ['/post/animation-la-gi', 'en', '/en/news'],
+  ['/en/post/types-jobs-animation-house', 'vi', '/news'],
   ['/our-work', 'en', '/en/our-work'],
   ['/en/news', 'vi', '/news'],
 ]) {
   await check(`language switch ${route} -> ${to}`, async () => {
     const got = await switchLanguage(route, to);
-    return { ok: got === expected, note: `lands on ${got} (live: ${expected})` };
+    return { ok: got === expected, note: `lands on ${got} (expected: ${expected})` };
   });
 }
 
