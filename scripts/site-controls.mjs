@@ -8,6 +8,7 @@ import { installProjectDetailBack } from './project-detail-navigation.mjs';
 import { installGalleryScaling } from './gallery-scale.mjs';
 import { installPostRootSize } from './post-root-size.mjs';
 import { installLanguageSwitch } from './language-switch.mjs';
+import { installProjectMobileVideo } from './project-mobile-video.mjs';
 import './project-video-player.mjs';
 import { installCmsOverrides } from './cms-overrides.mjs';
 import { installViewerFeedbackStyles } from './viewer-feedback.mjs';
@@ -384,6 +385,19 @@ export function syncScrollbarWidth(root = document, win = globalThis.window) {
   return width;
 }
 
+/** The 1-based ?tab=N links from the home page's category cards, as a data-idx. */
+export function requestedTabIndex(search) {
+  const tab = Number(new URLSearchParams(search ?? '').get('tab'));
+  return Number.isInteger(tab) && tab > 0 ? tab - 1 : null;
+}
+
+function openRequestedTab(root, search) {
+  const index = requestedTabIndex(search);
+  if (index === null) return;
+  const tab = root.querySelector?.(`[data-hook="tab-item"][role="tab"][data-idx="${index}"]`);
+  if (tab && tab.getAttribute('aria-selected') !== 'true') tab.click();
+}
+
 /** The project lists use "Xem thêm" (VI) and "See more" (EN); testimonials say "Show More". */
 export function isLoadMoreLabel(label) {
   return /(?:show|see) more|xem thêm/i.test(String(label ?? ''));
@@ -394,6 +408,8 @@ export function installSiteControls(root = document, pathname = location.pathnam
   installGalleryScaling(root);
   installPostRootSize(root);
   installLanguageSwitch(root);
+  installProjectMobileVideo(root);
+  openRequestedTab(root, globalThis.location?.search);
   installCmsOverrides(root, globalThis.window);
   installViewerFeedbackStyles(root, globalThis.window);
   installFormSubmit(root, globalThis.window);

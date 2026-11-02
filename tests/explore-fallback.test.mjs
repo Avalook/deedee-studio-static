@@ -28,66 +28,16 @@ test('explore redirects to the Wix English 404 while the GitHub fallback remains
   assert.match(githubFallback, /href="\/deedee-studio-static\/"[^>]*>\s*Đi tới Trang chủ/);
 });
 
-test('Wix 404 route portfolio-tabs/2 redirects to its English fallback', async () => {
-  const redirect = await readFile(new URL('../portfolio-tabs/2/index.html', import.meta.url), 'utf8');
-  const english = await readFile(new URL('../en/portfolio-tabs/2/index.html', import.meta.url), 'utf8');
-  const manifest = JSON.parse(await readFile(new URL('../manifest.json', import.meta.url), 'utf8'));
-  const refresh = redirect.match(/<meta http-equiv="refresh" content="0;url=([^"]+)">/);
-
-  assert.equal(refresh?.[1], '../../en/portfolio-tabs/2/');
-  assert.match(redirect, /window\.location\.replace/);
-  assert.match(english, /<title>404 Error: Page Not Found<\/title>/);
-  assert.match(english, /ERROR: PAGE NOT FOUND/);
-  assert.match(english, /This page isn’t available\./);
-  assert.match(english, /Go to Homepage/);
-
-  for (const route of ['/portfolio-tabs/2', '/en/portfolio-tabs/2']) {
-    const page = manifest.pages.find((entry) => entry.route === route);
-    assert.equal(page?.title, '404 Error: Page Not Found', `${route} manifest title should match Wix`);
+test('the old portfolio-tabs routes redirect to the matching tab of Our work, in their own language', async () => {
+  const base = '/deedee-studio-static';
+  for (const [prefix, language] of [['', 'vi'], ['en/', 'en']]) {
+    for (const tab of ['1', '2', '3', '4']) {
+      const html = await readFile(new URL(`../${prefix}portfolio-tabs/${tab}/index.html`, import.meta.url), 'utf8');
+      const target = `${base}/${prefix}our-work/${tab === '1' ? '' : `?tab=${tab}`}`;
+      assert.match(html, new RegExp(`<html lang="${language}">`));
+      assert.ok(html.includes(`<meta http-equiv="refresh" content="0; url=${target}">`), `${prefix}portfolio-tabs/${tab}`);
+      assert.ok(html.includes('content="noindex"'));
+      assert.doesNotMatch(html, /404/);
+    }
   }
-});
-
-test('Wix 404 routes portfolio-tabs/3 and /4 mirror the localized Wix error template', async () => {
-  const manifest = JSON.parse(await readFile(new URL('../manifest.json', import.meta.url), 'utf8'));
-  const expectedHtml = await readFile(new URL('../en/portfolio-tabs/3/index.html', import.meta.url), 'utf8');
-
-  assert.match(expectedHtml, /<title>404 Error: Page Not Found<\/title>/);
-  assert.match(expectedHtml, /href="https:\/\/static\.parastorage\.com\/services\/classic-error-pages-statics\/1\.98\.0\/app\.min\.css"/);
-  assert.match(expectedHtml, /madefor\.min\.css/);
-  assert.match(expectedHtml, /madeforDisplay\.min\.css/);
-  assert.match(expectedHtml, /class="ECJ82r" data-error-code="404" data-hook="root"/);
-  assert.match(expectedHtml, /class="foBJFG ohOhpx" data-hook="error-app"/);
-  assert.match(expectedHtml, /ERROR: PAGE NOT FOUND/);
-  assert.match(expectedHtml, /This page isn’t available\./);
-  assert.match(expectedHtml, /Go to Homepage/);
-  assert.match(expectedHtml, /href="\.\.\/\.\.\/\.\.\/"/);
-
-  for (const route of ['3', '4']) {
-    const redirect = await readFile(new URL(`../portfolio-tabs/${route}/index.html`, import.meta.url), 'utf8');
-    const english = await readFile(new URL(`../en/portfolio-tabs/${route}/index.html`, import.meta.url), 'utf8');
-    const refresh = redirect.match(/<meta http-equiv="refresh" content="0;url=([^"]+)">/);
-
-    assert.equal(refresh?.[1], `..\/..\/en\/portfolio-tabs\/${route}\/`);
-    assert.match(redirect, /window\.location\.replace/);
-    assert.equal(english, expectedHtml, `en/portfolio-tabs/${route} should use the shared Wix 404`);
-
-    const routeRecords = manifest.pages.filter((page) => page.route === `/portfolio-tabs/${route}` || page.route === `/en/portfolio-tabs/${route}`);
-    assert.equal(routeRecords.length, 2);
-    assert.ok(routeRecords.every((page) => page.title === '404 Error: Page Not Found'));
-  }
-
-  const portfolioTwo = manifest.pages.find((page) => page.route === '/portfolio-tabs/2');
-  assert.equal(portfolioTwo?.title, '404 Error: Page Not Found');
-});
-
-test('Wix 404 route portfolio-tabs/1 redirects to the local English fallback', async () => {
-  const redirect = await readFile(new URL('../portfolio-tabs/1/index.html', import.meta.url), 'utf8');
-  const english = await readFile(new URL('../en/portfolio-tabs/1/index.html', import.meta.url), 'utf8');
-  const expected = await readFile(new URL('../en/portfolio-tabs/3/index.html', import.meta.url), 'utf8');
-  const refresh = redirect.match(/<meta http-equiv="refresh" content="0;url=([^"]+)">/);
-
-  assert.equal(refresh?.[1], '../../en/portfolio-tabs/1/');
-  assert.match(redirect, /window\.location\.replace/);
-  assert.equal(english, expected);
-  assert.match(english, /<title>404 Error: Page Not Found<\/title>/);
 });
