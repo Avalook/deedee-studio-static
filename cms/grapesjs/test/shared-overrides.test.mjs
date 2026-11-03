@@ -10,11 +10,22 @@ import { SEED_DIR } from '../lib/config.mjs';
 import { syncRepository } from '../lib/hosted-repository.mjs';
 import { createContentStore } from '../lib/content-store.mjs';
 import { adoptPublishedContent, adoptPublishedOverrides, localisePublishedMedia, parsePublished, publishedElsewhere } from '../lib/shared-overrides.mjs';
+import { STATIC_BASE_PATH } from '../lib/export.mjs';
 
 const USERS = [{ id: 'user_publisher', username: 'publisher', role: 'publisher', password: 'publisher-test' }];
 const REVISION = 'rev_11111111-1111-1111-1111-111111111111';
 const FILE = '22222222-2222-2222-2222-222222222222.mp4';
 const VIDEO = Buffer.from('\0\0\0\x18ftypmp42');
+
+test('custom-domain exports use root paths and adopt both root and previous project media', () => {
+  assert.equal(STATIC_BASE_PATH, '');
+  const result = localisePublishedMedia([
+    { video: `/assets/cms/${FILE}` },
+    { video: `/deedee-studio-static/assets/cms/${FILE}` },
+  ]);
+  assert.deepEqual(result.pages, [{ video: `/media/${FILE}` }, { video: `/media/${FILE}` }]);
+  assert.deepEqual(result.files, [FILE]);
+});
 const page = (pageId, operations = [], insertions = []) => ({ schemaVersion: 1, pageId, operations, insertions });
 const published = (revisionId = REVISION) => ({ version: 1, revisionId, publishedAt: '2026-10-30T00:00:00.000Z', publishedBy: 'admin', pages: {
   '/aboutus': page('/aboutus', [{ selector: 'h1', text: 'Đã xuất bản' }],
