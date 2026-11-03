@@ -11,35 +11,39 @@
  */
 export const BASE_PATH = '/deedee-studio-static';
 const ROUTE_EXCEPTIONS = new Map([
-  [`${BASE_PATH}/aboutus`, `${BASE_PATH}/en/studio`],
-  [`${BASE_PATH}/en/studio`, `${BASE_PATH}/aboutus`],
+  ['/aboutus', '/en/studio'],
+  ['/en/studio', '/aboutus'],
 ]);
 
 export function normalizeLanguagePath(pathname) {
   let path = String(pathname || '/');
   try { path = decodeURI(path); } catch { /* keep the raw path */ }
   path = path.replace(/\/+$/, '');
-  return path || BASE_PATH;
+  return path || '/';
 }
 
 export function isEnglishPath(pathname) {
-  const path = normalizeLanguagePath(pathname);
-  return path === `${BASE_PATH}/en` || path.startsWith(`${BASE_PATH}/en/`);
+  const path = normalizeLanguagePath(pathname).replace(/^\/deedee-studio-static(?=\/|$)/, '');
+  return path === '/en' || path.startsWith('/en/');
 }
 
 /** Path of the same page in the other language. */
 export function counterpartPath(pathname) {
-  const path = normalizeLanguagePath(pathname);
+  const original = normalizeLanguagePath(pathname);
+  const base = original === BASE_PATH || original.startsWith(`${BASE_PATH}/`) ? BASE_PATH : '';
+  const path = original.slice(base.length) || '/';
   const exception = ROUTE_EXCEPTIONS.get(path);
-  if (exception) return exception;
-  if (isEnglishPath(path)) return path.slice(`${BASE_PATH}/en`.length) ? BASE_PATH + path.slice(`${BASE_PATH}/en`.length) : `${BASE_PATH}/`;
-  return path === BASE_PATH ? `${BASE_PATH}/en` : `${BASE_PATH}/en${path.slice(BASE_PATH.length)}`;
+  if (exception) return base + exception;
+  if (isEnglishPath(path)) return base + (path.slice(3) || '/');
+  return `${base}/en${path === '/' ? '' : path}`;
 }
 
 /** Where a page without a twin sends the visitor. */
 export function fallbackPath(pathname, wantsEnglish) {
-  const prefix = wantsEnglish ? `${BASE_PATH}/en` : BASE_PATH;
-  if (normalizeLanguagePath(pathname).includes('/post/')) return `${prefix}/news`;
+  const path = normalizeLanguagePath(pathname);
+  const base = path === BASE_PATH || path.startsWith(`${BASE_PATH}/`) ? BASE_PATH : '';
+  const prefix = base + (wantsEnglish ? '/en' : '');
+  if (path.includes('/post/')) return `${prefix}/news`;
   return wantsEnglish ? prefix : `${prefix}/`;
 }
 

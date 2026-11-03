@@ -244,7 +244,7 @@ export function observeEmptyWixImages(
 
   return observer;
 }
-export async function loadProjectData(fetchImpl = fetch, url = '/deedee-studio-static/project-pages.json') {
+export async function loadProjectData(fetchImpl = fetch, url = '/project-pages.json') {
   const response = await fetchImpl(url);
   if (!response.ok) throw new Error(`Project data HTTP ${response.status}`);
   return validateProjectData(await response.json());

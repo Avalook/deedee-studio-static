@@ -47,10 +47,10 @@ test('article “Xem tất cả” links resolve through the blog alias to the n
     const html = readFileSync(articlePath, 'utf8');
     const cta = html.match(/<a href="([^"]+)" class="vz0Mhy">Xem tất cả<\/a>/);
     assert.ok(cta, `Missing “Xem tất cả” CTA in ${entry.name}`);
-    assert.equal(cta[1], '/deedee-studio-static/blog/');
+    assert.equal(cta[1], '/blog/');
   }
 
   const aliasHtml = readFileSync(new URL('../blog/index.html', import.meta.url), 'utf8');
-  assert.match(aliasHtml, /url=\/deedee-studio-static\/news\//i);
+  assert.match(aliasHtml, /url=\/news\//i);
   assert.ok(existsSync(new URL('../news/index.html', import.meta.url)));
 });

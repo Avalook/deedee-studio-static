@@ -11,7 +11,7 @@ test('English homepage preserves the Wix-sized About Us section and uses the rep
   // The same repaired stylesheet as the Vietnamese homepage (the old 1px fixer is gone).
   assert.match(html, /7abd70d1cb9f053ad3e8f7c7\.css\?v=6/);
   assert.match(aboutSection, /id="comp-m8e63qxx"/);
-  assert.match(html, /href="\/deedee-studio-static\/assets\/en-homepage-parity\.css"/);
+  assert.match(html, /href="\/assets\/en-homepage-parity\.css"/);
   assert.match(parityCss, /@media screen and \(min-width:\s*1101px\)/);
   // The three news cards are visible on live, so nothing hides or shrinks that gallery.
   assert.doesNotMatch(parityCss, /m8h9etbq/);

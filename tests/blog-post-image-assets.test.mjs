@@ -6,7 +6,7 @@ import test from 'node:test';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const ROUTE_FILE = path.join(ROOT, 'en/post/does-adult-animation-always-look-mature/index.html');
-const BASE = '/deedee-studio-static/';
+const BASE = '/';
 
 function readAttribute(tag, name) {
   return tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
@@ -50,7 +50,7 @@ test('Vietnamese international-collaboration article restores Wix layout and ful
 
   assert.match(
     routeHtml,
-    /href="\/deedee-studio-static\/assets\/international-collaboration-post-mobile-parity\.css"/,
+    /href="\/assets\/international-collaboration-post-mobile-parity\.css"/,
     'loads the parity rules only on this article route',
   );
   assert.match(css, /@media\s*\(max-width:\s*600px\)/);

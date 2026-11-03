@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGE_FILE = 'en/freefire/index.html';
-const BASE = '/deedee-studio-static';
+const BASE = '';
 
 // Body copy exactly as the live https://www.deedeestudio.net/en/freefire page serves it, in source order.
 const SOURCE_PARAGRAPHS = [
@@ -125,9 +125,9 @@ test('/en/freefire offers English as the current language and routes VI to /free
 
   const runtime = html.match(/<script data-deedee-local-runtime>([\s\S]*?)<\/script>/);
   assert.ok(runtime, 'the shared local runtime is injected like the sibling pages');
-  assert.ok(runtime[1].includes('"/deedee-studio-static/en/freefire":"/deedee-studio-static/freefire"'), 'EN -> VI route pair');
-  assert.ok(runtime[1].includes('"/deedee-studio-static/freefire":"/deedee-studio-static/en/freefire"'), 'VI -> EN route pair');
-  assert.ok(html.includes('<script type="module" data-deedee-site-controls src="/deedee-studio-static/scripts/site-controls.mjs">'), 'site controls are loaded');
+  assert.ok(runtime[1].includes('"/en/freefire":"/freefire"'), 'EN -> VI route pair');
+  assert.ok(runtime[1].includes('"/freefire":"/en/freefire"'), 'VI -> EN route pair');
+  assert.ok(html.includes('<script type="module" data-deedee-site-controls src="/scripts/site-controls.mjs">'), 'site controls are loaded');
 });
 
 test('Vietnamese Free Fire Hack restores the verified Wix video player', async () => {
@@ -143,8 +143,8 @@ test('Vietnamese Free Fire Hack route preserves the localized Wix page', async (
   assert.ok(html.includes('Cách đây 1 năm, nhà DeeDee có làm một chiếc clip'));
   assert.match(html, /<html lang="vi"/);
   assert.ok(html.includes('hreflang="en-us"'), 'Vietnamese route declares its English counterpart');
-  assert.ok(html.includes('/deedee-studio-static/assets/'));
-  assert.ok(html.includes('/deedee-studio-static/assets/freefire-gallery-parity.css'));
+  assert.ok(html.includes('/assets/'));
+  assert.ok(html.includes('/assets/freefire-gallery-parity.css'));
   const galleryCss = await readFile(path.join(ROOT, 'assets/freefire-gallery-parity.css'), 'utf8');
   assert.match(galleryCss, /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(galleryCss, /#comp-l9pb4sld \[data-hook="item-container"\][\s\S]*?opacity:\s*1 !important/);
@@ -154,8 +154,8 @@ test('Vietnamese Free Fire Hack route preserves the localized Wix page', async (
 
 test('/home-again follows the Wix canonical redirect to /en/home-again', async () => {
   const html = await readFile(path.join(ROOT, 'home-again/index.html'), 'utf8');
-  assert.match(html, /http-equiv="refresh" content="0;url=\/deedee-studio-static\/en\/home-again\/?"/);
-  assert.match(html, /location\.replace\(['"]\/deedee-studio-static\/en\/home-again\//);
+  assert.match(html, /http-equiv="refresh" content="0;url=\/en\/home-again\/?"/);
+  assert.match(html, /location\.replace\(['"]\/en\/home-again\//);
 });
 
 test('Vietnamese Free Fire routes its English selector to /en/freefire', async () => {
@@ -164,7 +164,7 @@ test('Vietnamese Free Fire routes its English selector to /en/freefire', async (
   const runtimeEnd = html.indexOf('</script>', runtimeStart);
   const runtime = runtimeStart < 0 || runtimeEnd < 0 ? null : html.slice(runtimeStart, runtimeEnd);
   assert.ok(runtime, 'the Vietnamese page uses the shared local runtime');
-  assert.ok(runtime.includes('"/deedee-studio-static/freefire":"/deedee-studio-static/en/freefire"'), 'VI -> EN route pair stays on the Free Fire page');
+  assert.ok(runtime.includes('"/freefire":"/en/freefire"'), 'VI -> EN route pair stays on the Free Fire page');
   assert.ok(html.includes('data-testid="dropdown-option-en"'), 'the Vietnamese selector offers English');
   assert.ok(html.includes('data-deedee-site-controls'), 'the local selector click handler is loaded');
 
@@ -181,7 +181,7 @@ test('English Free Fire Hack restores the verified Wix video player', async () =
 
 test('English Free Fire Hack restores the responsive Wix project gallery', async () => {
   const html = await readFile(path.join(ROOT, 'en/freefirehack/index.html'), 'utf8');
-  assert.ok(html.includes('href="/deedee-studio-static/assets/freefire-gallery-parity.css"'), 'the gallery parity stylesheet is loaded');
+  assert.ok(html.includes('href="/assets/freefire-gallery-parity.css"'), 'the gallery parity stylesheet is loaded');
   const galleryCss = await readFile(path.join(ROOT, 'assets/freefire-gallery-parity.css'), 'utf8');
   assert.match(galleryCss, /#comp-l9pb4sld #pro-gallery-margin-container-comp-l9pb4sld[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(galleryCss, /\[data-hook="item-link-wrapper"\]\[data-idx="2"\][\s\S]*?grid-column:\s*2[\s\S]*?grid-row:\s*2/);
@@ -202,7 +202,7 @@ test('/en/freefire loads nothing from Wix at runtime', async () => {
   assert.equal((html.match(/url\((["']?)https?:\/\/|url\((["']?)\/\//g) ?? []).length, 0, 'no stylesheet url() is remote');
   assert.equal((html.match(/<script(?![^>]*data-deedee-)/g) ?? []).length, 0, 'only the local runtime modules are loaded');
 
-  const assetRefs = [...new Set(html.match(/\/deedee-studio-static\/assets\/[^"')\s]+/g) ?? [])];
+  const assetRefs = [...new Set(html.match(/\/assets\/[^"')\s]+/g) ?? [])];
   assert.ok(assetRefs.length > 100, 'the page references its archived assets');
   for (const reference of assetRefs) {
     assert.ok(existsSync(path.join(ROOT, reference.slice(BASE.length))), `${reference} exists on disk`);

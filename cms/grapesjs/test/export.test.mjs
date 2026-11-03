@@ -37,7 +37,7 @@ test('uploaded images are rewritten to the static asset path', () => {
   const input = { '/x': page('/x', [{ selector: '#img', image: `/media/${FILE}` }]) };
   const { pages, files } = rewriteUploadedMedia(input);
   assert.deepEqual(files, [FILE]);
-  assert.equal(pages['/x'].operations[0].image, `/deedee-studio-static/assets/cms/${FILE}`);
+  assert.equal(pages['/x'].operations[0].image, `/assets/cms/${FILE}`);
   assert.equal(input['/x'].operations[0].image, `/media/${FILE}`, 'input is not mutated');
 });
 
@@ -57,7 +57,7 @@ test('export writes the overrides, the runtime and referenced uploads, atomicall
   const written = JSON.parse(await fs.readFile(path.join(out, 'site-overrides.json'), 'utf8'));
   assert.equal(written.revisionId, 'rev_x');
   assert.equal(written.pages['/aboutus'].operations[0].text, 'Xin chào');
-  assert.equal(written.pages['/aboutus'].operations[1].image, `/deedee-studio-static/assets/cms/${FILE}`);
+  assert.equal(written.pages['/aboutus'].operations[1].image, `/assets/cms/${FILE}`);
   assert.equal(await fs.readFile(path.join(out, 'scripts', 'cms-runtime.js'), 'utf8'), '/* runtime */');
   assert.deepEqual([...await fs.readFile(path.join(out, 'assets', 'cms', FILE))], [1, 2, 3]);
   assert.deepEqual((await fs.readdir(out)).filter(name => name.endsWith('.tmp')), []);

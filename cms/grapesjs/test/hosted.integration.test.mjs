@@ -117,6 +117,6 @@ test('hosted HTTP flow persists drafts, proxies prefixed archive, uploads and pu
   assert.equal((await published.json()).export.git.pushed, true);
   const contents = JSON.parse(git(['show', 'main:site-overrides.json'], remote));
   assert.equal(contents.pages['/'].operations[0].text, 'Published online');
-  assert.match(contents.pages['/'].operations[1].image, /^\/deedee-studio-static\/assets\/cms\//);
+  assert.match(contents.pages['/'].operations[1].image, /^\/assets\/cms\//);
   assert.ok((await readFile(path.join(checkout, 'assets', 'cms', path.basename(asset.src)))).length > 0);
 });

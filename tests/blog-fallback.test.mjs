@@ -4,7 +4,7 @@ import test from 'node:test';
 
 // Wix sends /blog to an /explore 404; the Vietnamese alias is repaired to the news listing (see common-shell-image-paths.test.mjs).
 const fallbacks = [
-  ['blog/index.html', '/deedee-studio-static/news/'],
+  ['blog/index.html', '/news/'],
   ['en/blog/index.html', '../explore/'],
 ];
 

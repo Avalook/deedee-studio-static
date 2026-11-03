@@ -8,6 +8,6 @@ test('recent article CTA follows the source /blog destination while menu news st
   const cta = article.match(/<a href="([^"]+)" class="vz0Mhy">Xem tất cả<\/a>/);
 
   assert.ok(cta, 'recent-post CTA should be present');
-  assert.equal(cta[1], '/deedee-studio-static/blog/');
-  assert.match(homepage, /<a href="\/deedee-studio-static\/news\/"[^>]*>(?:(?!<\/a>)[\s\S])*?Tin tức(?:(?!<\/a>)[\s\S])*?<\/a>/);
+  assert.equal(cta[1], '/blog/');
+  assert.match(homepage, /<a href="\/news\/"[^>]*>(?:(?!<\/a>)[\s\S])*?Tin tức(?:(?!<\/a>)[\s\S])*?<\/a>/);
 });

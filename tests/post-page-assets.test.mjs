@@ -21,7 +21,7 @@ test('uses archived original images on the Storyboard 101 post page', async () =
   ];
 
   for (const [hash, count] of imageCounts) {
-    const localPath = `/deedee-studio-static/assets/${hash}.png`;
+    const localPath = `/assets/${hash}.png`;
     assert.equal(html.split(`src="${localPath}"`).length - 1, count);
     assert.ok((await readFile(path.join(root, 'assets', `${hash}.png`))).byteLength > 0);
     assert.doesNotMatch(

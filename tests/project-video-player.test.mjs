@@ -117,7 +117,7 @@ test('let-victory page loads the player module and keeps the Wix aspect ratio', 
   const html = fs.readFileSync(pageFile, 'utf8');
   assert.match(
     html,
-    /<script type="module" data-deedee-project-video-player src="\/deedee-studio-static\/scripts\/project-video-player\.mjs">/,
+    /<script type="module" data-deedee-project-video-player src="\/scripts\/project-video-player\.mjs">/,
     'the page must load scripts/project-video-player.mjs as a module',
   );
   const aspectRule = /#comp-mtcnqx5k\{[^}]*--aspect-ratio:([\d.]+)/.exec(html);

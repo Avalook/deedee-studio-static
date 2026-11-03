@@ -77,7 +77,7 @@ test('content export writes exact owned files, rewrites media and deletes only g
   assert.ok(result.files.includes('post/bai-moi/index.html'));
   assert.ok(result.files.every((name) => !name.startsWith('cms/')));
   const catalog = JSON.parse(await readFile(path.join(outDir, 'content.json'), 'utf8'));
-  assert.equal(catalog.items[0].cover, `/deedee-studio-static/assets/cms/${file}`);
+  assert.equal(catalog.items[0].cover, `/assets/cms/${file}`);
   await mkdir(path.join(outDir, 'post', 'archived'), { recursive: true }); await writeFile(path.join(outDir, 'post', 'archived', 'index.html'), 'keep');
   const removed = await exportContent({ ...args, previousItems: [published], items: [] });
   assert.ok(removed.files.includes('post/bai-moi/index.html'));

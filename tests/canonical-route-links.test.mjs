@@ -244,7 +244,7 @@ test('archives the verified Wix 404 at the exact English 12-rules route', async 
   const markup = await readFile(path.join(root, page.file), 'utf8');
   assert.match(markup, /<h1 class="error-page__code">404<\/h1>/);
   assert.match(markup, /This page is unavailable\./);
-  assert.match(markup, /href="\/deedee-studio-static\/en\/"/);
+  assert.match(markup, /href="\/en\/"/);
 });
 
 test('archives the verified English webinar route and localizes its Wix media', async () => {
@@ -259,7 +259,7 @@ test('archives the verified English webinar route and localizes its Wix media', 
   assert.equal(page?.captureStatus, 200);
   assert.match(page?.title ?? '', /WEBINAR/);
   const markup = await readFile(path.join(root, page.file), 'utf8');
-  assert.match(markup, /rel="canonical" href="\/deedee-studio-static\/en\/webinar"/);
+  assert.match(markup, /rel="canonical" href="\/en\/webinar"/);
   const activeMediaUrls = [];
   const visit = node => {
     if (node.tagName !== 'script') {
@@ -290,8 +290,8 @@ test('archives the linked webinar detail page and points its card to the local r
     readFile(path.join(root, page.file), 'utf8'),
     readFile(path.join(root, 'en/webinar/index.html'), 'utf8'),
   ]);
-  assert.match(detail, /rel="canonical" href="\/deedee-studio-static\/en\/webinar-popular-types-animation"/);
-  assert.match(webinar, /href="\/deedee-studio-static\/en\/webinar-popular-types-animation\/"/);
+  assert.match(detail, /rel="canonical" href="\/en\/webinar-popular-types-animation"/);
+  assert.match(webinar, /href="\/en\/webinar-popular-types-animation\/"/);
 });
 
 test('preserves the three source-equivalent webinar title labels without hrefs', async () => {
@@ -325,11 +325,11 @@ test('preserves the three source-equivalent webinar title labels without hrefs',
     { dataquery: '#textLink_ktfik4wp', text: 'Popular types of animation in advertising' },
   ]);
   assert.deepEqual(cardLinks, [
-    { motionPart: 'BG_LAYER comp-l9pr35on1__item3', href: '/deedee-studio-static/en/', target: '_self' },
-    { motionPart: 'BG_LAYER comp-l9pr35on1__item4', href: '/deedee-studio-static/en/', target: '_self' },
+    { motionPart: 'BG_LAYER comp-l9pr35on1__item3', href: '/en/', target: '_self' },
+    { motionPart: 'BG_LAYER comp-l9pr35on1__item4', href: '/en/', target: '_self' },
     {
       motionPart: 'BG_LAYER comp-l9pr35on1__item8',
-      href: '/deedee-studio-static/en/webinar-popular-types-animation/',
+      href: '/en/webinar-popular-types-animation/',
       target: '_blank',
     },
   ]);
@@ -347,11 +347,11 @@ test('routes the retired Vietnamese explore alias to the verified English Wix 40
   ].map(file => readFile(path.join(root, file), 'utf8')));
   const refreshTarget = markup => markup.match(/<meta http-equiv="refresh" content="([^"]+)"/i)?.[1] ?? null;
   // The Vietnamese /blog alias is intentionally repaired to the news listing; the English alias keeps Wix's /explore 404.
-  assert.equal(new URL(refreshTarget(blog).split('url=')[1], 'https://local.test/deedee-studio-static/blog/').pathname,
-    '/deedee-studio-static/news/');
-  assert.equal(new URL(refreshTarget(enBlog).split('url=')[1], 'https://local.test/deedee-studio-static/en/blog/').pathname,
-    '/deedee-studio-static/en/explore/');
-  assert.equal(refreshTarget(explore), '0;url=/deedee-studio-static/en/explore/');
-  assert.match(explore, /href="\/deedee-studio-static\/en\/explore\/"/);
+  assert.equal(new URL(refreshTarget(blog).split('url=')[1], 'https://local.test/blog/').pathname,
+    '/news/');
+  assert.equal(new URL(refreshTarget(enBlog).split('url=')[1], 'https://local.test/en/blog/').pathname,
+    '/en/explore/');
+  assert.equal(refreshTarget(explore), '0;url=/en/explore/');
+  assert.match(explore, /href="\/en\/explore\/"/);
   assert.match(enExplore, /<h1 class="error-page__code">404<\/h1>/);
 });

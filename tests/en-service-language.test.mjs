@@ -31,6 +31,6 @@ test('/en/service exposes English header and selector state', async () => {
 
   const localRuntime = html.match(/<script[^>]*data-deedee-local-runtime[^>]*>([\s\S]*?)<\/script>/i);
   assert.ok(localRuntime, 'the localized route handler is available');
-  assert.match(localRuntime[1], /"\/deedee-studio-static\/en\/service":"\/deedee-studio-static\/service"/);
-  assert.match(localRuntime[1], /"\/deedee-studio-static\/service":"\/deedee-studio-static\/en\/service"/);
+  assert.match(localRuntime[1], /"\/en\/service":"\/service"/);
+  assert.match(localRuntime[1], /"\/service":"\/en\/service"/);
 });

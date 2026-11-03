@@ -58,7 +58,7 @@ export function installMediaMotion(root = document, pathname = location.pathname
     const index = players.indexOf(wrapper);
     if (!wrapper || index < 0) return;
     event.preventDefault();
-    const response = await fetch('/deedee-studio-static/media-sources.json');
+    const response = await fetch(new URL('../media-sources.json', import.meta.url));
     if (!response.ok) return;
     const data = await response.json();
     const player = createPlayer(root, data.pages?.[route]?.[index]);

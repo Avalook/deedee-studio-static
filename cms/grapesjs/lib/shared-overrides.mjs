@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { collectPageDocuments, STATIC_BASE_PATH } from './export.mjs';
+import { collectPageDocuments } from './export.mjs';
 import { remoteFile } from './hosted-repository.mjs';
 import { detectMedia, MEDIA_EXTENSIONS } from './media.mjs';
 
@@ -10,7 +10,7 @@ import { detectMedia, MEDIA_EXTENSIONS } from './media.mjs';
  */
 const OVERRIDES_FILE = 'site-overrides.json';
 const CONTENT_FILE = 'content.json';
-const PUBLISHED_MEDIA = new RegExp(`${STATIC_BASE_PATH}/assets/cms/([a-f0-9-]{36}\\.(?:${MEDIA_EXTENSIONS}))`, 'gi');
+const PUBLISHED_MEDIA = new RegExp(`(?:/deedee-studio-static)?/assets/cms/([a-f0-9-]{36}\\.(?:${MEDIA_EXTENSIONS}))`, 'gi');
 
 /** Undo rewriteUploadedMedia so that adopted documents use the /media/ references the editor understands. */
 export function localisePublishedMedia(pages) {

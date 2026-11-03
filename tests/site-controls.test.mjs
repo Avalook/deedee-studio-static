@@ -121,13 +121,13 @@ test('English Service route matches source content and uses English local naviga
   const html = readFileSync(new URL('../en/service/index.html', import.meta.url), 'utf8');
   assert.ok(html.includes('<html lang="en">'));
   assert.ok(html.includes('<title>SERVICE | DeeDee Studio</title>'));
-  assert.ok(html.includes('rel="canonical" href="/deedee-studio-static/en/service"'));
+  assert.ok(html.includes('rel="canonical" href="/en/service"'));
   assert.ok(html.includes('DeeDee Animation studio offers high-quality animation production services from concept and storyboard to animation and postproduction.'));
   assert.ok(html.includes('TRULY CREATIVE SERVICES'));
   assert.ok(html.includes('INTERNATIONAL STANDARD PIPELINE'));
   assert.ok(html.includes('EXCELLENT PROJECT MANAGEMENT'));
-  assert.ok(html.includes('href="/deedee-studio-static/en/our-work/"'));
-  assert.ok(html.includes('href="/deedee-studio-static/en/service/"'));
+  assert.ok(html.includes('href="/en/our-work/"'));
+  assert.ok(html.includes('href="/en/service/"'));
   const galleryTitles = [...html.matchAll(/data-hook="item-title"[^>]*><span>([^<]+)<[/]span>/g)].map(([, title]) => title);
   assert.deepEqual(galleryTitles, [
     'SCRIPT WRITING',
@@ -148,21 +148,21 @@ test('English Service route matches source content and uses English local naviga
 test('English About us route is captured with matching page metadata', () => {
   const html = readFileSync(new URL('../en/aboutus/index.html', import.meta.url), 'utf8');
   assert.match(html, /<title>ABOUT US \| DeeDee Studio<\/title>/);
-  assert.match(html, /rel="canonical" href="\/deedee-studio-static\/en\/aboutus"/);
+  assert.match(html, /rel="canonical" href="\/en\/aboutus"/);
   assert.match(html, /ABOUT US/);
 });
 
 test('homepage category image links preserve Wix tab queries while text links use the default route', () => {
   const homeHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const expectedImageRoutes = new Map([
-    ['Group 625990.png', '/deedee-studio-static/our-work/'],
-    ['Group 625993.png', '/deedee-studio-static/our-work/?tab=2'],
-    ['Group 625992.png', '/deedee-studio-static/our-work/?tab=3'],
-    ['Group 625994.png', '/deedee-studio-static/our-work/?tab=4'],
-    ['originals.png', '/deedee-studio-static/our-work/'],
-    ['long.png', '/deedee-studio-static/our-work/?tab=2'],
-    ['short.png', '/deedee-studio-static/our-work/?tab=3'],
-    ['game.png', '/deedee-studio-static/our-work/?tab=4'],
+    ['Group 625990.png', '/our-work/'],
+    ['Group 625993.png', '/our-work/?tab=2'],
+    ['Group 625992.png', '/our-work/?tab=3'],
+    ['Group 625994.png', '/our-work/?tab=4'],
+    ['originals.png', '/our-work/'],
+    ['long.png', '/our-work/?tab=2'],
+    ['short.png', '/our-work/?tab=3'],
+    ['game.png', '/our-work/?tab=4'],
   ]);
   const anchors = [...homeHtml.matchAll(/<a\b[\s\S]*?<\/a>/g)].map(([html]) => html);
 
@@ -177,7 +177,7 @@ test('homepage category image links preserve Wix tab queries while text links us
 
   const textLinks = anchors.filter((html) => /<a\b[^>]*>Long-form<\/a>/.test(html));
   assert.ok(textLinks.length > 0);
-  assert.ok(textLinks.every((html) => html.includes('href=\"/deedee-studio-static/our-work/\"')));
+  assert.ok(textLinks.every((html) => html.includes('href=\"/our-work/\"')));
 });
 
 test('project tabs reflect their selected state in the Wix-compatible URL and restore it on load', () => {
@@ -217,14 +217,14 @@ test('desktop vertical menu links preserve the original VI and EN destinations',
     return match[1];
   };
 
-  assert.equal(hrefFor('../index.html', 'Khám phá'), '/deedee-studio-static/blog/');
-  assert.equal(hrefFor('../en/index.html', 'About us'), '/deedee-studio-static/en/aboutus/');
-  assert.equal(hrefFor('../en/index.html', 'Explore'), '/deedee-studio-static/en/explore/');
+  assert.equal(hrefFor('../index.html', 'Khám phá'), '/blog/');
+  assert.equal(hrefFor('../en/index.html', 'About us'), '/en/aboutus/');
+  assert.equal(hrefFor('../en/index.html', 'Explore'), '/en/explore/');
 
   const englishExplore404 = readFileSync(new URL('../en/explore/index.html', import.meta.url), 'utf8');
   assert.match(englishExplore404, /<title>404/);
   assert.match(englishExplore404, /error-page\.css/);
-  assert.equal(hrefFor('../en/index.html', 'Service'), '/deedee-studio-static/en/service/');
+  assert.equal(hrefFor('../en/index.html', 'Service'), '/en/service/');
 });
 
 

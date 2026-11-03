@@ -185,7 +185,7 @@ test('archived page maps stay within captured cards and custom links exist', () 
     if (!item.href) continue;
     const route = decodeURIComponent(
       new URL(item.href, 'https://local.invalid').pathname
-        .replace(/^\/deedee-studio-static\//, ''),
+        .replace(/^\//, ''),
     );
     assert.ok(
       existsSync(resolve(PROJECT_ROOT, route, 'index.html')),
@@ -227,7 +227,7 @@ test('newly archived Activity cards link to exact captured Vietnamese post route
     assert.ok(item.href, `expected verified local link for ${item.title}`);
     const route = decodeURIComponent(
       new URL(item.href, 'https://local.invalid').pathname
-        .replace('/deedee-studio-static/', ''),
+        .replace('/', ''),
     );
     const pagePath = resolve(PROJECT_ROOT, route, 'index.html');
     assert.ok(existsSync(pagePath), `expected archived route for ${item.title}`);

@@ -90,21 +90,21 @@ test('EN service galleries retain all source-verified tiles and assets', () => {
       id: '9ed2eac6-3af9-497b-a11c-c8ed2b149285',
       idx: '2',
       title: 'DIALOGUE RECORDING',
-      image: '/deedee-studio-static/assets/346f26deab1bb90937a6ffe1.png',
+      image: '/assets/346f26deab1bb90937a6ffe1.png',
     },
     {
       gallery: 'comp-l9qgpx94',
       id: '8a8017bf-2697-470c-a65b-f0183a4b77ed',
       idx: '2',
       title: 'HYBRID ANIMATION',
-      image: '/deedee-studio-static/assets/df6b23b0eb2f493ee5e3f927.png',
+      image: '/assets/df6b23b0eb2f493ee5e3f927.png',
     },
     {
       gallery: 'comp-l9qgun5r',
       id: '24333271-c1f0-46e1-a3e3-75ddab0f87ea',
       idx: '2',
       title: 'EDITING',
-      image: '/deedee-studio-static/assets/be8df158304c9e209352f191.png',
+      image: '/assets/be8df158304c9e209352f191.png',
     },
   ];
 
@@ -118,7 +118,7 @@ test('EN service galleries retain all source-verified tiles and assets', () => {
       title: expected.title,
       image: expected.image,
     });
-    assert.ok(fs.existsSync(path.join(root, expected.image.replace('/deedee-studio-static/', ''))));
+    assert.ok(fs.existsSync(path.join(root, expected.image.replace('/', ''))));
   }
 });
 

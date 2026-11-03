@@ -241,7 +241,7 @@ test('the Vi homepage category cards link to the Wix tab query', async () => {
   const hrefs = [...html.matchAll(/href="([^"]*\/our-work\/[^"]*tab=\d[^"]*)"/g)].map((match) => match[1]);
 
   for (const tab of [2, 3, 4]) {
-    assert.ok(hrefs.includes(`/deedee-studio-static/our-work/?tab=${tab}`), `missing ?tab=${tab} link`);
+    assert.ok(hrefs.includes(`/our-work/?tab=${tab}`), `missing ?tab=${tab} link`);
   }
   assert.equal(hrefs.length, 6, 'each category card appears twice on the homepage');
 });

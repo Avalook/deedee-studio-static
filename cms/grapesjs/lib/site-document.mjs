@@ -5,7 +5,7 @@ const SELECTOR_ID = /^#[A-Za-z][A-Za-z0-9_-]{0,127}$/;
 // edits address it by the part that is the same everywhere: [id$="_r_comp-<shared>"].
 const SHARED_COMPONENT = '\\[id\\$="_r_comp-[A-Za-z0-9_-]{1,100}"\\]';
 const SELECTOR_PATH = new RegExp(`^(?:${SHARED_COMPONENT}|#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?(?: > (?:#[A-Za-z][A-Za-z0-9_-]{0,127}|html|body|[a-z][a-z0-9-]*)(?::nth-of-type\\([1-9]\\d{0,3}\\))?){0,40}$`);
-const LOCAL_IMAGE = /^\/deedee-studio-static\/assets\/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$/;
+const LOCAL_IMAGE = /^\/(?:deedee-studio-static\/)?assets\/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$/;
 const UPLOADED_IMAGE = /^\/media\/[a-f0-9-]{36}\.(?:png|jpe?g|webp|gif)$/i;
 const UPLOADED_VIDEO = /^\/media\/[a-f0-9-]{36}\.(?:mp4|webm)$/i;
 const DEVICE_NAMES = ['desktop', 'laptop', 'tablet', 'mobile'];

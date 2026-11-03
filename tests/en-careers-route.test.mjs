@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGE_FILE = 'en/careers/index.html';
-const BASE = '/deedee-studio-static';
+const BASE = '';
 
 // Cards as the live https://www.deedeestudio.net/en/careers listing serves them, in source order.
 const SOURCE_CARDS = [
@@ -70,13 +70,13 @@ test('/en/careers renders all ten source cards with their own post links and thu
   for (const card of SOURCE_CARDS) {
     assert.ok(titles.includes(card.title), `${card.title} keeps the source title`);
     assert.ok(html.includes(`href="${BASE}/en/post/${card.slug}/"`), `${card.title} links to its English post route`);
-    assert.ok(/src="\/deedee-studio-static\/assets\/[^"?]+\.(?:webp|avif|jpe?g|png)"/.test(html.slice(html.indexOf(`/en/post/${card.slug}/`) - 6000, html.indexOf(`/en/post/${card.slug}/`))), `${card.title} uses a locally archived thumbnail`);
+    assert.ok(/src="\/assets\/[^"?]+\.(?:webp|avif|jpe?g|png)"/.test(html.slice(html.indexOf(`href="/en/post/${card.slug}/"`) - 6000, html.indexOf(`href="/en/post/${card.slug}/"`))), `${card.title} uses a locally archived thumbnail`);
   }
 });
 
 test('/en/careers keeps the source header behaviour and internalizes every link', async () => {
   const html = await loadPage();
-  assert.equal((html.match(/href="\/deedee-studio-static\/en\/carrers\/"/g) ?? []).length, 2, 'header Career points at the directory route on Pages');
+  assert.equal((html.match(/href="\/en\/carrers\/"/g) ?? []).length, 2, 'header Career points at the directory route on Pages');
   assert.ok(!/href="https?:\/\/www\.deedeestudio\.net/.test(html), 'no site link points back to the Wix origin');
 });
 
@@ -107,7 +107,7 @@ test('/en/careers fetches nothing from Wix at runtime', async () => {
   assert.equal((html.match(/<script(?![^>]*data-deedee-)/g) ?? []).length, 0, 'only the local runtime modules are loaded');
   assert.equal((html.match(/<link[^>]*\brel="(?:preload|prefetch)"/g) ?? []).length, 0, 'no Wix bundle hints survive');
   assert.equal((html.match(/static\.wixstatic\.com\/ufonts|parastorage\.com\/fonts/g) ?? []).length, 0, 'font faces resolve to archived files');
-  const assetRefs = [...new Set(html.match(/\/deedee-studio-static\/assets\/[^"')\s]+/g) ?? [])];
+  const assetRefs = [...new Set(html.match(/\/assets\/[^"')\s]+/g) ?? [])];
   assert.ok(assetRefs.length > 40, 'the page references its archived assets');
   for (const reference of assetRefs) {
     assert.ok(existsSync(path.join(ROOT, reference.slice(BASE.length).split('?')[0])), `${reference} exists on disk`);

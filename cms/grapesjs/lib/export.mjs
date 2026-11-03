@@ -13,7 +13,7 @@ import { MEDIA_EXTENSIONS, mediaLayout } from './media.mjs';
  *   scripts/cms-runtime.js the same runtime the editor preview uses
  * The archived HTML is never edited; the pages apply the overrides when they load.
  */
-export const STATIC_BASE_PATH = '/deedee-studio-static';
+export const STATIC_BASE_PATH = '';
 const UPLOADED = new RegExp(`/media/([a-f0-9-]{36}\\.(?:${MEDIA_EXTENSIONS}))`, 'gi');
 
 export function collectPageDocuments(siteDocument) {

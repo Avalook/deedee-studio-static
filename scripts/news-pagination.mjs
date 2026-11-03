@@ -42,43 +42,43 @@ const TABS = Object.freeze({
 export const NEWS_UNARCHIVED_ACTIVITY_ITEMS = Object.freeze([
   Object.freeze({
     title: 'DeeDee x MACC: Master Class With Anime Director Ito Tomohiko (2020)',
-    href: '/deedee-studio-static/post/deedee-x-macc-master-class-with-anime-director-ito-tomohiko-2020/',
+    href: '/post/deedee-x-macc-master-class-with-anime-director-ito-tomohiko-2020/',
   }),
   Object.freeze({
     title: 'Trip 2020',
-    href: '/deedee-studio-static/post/deedee-trip-2020/',
+    href: '/post/deedee-trip-2020/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Frederic Alliod (2020)',
-    href: '/deedee-studio-static/post/a-visiting-from-mr-frederic-alliod-2020/',
+    href: '/post/a-visiting-from-mr-frederic-alliod-2020/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Phạm Quang Vinh - Director Of Kim Dong Publishing House (2020)',
-    href: '/deedee-studio-static/post/a-visiting-from-mr-ph%E1%BA%A1m-quang-vinh-director-of-kim-dong-publishing-house-2020/',
+    href: '/post/a-visiting-from-mr-ph%E1%BA%A1m-quang-vinh-director-of-kim-dong-publishing-house-2020/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Daniel Santos - Director of Sales - EMEA & APAC Of Toon Boom (2020)',
-    href: '/deedee-studio-static/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020/',
+    href: '/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020/',
   }),
   Object.freeze({
     title: 'Asia TV Forum 2019',
-    href: '/deedee-studio-static/post/deedee-attended-asia-tv-forum-market-2019/',
+    href: '/post/deedee-attended-asia-tv-forum-market-2019/',
   }),
   Object.freeze({
     title: '21st Viet Nam Film Festival 2019',
-    href: '/deedee-studio-static/post/21st-viet-nam-film-festival-2019/',
+    href: '/post/21st-viet-nam-film-festival-2019/',
   }),
   Object.freeze({
     title: 'Golden Kite Film Festival 2019',
-    href: '/deedee-studio-static/post/golden-kite-film-festival-2019-2/',
+    href: '/post/golden-kite-film-festival-2019-2/',
   }),
   Object.freeze({
     title: 'Khởi Nghiệp Animation',
-    href: '/deedee-studio-static/post/khoi-nghiep-animation/',
+    href: '/post/khoi-nghiep-animation/',
   }),
   Object.freeze({
     title: 'Biệt Đội iOn Bạc anniversary',
-    href: '/deedee-studio-static/post/series-hoat-hinh-viet/',
+    href: '/post/series-hoat-hinh-viet/',
   }),
 ]);
 
@@ -128,41 +128,41 @@ export const NEWS_UNARCHIVED_ITEMS_EN = Object.freeze({
   activity: Object.freeze([
   Object.freeze({
     title: 'DeeDee x FPT University: Talkshow \'Cartoon From A- Z\' (2020)',
-    href: '/deedee-studio-static/en/post/deedee-x-fpt-university-talkshow-cartoon-from-a-z-2020-1/',
+    href: '/en/post/deedee-x-fpt-university-talkshow-cartoon-from-a-z-2020-1/',
   }),
   Object.freeze({
     title: 'DeeDee Trip (2020)',
-    href: '/deedee-studio-static/en/post/deedee-trip-2020-1/',
+    href: '/en/post/deedee-trip-2020-1/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Frederic Alliod (2020)',
-    href: '/deedee-studio-static/en/post/a-visiting-from-mr-frederic-alliod-2020-1/',
+    href: '/en/post/a-visiting-from-mr-frederic-alliod-2020-1/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Phạm Quang Vinh - Director Of Kim Dong Publishing House (2020)',
-    href: '/deedee-studio-static/en/post/a-visiting-from-mr-ph%E1%BA%A1m-quang-vinh-director-of-kim-dong-publishing-house-2020-1/',
+    href: '/en/post/a-visiting-from-mr-ph%E1%BA%A1m-quang-vinh-director-of-kim-dong-publishing-house-2020-1/',
   }),
   Object.freeze({
     title: 'A Visiting From Mr. Daniel Santos - Director of Sales - EMEA & APAC Of Toon Boom (2020)',
-    href: '/deedee-studio-static/en/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020-1/',
+    href: '/en/post/a-visiting-from-mr-daniel-santos-director-of-sales-emea-apac-of-toon-boom-2020-1/',
   }),
   Object.freeze({
     title: 'DeeDee Attended Asia TV Forum & Market (2019)',
-    href: '/deedee-studio-static/en/post/deedee-attended-asia-tv-forum-market-2019-1/',
+    href: '/en/post/deedee-attended-asia-tv-forum-market-2019-1/',
   }),
   Object.freeze({
     title: '21st Viet Nam Film Festival (2019)',
-    href: '/deedee-studio-static/en/post/21st-viet-nam-film-festival-2019-1/',
+    href: '/en/post/21st-viet-nam-film-festival-2019-1/',
   }),
   Object.freeze({
     title: 'Golden Kite Film Festival (2019)',
-    href: '/deedee-studio-static/en/post/golden-kite-film-festival-2019/',
+    href: '/en/post/golden-kite-film-festival-2019/',
   }),
 ]),
   expert: Object.freeze([
   Object.freeze({
     title: 'Does Adult Animation Always Look Mature?',
-    href: '/deedee-studio-static/en/post/does-adult-animation-always-look-mature/',
+    href: '/en/post/does-adult-animation-always-look-mature/',
   }),
 ]),
   knowledge: Object.freeze([]),

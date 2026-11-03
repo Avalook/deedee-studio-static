@@ -6,7 +6,7 @@ import { test } from 'node:test';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const routeFile = path.join(root, 'en/all-project/an-unexpected-guest/index.html');
-const base = '/deedee-studio-static/';
+const base = '/';
 
 test('Unexpected Guest picture sources use verified local candidates', () => {
   const html = readFileSync(routeFile, 'utf8');
@@ -14,13 +14,13 @@ test('Unexpected Guest picture sources use verified local candidates', () => {
 
   assert.equal(srcsets.length, 19, 'the route keeps all captured picture source entries');
   assert.equal(
-    (html.match(/\/deedee-studio-static\/en\/all-project\/(?:h_|w_|q_|al_|enc_|usm_)/g) ?? []).length,
+    (html.match(/\/en\/all-project\/(?:h_|w_|q_|al_|enc_|usm_)/g) ?? []).length,
     0,
     'Wix transform fragments must not be interpreted as local routes',
   );
 
   for (const srcset of srcsets) {
-    assert.match(srcset, /^\/deedee-studio-static\/assets\/[^,\s"]+\s+1x$/);
+    assert.match(srcset, /^\/assets\/[^,\s"]+\s+1x$/);
     const assetPath = path.join(root, srcset.slice(base.length).replace(/\s+1x$/, ''));
     assert.ok(existsSync(assetPath), 'missing local candidate: ' + srcset);
   }
@@ -38,7 +38,7 @@ test('Unexpected Guest picture sources use verified local candidates', () => {
 
   assert.match(
     html,
-    /<img loading="lazy" src="\/deedee-studio-static\/assets\/project-detail-ecd8c069780b3860a03c994a\.webp" alt="Frame 1171276725\.png"/,
+    /<img loading="lazy" src="\/assets\/project-detail-ecd8c069780b3860a03c994a\.webp" alt="Frame 1171276725\.png"/,
     'the blank logo keeps its verified local image fallback',
   );
 });
